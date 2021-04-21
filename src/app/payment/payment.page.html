@@ -1,0 +1,46 @@
+<ion-content class="main-all">
+  <ion-header class="haeder-all">
+    <ion-toolbar color="light">
+      <ion-buttons slot="start">
+        <ion-button>
+          <ion-icon class="home-close-button" name="close-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button class="payment-button">
+   پرداخت<ion-icon name="chevron-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-grid>
+    <ion-row>
+      <ion-col size-md="4" offset-md="4" size-xs="12">
+        <h3 class="header-register">پرداخت</h3>
+        <p class="login-text">برای پرداخت میتوانید از یکی از روش های زیر استفاده نمایید</p>
+      </ion-col>
+      <ion-col [ngStyle]="{'border': flagClass ? '1px solid #41D5FB' : 'none' }" (click)="clickpayment()"  class="box" size-md="4" offset-md="4" size-xs="12">
+        <div>
+          <img class="box-img" style="float: right;"  src="../../assets/img/pic.png" alt="">
+          <h6 class="header-register box-h2" style="float: right;">به پرداخت ملت </h6>
+        </div>
+        <ion-icon *ngIf="flagClass" name="checkbox-outline" class="icon-check"></ion-icon>
+      </ion-col>
+      <ion-col [ngStyle]="{'border': flagClass ? 'none' : '1px solid #41D5FB' }" (click)="clickpayment2()" class="box" size-md="4" offset-md="4" size-xs="12">
+        <div>
+          <img class="box-img"  src="../../assets/img/zarin.png" alt="">
+          <h6 class="header-register box-h2" >پی بال </h6>
+        </div>
+        <ion-icon *ngIf="!flagClass" name="checkbox-outline" class="icon-check"></ion-icon>
+      </ion-col>
+      <ion-col class="sale"  size-md="4" offset-md="4" size-xs="12">
+        <p  class="add-new" [routerLink]="['/', 'payment', 'offer']">
+          <ion-icon class="plus-icon" name="add-outline"></ion-icon>  افزودن کد تخفیف
+        </p>
+      </ion-col>
+      <ion-col size-md="4" offset-md="4" size-xs="12" class="button-grid">
+        <ion-button class="color-register2" fill="outline" ><ion-icon name="card-outline"></ion-icon>انجام</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

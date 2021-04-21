@@ -1,0 +1,48 @@
+<ion-content  class="main-all ">
+
+  <ion-grid class="content-margin" *ngFor="let history of listRunning">
+    <!--<ion-row>-->
+      <!--<ion-col class="tarikhrun" size-md="4" offset-md="4" size-xs="12">-->
+        <!--<p>99/2/8 ، ساعت 16:48</p>-->
+      <!--</ion-col>-->
+    <!--</ion-row>-->
+    <!--<ion-row >-->
+      <!--<ion-col   class="rowrun box " size-md="4" offset-md="4" size-xs="12">-->
+        <!--<ion-col size-md="12" size-xs="12">-->
+          <!--<ul class="li2rec">-->
+            <!--<li><span class="spanrec">17:04</span>{{history.shipping.address_1}}</li>-->
+          <!--</ul>-->
+        <!--</ion-col>-->
+        <!--<div class="shop-all">-->
+          <!--<p class="shop-p2"> {{history.line_items[0].name}} :نام محصول</p>-->
+        <!--</div>-->
+        <!--<div class="hazinerun">-->
+          <!--<p class="prun"><span class="spanrun">هزینه نهایی</span><br>تومان {{  history.total | number:'3.0-0' }}</p>-->
+        <!--</div>-->
+      <!--</ion-col>-->
+    <!--</ion-row>-->
+    <ion-row>
+      <ion-col class="tarikhrun" size-md="4" offset-md="4" size-xs="12">
+       <!-- <p style="float: left">99/2/8 ، ساعت 16:48</p>--> <p>شماره سفارش:{{history.id}}</p>
+      </ion-col>
+    </ion-row>
+    <ion-row >
+      <ion-col class="rowrun box " size-md="4" offset-md="4" size-xs="12">
+
+          <ul class="li2rec">
+
+            <li class="li-padding"> {{history.shipping.address_1}}</li>
+          </ul>
+
+        <img class="shop-img" src="{{history.line_items[0].product_data.images[0].src}}" alt="">
+        <div class="shop-all">
+          <p class="shop-p2">{{history.line_items[0].name}}</p>
+        </div>
+        <div class="hazinerun">
+          <p class="prun"><span class="spanrun">هزینه نهایی</span><br> {{  history.total | number:'3.0-0' }} </p>
+        </div>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+</ion-content>

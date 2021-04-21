@@ -1,0 +1,54 @@
+<ion-content class="main-all ">
+  <ion-header class="haeder-all toolbar-rel ">
+<ion-toolbar color="light">
+    <ion-buttons class="toolbar-rel">
+      <ion-button (click)="backClick()"><ion-icon style="font-size: 28px" name="arrow-forward-outline"></ion-icon></ion-button>
+    </ion-buttons>
+    <ion-title class="home-message">مکان خود را مشخص نمایید</ion-title>
+</ion-toolbar>
+  </ion-header>
+  <ion-grid style="position:relative;">
+    <ion-row >
+      <img *ngIf="lock" class="login-code-gif special" src="../../assets/img/saedi2.png"  alt="" >
+      <img *ngIf="!lock" class="login-code-gif special" src="../../assets/img/saedi.gif" alt="" >
+
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <form [formGroup]="form" (ngSubmit)="addRecipe()">
+    <ion-row >
+      <ion-col class="codepage-textalighn"  size-md="4" offset-md="4" size-xs="12">
+        <h3 class="header-register">به تک استارت خوش آمدید</h3>
+        <p class="login-text">ورود به حساب کاربری</p>
+      </ion-col>
+    </ion-row>
+    <ion-row >
+      <ion-col size-md="4" offset-md="4" size-xs="12" class="button-grid2 ">
+        <div>
+          <ion-label >شماره تلفن همراه</ion-label>
+          <ion-input  class="input-register"  placeholder="شماره همراه" formControlName="phone"></ion-input>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row class="rel-row" >
+
+<!--      <ion-col size-md="4" offset-md="4" size-xs="12" class="button-grid abso-button  ">-->
+
+<!--        <ion-button class="color-register2   " fill="outline"  type="submit"><ion-icon name="checkmark-outline"></ion-icon>تایید</ion-button>-->
+<!--        <p class="login-rules">کاربر گرامی این سایت تابع همه قوانین جمهوی اسلامی ایران می باشد و هرگونه سرپیچی از <a href="#">قوانین</a> آن پیگرد قانونی دارد.</p>-->
+
+<!--      </ion-col>-->
+      <ion-col size-md="4" offset-md="4" size-xs="12" class="button-grid  abso-button  ">
+        <ion-button *ngIf="!flagLoad" class="color-register10" fill="outline">
+          <span  style="display: contents;"><img  class="image-loading" src="../../assets/img/2.gif" alt="">لطفا صبر کنید</span>
+        </ion-button>
+        <ion-button *ngIf="flagLoad && form.valid" class="color-register2 " fill="outline"  type="submit"><ion-icon name="checkmark-outline"></ion-icon>تایید</ion-button>
+        <ion-button [disabled]=!form.valid *ngIf="!form.valid"  class="color-register22 " fill="outline"  type="submit"><ion-icon name="checkmark-outline"></ion-icon>تایید</ion-button>
+        <p class="login-rules">کاربر گرامی این سایت تابع  قوانین جمهوی اسلامی ایران می باشد و هرگونه سرپیچی از <a href="#">قوانین</a> آن پیگرد قانونی دارد.</p>
+
+      </ion-col>
+    </ion-row>
+    </form>
+
+  </ion-grid>
+</ion-content>

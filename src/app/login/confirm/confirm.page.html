@@ -1,0 +1,83 @@
+<ion-header class="haeder-all">
+
+  <ion-toolbar  color="light">
+    <ion-buttons slot="start">
+      <ion-button (click)="backClick()">
+        <ion-icon class="home-close-button" name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button class="payment-button" (click)="addRecipe()" [disabled]="!form.valid">
+        ویرایش<ion-icon name="pencil-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+<ion-content *ngIf="load" class="main-all">
+<!--  <ion-header class="haeder-all  ">
+
+    <ion-toolbar  color="light">
+      <ion-buttons slot="start">
+        <ion-button>
+          <ion-icon class="home-close-button" name="close-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button class="payment-button">
+        ویرایش<ion-icon name="pencil-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+
+  </ion-header>-->
+  <ion-grid >
+    <form [formGroup]="form" (ngSubmit)="addRecipe()">
+      <ion-row>
+        <ion-col size-md="4" offset-md="4" size-xs="12">
+          <h3 class="header-register">تکمیل اطلاعات کاربری</h3>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="4" offset-md="4" size-xs="12" class="button-grid2">
+          <div>
+            <ion-label >نام </ion-label>
+            <ion-input class="input-register" placeholder="نام" formControlName="first_name"></ion-input>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="4" offset-md="4" size-xs="12" class="button-grid2">
+          <div>
+            <ion-label >نام خانوادگی </ion-label>
+            <ion-input class="input-register" placeholder="نام خانوادگی" formControlName="last_name"></ion-input>
+          </div>
+        </ion-col>
+
+        <ion-col size-md="1" offset-md="4" size-xs="12" class="offer-float">
+          <ion-button (click)="onPickImage()" class="color-register3 " fill="outline" ><ion-icon name="camera-outline"></ion-icon>تصویر</ion-button>
+        </ion-col>
+        <ion-col size-md="3"  size-xs="12">
+          <input type="file" hidden #filePicker (change)="onFileChoosen($event)" formControlName="avatar">
+          <ion-input [disabled]="true" class="input-register " placeholder="تصویر" formControlName="nameImage"></ion-input>
+        </ion-col>
+        <ion-col size-md="1" offset-md="4" size-xs="12" class="offer-float2">
+          <ion-button (click)="onPickImage()" class="color-register3 " fill="outline" ><ion-icon name="camera-outline"></ion-icon>تصویر</ion-button>
+        </ion-col>
+
+        <!--<ion-col *ngIf="mode2" size-md="4" offset-md="4" size-xs="12" class="button-grid2">-->
+          <!--<div>-->
+
+            <!--<input type="file" hidden #filePicker (change)="onFileChoosen($event)" formControlName="avatar">-->
+            <!--<ion-input class="input-register" placeholder="تصویر" formControlName="nameImage"></ion-input>-->
+            <!--<ion-button class="color-register2" fill="outline" (click)="onPickImage()"><ion-icon name="camera-outline"></ion-icon>تصویر</ion-button>-->
+            <!---->
+          <!--</div>-->
+
+        <!--</ion-col>-->
+
+      </ion-row>
+
+    </form>
+  </ion-grid>
+</ion-content>

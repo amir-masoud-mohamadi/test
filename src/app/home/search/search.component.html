@@ -1,0 +1,35 @@
+<ion-content class="main-all">
+    <ion-header class="height42" >
+      <ion-toolbar color="light">
+        <ion-buttons slot="end">
+          <ion-button (click)="dismiss()">
+            <ion-icon class="home-close-button"  name="close-outline" ></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <p>مکان خود را جستجو کنید</p>
+      </ion-toolbar>
+    </ion-header>
+    <ion-grid>
+      <form [formGroup]="form" (ngSubmit)="addRecipe()">
+        <ion-row>
+          <ion-col size-md="12"  size-xs="12" class="button-grid2">
+            <div>
+              <ion-input class="input-register"
+                         (ionChange)="segmentChanged($event)" placeholder="کجا هستید؟" formControlName="town">
+                <ion-icon class="icon-input" name="search-outline"></ion-icon>
+              </ion-input>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-md="12"  size-xs="12" *ngIf="listSearch.length > 0">
+            <ion-list  >
+              <ion-item *ngFor="let search of listSearch" class="main-all2" (click)="onClickTown(search)">
+                <ion-label>{{search.address}}</ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-col>
+        </ion-row>
+      </form>
+    </ion-grid>
+</ion-content>

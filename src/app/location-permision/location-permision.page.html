@@ -1,0 +1,38 @@
+<!--<ion-header class="haeder-all toolbar-rel ">-->
+  <!--<ion-toolbar color="light" class=" toolbar-rel" >-->
+    <!--<ion-buttons class="toolbar-rel">-->
+      <!--<ion-button (click)="backClick()"><ion-icon style="font-size: 28px" name="arrow-forward-outline"></ion-icon></ion-button>-->
+    <!--</ion-buttons>-->
+    <!--<ion-title class="home-message">مکان خود را مشخص نمایید</ion-title>-->
+  <!--</ion-toolbar>-->
+<!--</ion-header>-->
+
+<ion-content>
+
+  <ion-grid >
+
+<ion-row>
+  <ion-col size-lg="5" size-md="5" size-xs="3"></ion-col>
+  <ion-col size-lg="2" size-md="2" size-xs="6">
+    <img class=" location-permision-img" src="../../assets/img/world.gif" >
+  </ion-col>
+  <ion-col size-lg="5" size-md="5" size-xs="3"></ion-col>
+</ion-row>
+      <ion-row>
+        <ion-col size-lg="5" size-md="5" size-xs="3"></ion-col>
+        <ion-col size-lg="2" size-md="2" size-xs="6" >
+          <h3 class="header-register">فعالسازی مکان یاب </h3>
+          <p class="login-text">برای شروع بر اساس موقعیت شما، مکان یاب خود را فعال نمایید</p>
+          <img class=" location-permision-img map-margin" src="../../assets/img/map.png" >
+        </ion-col>
+        <ion-col size-lg="5" size-md="5" size-xs="3"></ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="4" offset-md="4" size-xs="12" class="button-grid abso-button privacy">
+          <ion-button class="color-register2 " fill="outline" (click)="clickGps()"><ion-icon name="pin-outline"></ion-icon>تایید دسترسی</ion-button>
+          <p (click)="closeClick()" class="login-text"><a>فعلا نه</a></p>
+        </ion-col>
+      </ion-row>
+
+  </ion-grid>
+</ion-content>

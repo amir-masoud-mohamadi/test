@@ -1,0 +1,22 @@
+<ion-content class="main-all">
+  <ion-header class="haeder-all">
+    <ion-toolbar color="light">
+  <p class="title-license">لیست خودرو های ثبت شده:</p>
+    </ion-toolbar>
+  </ion-header>
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let car of carList" style="cursor: pointer" (click)="setCar(car)"  class="box" size-md="4" offset-md="4" size-xs="12">
+        <div>
+          <ion-icon  class="license-float" name="car-outline" class="box-img" ></ion-icon>
+          <h6 class="header-register box-h2" style="float: right;">{{car.name}}</h6>
+        </div>
+      </ion-col>
+      <ion-col class="sale"  size-md="4" offset-md="4" size-xs="12">
+        <p class="curser" [routerLink]="['/', 'login', 'license', 'add-car']">
+          <ion-icon class="plus-icon" name="add-outline"></ion-icon> افزودن خودرو جدید
+        </p>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

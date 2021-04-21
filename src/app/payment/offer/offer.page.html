@@ -1,0 +1,54 @@
+<ion-content class="main-all">
+  <ion-header class="haeder-all toolbar-rel">
+    <ion-toolbar color="light">
+      <ion-buttons slot="start">
+        <ion-button (click)="backClick()">
+          <ion-icon class="home-close-button" name="arrow-forward-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title class="home-message">تخفیف ها</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-grid>
+    <ion-row >
+      <ion-col size-md="4" offset-md="4" size-xs="12">
+        <h3 class="header-register">افزودن کد تخفیف</h3>
+      </ion-col>
+    </ion-row>
+    <ion-row class="offer-margin ">
+      <ion-col size-md="1" offset-md="4" size-xs="12" class="offer-float">
+        <ion-button class="color-register3 " fill="outline" [routerLink]="['/', 'login']">تایید</ion-button>
+      </ion-col>
+      <ion-col size-md="3"  size-xs="12">
+        <ion-input class="input-register " placeholder="کد تخفیف را وارد نمایید" ></ion-input>
+      </ion-col>
+      <ion-col size-md="1" offset-md="4" size-xs="12" class="offer-float2">
+        <ion-button class="color-register3 " fill="outline" [routerLink]="['/', 'login']">تایید</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="box" size-md="4" offset-md="4" size-xs="12">
+        <div  class="img-div">
+          <img class="box-img"   src="../../assets/img/offer.png" alt="">
+        </div>
+        <h6 class="header-register box-h2 box-h3" >تخفیف 20% برای اولین خرید باتری </h6>
+        <p class="offer-text">معتبر تا۲۶ اسفند ۱۳۹۹  </p>
+      </ion-col>
+      <ion-col class="box" size-md="4" offset-md="4" size-xs="12">
+        <div class="img-div" >
+          <img class="box-img"  src="../../assets/img/offer.png" alt="">
+        </div>
+        <h6 class="header-register box-h2 box-h3">تخفیف 20% برای دومین خرید باتری  </h6>
+        <p class="offer-text">معتبر تا۲۶ اسفند ۱۳۹۹   </p>
+      </ion-col>
+      <ion-col class="box" size-md="4" offset-md="4" size-xs="12">
+        <div class="img-div" >
+          <img class="box-img"   src="../../assets/img/offer.png" alt="">
+        </div>
+        <h6 class="header-register box-h2 box-h3">تخفیف 20% برای سومین خرید باتری  </h6>
+        <p class="offer-text">معتبر تا۲۶ اسفند ۱۳۹۹  </p>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+</ion-content>

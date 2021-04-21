@@ -1,0 +1,225 @@
+<ion-header *ngIf="product && !loading" class="haeder-all height42">
+  <ion-toolbar color="light">
+    <ion-buttons slot="start">
+      <ion-button (click)="dismiss()">
+        <ion-icon class="home-close-button"   name="close-outline" class="icon-20px" ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content *ngIf="product && !loading" class="main-all">
+
+  <ion-grid >
+    <ion-row >
+      <ion-col size-md="12" size-xs="12" >
+        <img class="input-img"   src="../../../assets/img/input.png" alt="">
+<div class="product-input">
+          <ion-label >موقعیت خریدار</ion-label>
+          <p>{{address}}</p>
+</div>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="flagBaterry" >
+      <ion-col size-md="12" size-xs="12">
+        <p class="login-text"> :محصولات قابل سفارش برای خودرو شما</p>
+      </ion-col>
+    </ion-row>
+    <div *ngIf="flagBaterry" >
+      <ion-row class="box" *ngFor="let battery of listBaterry" (click)="batteryChoose(battery)">
+        <ion-col size-md="2" size-xs="3">
+          <p class="login-text product-text ">{{battery.price | number:'3.0-0'}} تومان</p>
+        </ion-col>
+        <ion-col   size-md="10" size-xs="9" class="battery-image">
+          <img class="box-img"   src="{{battery.images[0].src}}" alt="">
+          <p class="login-text product-text1">{{battery.name}}</p>
+        </ion-col>
+      </ion-row>
+    </div>
+    <ion-row class="product-direction" *ngIf="!flagBaterry">
+      <ion-list class="width-100i" >
+
+          <!--<ion-item>
+            <ion-thumbnail slot="start">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-thumbnail>
+            <ion-label>
+              <p>
+                <ion-skeleton-text class="width-100" animated ></ion-skeleton-text>
+              </p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-thumbnail slot="start">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-thumbnail>
+            <ion-label>
+              <p>
+                <ion-skeleton-text class="width-100" animated></ion-skeleton-text>
+              </p>
+            </ion-label>
+          </ion-item>-->
+          <ion-item>
+            <ion-thumbnail slot="start">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-thumbnail>
+            <ion-label>
+              <p>
+                <ion-skeleton-text class="width-100" animated></ion-skeleton-text>
+              </p>
+            </ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-thumbnail slot="start">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-thumbnail>
+            <ion-label>
+              <p>
+                <ion-skeleton-text class="width-100" animated ></ion-skeleton-text>
+              </p>
+            </ion-label>
+          </ion-item>
+          <!--<ion-item>
+            <ion-thumbnail slot="start">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-thumbnail>
+            <ion-label>
+              <p>
+                <ion-skeleton-text class="width-100" animated ></ion-skeleton-text>
+              </p>
+            </ion-label>
+          </ion-item>-->
+        </ion-list>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-header *ngIf="!product && !loading" class="haeder-all height42">
+  <ion-toolbar color="light" class="shop-first-row">
+    <ion-buttons slot="start">
+
+    </ion-buttons>
+    <ion-title slot="start" class="shop-p1">
+      نماینده شما تا دو دقیقه دیگر به شما میرسد
+    </ion-title>
+
+    <ion-buttons slot="end" class="shop-top-button">
+      <ion-button (click)="cancelButton()" class="shop-top-button-font" >
+        لغو درخواست
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content *ngIf="!product && !loading " class="main-all">
+
+  <ion-grid>
+    <ion-row>
+      <ion-col class="shop-second-row" size-md="12" size-xs="12" >
+        <img class="shop-img" src="../../../assets/img/person.png" alt="">
+        <div class="shop-all">
+          <p class="shop-p2">حسام خردمند</p>
+          <p class="shop-p3">آدرس نمایندگی:خیابان ولیعصر...</p>
+        </div>
+      </ion-col>
+      <img class="login-code-gif" src="../../../assets/img/bakian1.gif" alt="">
+    </ion-row>
+    <ion-row>
+      <ion-col class="shop-buttons-row" size-md="12" size-xs="12">
+        <ion-row>
+          <ion-col size-md="6" size-sm="6" size-xs="6" style="text-align: center">
+            <ion-button href="tel:09203185480" fill="outline" class="call-button" fill="outline">تماس</ion-button>
+          </ion-col>
+          <ion-col size-md="6" size-sm="6" size-xs="6" style="text-align: center">
+            <ion-button fill="outline" href="sms:09203185480" class="message-button color-login">پیام</ion-button>
+          </ion-col>
+          <ion-col class="special-shop-row">
+            <h3 class="shop-h3 ">هزینه نهایی</h3>
+            <h5 class="shop-h3 ">12000 تومان</h5>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="shop-third-row-s shop-abso" size-md="12" size-xs="12">
+
+        <ion-button (click)="payButton()" class="color-register2 "  type="submit">پرداخت<ion-icon name="card-outline"></ion-icon></ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+<ion-header *ngIf="loading">
+  <ion-toolbar color="light">
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">
+        <ion-icon class="home-close-button"   name="close-outline" class="icon-20px" ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content *ngIf="loading">
+
+  <ion-grid >
+
+      <ion-row>
+        <ion-col size-md="12"  size-xs="12" class="posload1">
+          <img src="../../assets/img/loading2.gif" alt="" class="imgload marginload">
+
+        </ion-col>
+        <ion-col size-md="12"  size-xs="12" class="pospload">
+
+          <p class="imgload marginload">لطفا کمی صبر کنید</p>
+        </ion-col>
+        <ion-col size-md="12"  size-xs="12" class="posload3">
+          <ion-button (click)="loadingButton()" class="color-register2-loading imgload2 btnload" fill="outline"  type="submit">انصراف</ion-button>
+        </ion-col>
+      </ion-row>
+
+
+  </ion-grid>
+
+</ion-content>
+<!--<ion-header *ngIf="!loading && !product && payment" class="haeder-all">-->
+  <!--<ion-toolbar color="light">-->
+    <!--<ion-buttons slot="start">-->
+      <!--<ion-button (click)="dismiss()">-->
+        <!--<ion-icon class="home-close-button" name="close-outline"></ion-icon>-->
+      <!--</ion-button>-->
+    <!--</ion-buttons>-->
+    <!--<ion-buttons slot="end">-->
+      <!--<ion-button class="payment-button">-->
+        <!--پرداخت<ion-icon name="chevron-back-outline"></ion-icon>-->
+      <!--</ion-button>-->
+    <!--</ion-buttons>-->
+  <!--</ion-toolbar>-->
+<!--</ion-header>-->
+<!--<ion-content *ngIf="!loading && !product && payment" class="main-all">-->
+
+  <!--<ion-grid>-->
+    <!--<ion-row>-->
+      <!--<ion-col size-md="12"  size-xs="12">-->
+        <!--<h3 class="header-register">پرداخت</h3>-->
+        <!--<p class="login-text">برای پرداخت میتوانید از یکی از روش های زیر استفاده نمایید</p>-->
+      <!--</ion-col>-->
+      <!--<ion-col [ngStyle]="{'border': flagClass ? '1px solid #41D5FB' : 'none' }" (click)="clickpayment()"  class="box" size-md="4" offset-md="4" size-xs="12">-->
+        <!--<div>-->
+          <!--<img class="box-img" style="float: right;"  src="../../assets/img/pic.png" alt="">-->
+          <!--<h6 class="header-register box-h2" style="float: right;">به پرداخت ملت </h6>-->
+        <!--</div>-->
+        <!--<ion-icon *ngIf="flagClass" name="checkbox-outline" class="icon-check"></ion-icon>-->
+      <!--</ion-col>-->
+      <!--<ion-col [ngStyle]="{'border': flagClass ? 'none' : '1px solid #41D5FB' }" (click)="clickpayment2()" class="box" size-md="4" offset-md="4" size-xs="12">-->
+        <!--<div>-->
+          <!--<img class="box-img"  src="../../assets/img/zarin.png" alt="">-->
+          <!--<h6 class="header-register box-h2" >پی بال </h6>-->
+        <!--</div>-->
+        <!--<ion-icon *ngIf="!flagClass" name="checkbox-outline" class="icon-check"></ion-icon>-->
+      <!--</ion-col>-->
+      <!--&lt;!&ndash;<ion-col class="sale"  size-md="4" offset-md="4" size-xs="12">&ndash;&gt;-->
+        <!--&lt;!&ndash;<p  class="add-new" [routerLink]="['/', 'payment', 'offer']">&ndash;&gt;-->
+          <!--&lt;!&ndash;<ion-icon class="plus-icon" name="add-outline"></ion-icon>  افزودن کد تخفیف&ndash;&gt;-->
+        <!--&lt;!&ndash;</p>&ndash;&gt;-->
+      <!--&lt;!&ndash;</ion-col>&ndash;&gt;-->
+      <!--<ion-col size-md="12" size-xs="12" class="button-grid">-->
+        <!--<ion-button class="color-register2" fill="outline" >انجام<ion-icon name="card-outline"></ion-icon></ion-button>-->
+      <!--</ion-col>-->
+    <!--</ion-row>-->
+  <!--</ion-grid>-->
+<!--</ion-content>-->

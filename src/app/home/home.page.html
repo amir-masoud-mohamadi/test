@@ -1,0 +1,103 @@
+<ion-header  class="toolbar-rel " >
+  <ion-toolbar color="light " >
+    <ion-buttons slot="end" *ngIf="flagMenu">
+      <ion-button (click)="clickMenu()"class="home-close-button"  *ngIf="!menuControl"><ion-icon class="home-close-button" name="menu-outline"></ion-icon></ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end" *ngIf="flagMenu">
+      <ion-button  (click)="clickMenu()"  *ngIf="menuControl"><ion-icon class="home-close-button" name="close-outline"></ion-icon></ion-button>
+    </ion-buttons>
+    <ion-title class="home-message">مکان خود را مشخص نمایید</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+  <div *ngIf="show" id="container" >
+    <mgl-map
+      [zoom]="[16]"
+      [center]="center"
+      [centerWithPanTo]="true"
+      [interactive]="true"
+      [apiKey]="apiKey"
+      (click)="clicked($event)"
+
+    >
+      <mgl-marker
+
+      [(lngLat)]="markerPosition"
+      [draggable]="true"
+      (dragEnd)="dragged($event)"
+      anchor="bottom"
+      >
+      </mgl-marker>
+    </mgl-map>
+    <div class="abso2">
+      <ion-input [(ngModel)]="input" class="input-register input-loc" placeholder="کجا هستید؟" readonly (click)="modalSearch()"><ion-icon name="search-outline"></ion-icon></ion-input>
+    </div>
+  <ion-button class="color-register2 abso" fill="outline"  (click)="clickButton()"><ion-icon name="pin-outline"></ion-icon>تایید مکان </ion-button>
+    <ion-icon class="abso3" name="locate-outline" (click)="clickGps()"></ion-icon>
+  </div>
+<div *ngIf="menuControl" class="home-side-menu0" >
+  <ion-grid class="home-side-menu1">
+    <ion-row class="home-side-menu2">
+      <ion-col>
+        <ion-list>
+          <ion-item>
+            <ion-avatar slot="start" class="image-card">
+              <img class="image-card" src="{{user.avatar}}">
+            </ion-avatar>
+            <ion-label>
+              <h2>{{user.first_name}} {{user.last_name}}</h2>
+              <p class="edit" [routerLink]="['/', 'login', 'confirm', 'update']">ویرایش حساب</p>
+            </ion-label>
+          </ion-item>
+          <ion-item class="row-menu">
+            <ion-label class="item-menu" [routerLink]="['/', 'history']">
+              <ion-icon class="icon-menu" name="create-outline"></ion-icon>سفارش های من
+            </ion-label>
+          </ion-item>
+          <!--<ion-item class="row-menu">
+            <ion-label class="item-menu" [routerLink]="['/', 'payment', 'offer']">
+              <ion-icon class="icon-menu" name="gift-outline"></ion-icon>تخفیف ها
+            </ion-label>
+          </ion-item>-->
+          <ion-item class="row-menu">
+            <ion-label class="item-menu" (click)="upadteUser()">
+              <ion-icon class="icon-menu" name="car-outline"></ion-icon>وسیله نقلیه
+            </ion-label>
+          </ion-item>
+          <ion-item class="row-menu">
+            <ion-label class="item-menu"  >
+              <a class="call-me" href="tel:09203185480">
+              <ion-icon class="icon-menu" name="call-outline" ></ion-icon>تماس با ما
+              </a>
+            </ion-label>
+          </ion-item>
+          <ion-item class="row-menu">
+            <ion-label class="item-menu"  >
+              <a class="call-me" href="https://bakian.ir">
+
+              <ion-icon class="icon-menu" name="globe-outline" ></ion-icon>سایت
+              </a>
+            </ion-label>
+          </ion-item>
+          <ion-item class="row-menu-exit">
+            <ion-label class="item-menu" (click)="exit()">
+              <ion-icon class="icon-menu" name="exit-outline"></ion-icon>خروج از حساب کاربری
+            </ion-label>
+          </ion-item>
+
+        </ion-list>
+
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+</div>
+
+<!--<ion-col class="shop-buttons-row" size-md="12" size-xs="12">-->
+  <!--<ion-row>-->
+    <!--<ion-col size-md="6" size-sm="6" size-xs="6">-->
+     <!---->
+    <!--</ion-col>-->
+    <!--<ion-col size-md="6" size-sm="6" size-xs="6" style="text-align: center">-->
+      <!---->
+    <!--</ion-col>-->

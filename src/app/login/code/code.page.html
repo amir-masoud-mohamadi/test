@@ -1,0 +1,44 @@
+<ion-content class="main-all">
+  <ion-header class="haeder-all toolbar-rel">
+    <ion-toolbar color="light">
+    <ion-buttons class="toolbar-rel">
+      <ion-button (click)="backClick()"><ion-icon class="home-close-button" name="arrow-forward-outline"></ion-icon></ion-button>
+    </ion-buttons>
+    <ion-title class="home-message">تایید شماره همراه </ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-grid style="position:relative;">
+    <ion-row >
+      <img *ngIf="lock" class="login-code-gif " src="../../assets/img/قفل-بسته6.png" style="" alt="" >
+      <img *ngIf="!lock" class="login-code-gif special" src="../../assets/img/قفل6.gif" alt="" style="">
+
+    </ion-row>
+  </ion-grid>
+  <ion-grid class="grid-margin">
+    <form [formGroup]="form" (ngSubmit)="addRecipe()">
+    <ion-row>
+      <ion-col class="codepage-textalighn" size-md="4" offset-md="4" size-xs="12" >
+
+        <h3 class="header-register">کد چهار رقمی خود را وارد نمایید</h3>
+        <p class="login-text">پبام کوتاهی به شماره تلفن همراه شما <span class="code-number" *ngIf="phoneNumber">{{phoneNumber}}</span> ارسال شده است</p>
+      </ion-col>
+      <ion-col size-md="4" offset-md="4" size-xs="12" class="button-grid2">
+        <ion-input class="input-register" formControlName="code" tabIndex="0" maxlength="4"></ion-input>
+      </ion-col>
+    </ion-row>
+    <ion-row class="rel-row" >
+
+      <ion-col size-md="4" offset-md="4" size-xs="12" class="button-grid abso-button">
+        <ion-button *ngIf="!flagLoad" class="color-register10" fill="outline">
+          <span  style="display: contents;"><img  class="image-loading" src="../../assets/img/2.gif" alt="">لطفا صبر کنید</span>
+        </ion-button>
+        <ion-button *ngIf="flagLoad && form.valid" class="color-register2 " fill="outline"  type="submit"><ion-icon name="checkmark-outline"></ion-icon>تایید</ion-button>
+        <ion-button [disabled]=!form.valid *ngIf="!form.valid"  class="color-register22 " fill="outline"  type="submit"><ion-icon name="checkmark-outline"></ion-icon>تایید</ion-button>
+        <p class="login-text login-rules">پیامک را دریافت نکرده اید؟ <a (click)="restart()" style="cursor: pointer">ارسال مجدد</a></p>
+
+      </ion-col>
+    </ion-row>
+    </form>
+
+  </ion-grid>
+</ion-content>
