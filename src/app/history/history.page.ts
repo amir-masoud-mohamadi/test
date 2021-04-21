@@ -12,7 +12,5 @@ export class HistoryPage implements OnInit {
 
   ngOnInit() {
   }
-  backClick() {
-    this.router.navigate(['/', 'home']);
-  }
+
 }

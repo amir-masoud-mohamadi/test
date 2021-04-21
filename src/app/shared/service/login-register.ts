@@ -25,11 +25,6 @@ export class loginRegister {
     return this.http.get('https://bakian.ir/sb/sign/isCarSet.php' , {
       observe: 'response', headers: new HttpHeaders().set('Token', auth)}).pipe(take(1));
   }
-  /*setCar(id){
-    const auth = localStorage.getItem('token');
-    return this.http.post('https://bakian.ir/sb/sign/setCar.php', id , {
-      observe: 'response', headers: new HttpHeaders().set('Token', auth)}).pipe(take(1));
-  }*/
   constructor(private http: HttpClient,private alertCtrl: AlertController) { }
   generate(some) {
     const formData = new FormData();

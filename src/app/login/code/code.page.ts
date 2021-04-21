@@ -59,7 +59,7 @@ export class CodePage implements OnInit {
                   this.lock = false;
                   setTimeout(() => {
                     this.lock = true;
-                    this.router.navigate(['/', 'login', 'license', 'add-car', 'new']);
+                    this.router.navigate(['/', 'location-permision']);
                   }, 2000)
 
                 }

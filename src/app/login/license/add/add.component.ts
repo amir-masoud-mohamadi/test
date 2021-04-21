@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {AlertController, LoadingController, ToastController} from "@ionic/angular";
+import {AlertController, LoadingController, ModalController, NavParams, ToastController} from "@ionic/angular";
 import {loginRegister} from "../../../shared/service/login-register";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {HttpResponse} from "@angular/common/http";
@@ -11,6 +11,7 @@ import {HttpResponse} from "@angular/common/http";
 })
 export class AddComponent implements OnInit {
   form: FormGroup;
+  update;
   errorMsg;
   company;
   mode;
@@ -302,39 +303,39 @@ export class AddComponent implements OnInit {
               private loading: LoadingController,
               private router: Router,
               private route: ActivatedRoute,
+              private navParams: NavParams,
+              public modalCtrl: ModalController,
               private toastController: ToastController) { }
   ngOnInit() {
-    this.route.params.subscribe(
-      (params: Params) =>{
-        this.mode = params.update;
-        console.log('params');
-        console.log(params.update);
-        if (this.mode === 'new') {
-          this.mode2 = false;
-        } else if (this.mode === 'update') {
-          this.mode2 = true;
-          this.userService.getCarName().subscribe((com: HttpResponse<any>) => {
-            if (com.status === 200) {
-              console.log(com);
-              this.carName= com.body[0].name;
+    console.log('update modal');
+    if (this.navParams.data.update) {
+      this.update = this.navParams.data.update;
+    }
+    console.log(this.update);
+    if (this.update === 'new') {
+      this.mode2 = false;
+    } else if (this.update === 'update') {
+      this.mode2 = true;
+      this.userService.getCarName().subscribe((com: HttpResponse<any>) => {
+        if (com.status === 200) {
+          console.log(com);
+          this.carName= com.body[0].name;
 
-            }
-          }, err => {
-            this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
-            this.alertCtrl.create({
-              message: this.errorMsg, buttons: [
-                {
-                  text: 'تایید',
-                  role: 'cancel'
-                }
-              ]
-            }).then(alertEl => {
-              alertEl.present();
-            });
-          });
         }
-      }
-    );
+      }, err => {
+        this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+        this.alertCtrl.create({
+          message: this.errorMsg, buttons: [
+            {
+              text: 'تایید',
+              role: 'cancel'
+            }
+          ]
+        }).then(alertEl => {
+          alertEl.present();
+        });
+      });
+    }
     this.form = new FormGroup({
       company: new FormControl('0', [Validators.required]),
       model: new FormControl('0', [Validators.required]),
@@ -500,7 +501,6 @@ export class AddComponent implements OnInit {
           });
         }
       } else {
-        this.presentToast('ماشین ثبت شد');
         localStorage.setItem('car_id', this.form.value.model);
         localStorage.setItem('company', this.company);
         localStorage.setItem('company_id', this.form.value.company);
@@ -515,10 +515,11 @@ export class AddComponent implements OnInit {
             this.loading.dismiss();
             this.presentToast('اطلاعات ثبت شد');
               if (this.mode2) {
-                this.router.navigate(['/', 'home']);
+                this.modalCtrl.dismiss();
 
               }else {
                 this.router.navigate(['/', 'location-permision']);
+                this.modalCtrl.dismiss();
               }
 
 
@@ -528,6 +529,7 @@ export class AddComponent implements OnInit {
         }, err => {
 
           this.errorMsg = err.error.message;
+          this.modalCtrl.dismiss();
           this.loading.dismiss();
           this.alertCtrl.create({
             message: this.errorMsg, buttons: [
@@ -571,6 +573,6 @@ export class AddComponent implements OnInit {
     toast.present();
   }
   backClick() {
-    this.router.navigate(['/', 'home']);
+    this.modalCtrl.dismiss();
   }
 }

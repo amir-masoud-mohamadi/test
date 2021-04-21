@@ -7,9 +7,10 @@ import {SearchComponent} from './search/search.component';
 import {loginRegister} from '../shared/service/login-register';
 import { Plugins } from '@capacitor/core';
 import {Router} from "@angular/router";
-import {SplashScreen} from "@ionic-native/splash-screen/ngx";
-import {StatusBar} from "@ionic-native/status-bar/ngx";
-import {Subject, Subscription} from "rxjs";
+import {Subscription} from "rxjs";
+import {AddComponent} from "../login/license/add/add.component";
+import {HistoryPage} from "../history/history.page";
+import {RunningComponent} from "../history/running/running.component";
 const { Geolocation } = Plugins;
 
 
@@ -340,15 +341,45 @@ export class HomePage implements OnInit, AfterViewInit {
 
     }, 2000);
   }
-  upadteUser() {
-    this.router.navigate(['/', 'login', 'license', 'add-car', 'update']);
-    this.selfClose();
-  }
+
   selfClose() {
     this.viewContainerRef
       .element
       .nativeElement
       .parentElement
       .removeChild(this.viewContainerRef.element.nativeElement);
+  }
+  async upadteUser(){
+    if (this.menuControl === true) {
+      this.menuControl = false;
+    }
+    const modal = await this.modalController.create({
+      component: AddComponent,
+      cssClass: 'custom-modal2',
+      componentProps: {
+        update: 'new'
+      }
+    });
+    return await modal.present();
+  }
+  async historyModal(){
+    if (this.menuControl === true) {
+      this.menuControl = false;
+    }
+    const modal = await this.modalController.create({
+      component: RunningComponent,
+      cssClass: 'custom-modal2'
+    });
+    return await modal.present();
+  }
+  async edit(){
+    if (this.menuControl === true) {
+      this.menuControl = false;
+    }
+    const modal = await this.modalController.create({
+      component: RunningComponent,
+      cssClass: 'custom-modal2'
+    });
+    return await modal.present();
   }
 }
