@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {loginRegister} from '../shared/service/login-register';
 import {HttpResponse} from '@angular/common/http';
-import {LoadingController, AlertController, ToastController} from '@ionic/angular';
+import {LoadingController, AlertController, ToastController, ModalController} from '@ionic/angular';
 import {Router} from '@angular/router';
 @Component({
   selector: 'app-login',
@@ -20,7 +20,8 @@ export class LoginPage implements OnInit {
     private userService: loginRegister,
     private loading: LoadingController,
     private router: Router,
-    private toastController: ToastController
+    private toastController: ToastController,
+    public modalCtrl: ModalController
   ) { }
 
   ngOnInit() {
@@ -45,9 +46,12 @@ export class LoginPage implements OnInit {
             /setTimeout(() =>  , 2000);/
             this.flagLoad = true;
             this.lock = false;
+
             setTimeout(() => {
               this.lock = true;
-              this.router.navigate(['/', 'login', 'code']);
+              this.modalCtrl.dismiss({
+                'dismissed': true
+              });
             }, 2000)
           } else {}
         }, err => {
@@ -76,7 +80,9 @@ export class LoginPage implements OnInit {
     }
   }
   backClick() {
-    this.router.navigate(['/', 'register-login']);
+    this.modalCtrl.dismiss({
+      'dismissed': false
+    });
   }
   async presentToast(messages) {
     const toast = await this.toastController.create({

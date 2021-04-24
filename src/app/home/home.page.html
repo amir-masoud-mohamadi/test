@@ -1,9 +1,9 @@
 <ion-header  class="toolbar-rel " >
   <ion-toolbar color="light " >
-    <ion-buttons slot="end" *ngIf="flagMenu">
+    <ion-buttons slot="end">
       <ion-button (click)="clickMenu()"class="home-close-button"  *ngIf="!menuControl"><ion-icon class="home-close-button" name="menu-outline"></ion-icon></ion-button>
     </ion-buttons>
-    <ion-buttons slot="end" *ngIf="flagMenu">
+    <ion-buttons slot="end">
       <ion-button  (click)="clickMenu()"  *ngIf="menuControl"><ion-icon class="home-close-button" name="close-outline"></ion-icon></ion-button>
     </ion-buttons>
     <ion-title class="home-message">مکان خود را مشخص نمایید</ion-title>

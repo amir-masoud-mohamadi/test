@@ -515,11 +515,14 @@ export class AddComponent implements OnInit {
             this.loading.dismiss();
             this.presentToast('اطلاعات ثبت شد');
               if (this.mode2) {
-                this.modalCtrl.dismiss();
+                this.modalCtrl.dismiss({
+                  'dismissed': true,
+                });
 
               }else {
-                this.router.navigate(['/', 'location-permision']);
-                this.modalCtrl.dismiss();
+                this.modalCtrl.dismiss({
+                  'dismissed': true,
+                });
               }
 
 
@@ -573,6 +576,12 @@ export class AddComponent implements OnInit {
     toast.present();
   }
   backClick() {
-    this.modalCtrl.dismiss();
+    if (this.update === 'new') {
+      localStorage.removeItem('token');
+    }
+
+    this.modalCtrl.dismiss({
+      'dismissed': false
+    });
   }
 }

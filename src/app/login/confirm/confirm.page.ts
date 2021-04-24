@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {loginRegister} from "../../shared/service/login-register";
-import {LoadingController, AlertController, ToastController} from '@ionic/angular';
+import {LoadingController, AlertController, ToastController, ModalController} from '@ionic/angular';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {HttpResponse} from '@angular/common/http';
 import { Plugins } from '@capacitor/core';
@@ -28,6 +28,7 @@ export class ConfirmPage implements OnInit {
     private router: Router,
     private alertCtrl: AlertController,
     private toastController: ToastController,
+    public modalCtrl: ModalController,
     private route: ActivatedRoute
   ) {
     this.form = new FormGroup({
@@ -165,12 +166,9 @@ export class ConfirmPage implements OnInit {
     toast.present();
   }
   backClick() {
-    if (this.mode2) {
-      this.router.navigate(['/', 'home']);
-    } else {
-
-    }
-
+    this.modalCtrl.dismiss({
+      'dismissed': false
+    });
   }
   clickButton() {
     this.clickInput();

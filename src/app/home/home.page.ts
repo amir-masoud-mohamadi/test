@@ -11,6 +11,9 @@ import {Subscription} from "rxjs";
 import {AddComponent} from "../login/license/add/add.component";
 import {HistoryPage} from "../history/history.page";
 import {RunningComponent} from "../history/running/running.component";
+import {LoginPage} from "../login/login.page";
+import {CodePage} from "../login/code/code.page";
+import {ConfirmPage} from "../login/confirm/confirm.page";
 const { Geolocation } = Plugins;
 
 
@@ -22,13 +25,13 @@ const { Geolocation } = Plugins;
 })
 export class HomePage implements OnInit, AfterViewInit {
   title = 'mapir-angular-test';
-  location;
+  login = false;
   flag = false;
   menuControl = false;
   errorMsg;
   subscription: Subscription;
   input;
-  flagMenu =false;
+  humber = false;
   user;
   show =false;
   center: any ;
@@ -42,7 +45,27 @@ export class HomePage implements OnInit, AfterViewInit {
               private viewContainerRef: ViewContainerRef,
               private loading: LoadingController,) { }
     async ngOnInit() {
-      await this.userService.getUser().subscribe((com: any) => {
+      this.loading.create({message: '...لطفا صبر کنید', keyboardClose: true}).then(load => {
+        load.present();
+
+        if (localStorage.getItem('token')) {
+          this.userService.getUser().subscribe((com: any) => {
+            if (com.status === 200) {
+              this.user = com.body;
+              this.humber = true;
+              this.login = true;
+              this.loading.dismiss();
+            }
+
+
+          });
+
+        } else {
+          this.humber = false;
+        }
+
+      });
+      /*await this.userService.getUser().subscribe((com: any) => {
         if (com.status === 200) {
           this.user = com.body;
           this.flagMenu=true
@@ -62,36 +85,12 @@ export class HomePage implements OnInit, AfterViewInit {
         }).then(alertEl => {
           alertEl.present();
         });
-      });
+      });*/
       this.subscription = this.userService.recipeEvent.subscribe(
         (recipes)=>{
           console.log('subject');
           console.log(recipes);
-          this.loading.create({message: '...لطفا صبر کنید', keyboardClose: true}).then(load => {
-            load.present();
-            this.userService.getUser().subscribe((com: any) => {
-              if (com.status === 200) {
-                this.user = com.body;
-                this.loading.dismiss();
-              }
 
-
-            }, err => {
-              this.loading.dismiss();
-              this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
-              this.alertCtrl.create({
-                message: this.errorMsg, buttons: [
-                  {
-                    text: 'تایید',
-                    role: 'cancel'
-                  }
-                ]
-              }).then(alertEl => {
-                alertEl.present();
-              });
-            });
-
-          });
           /*this.userService.getUser().subscribe((com: any) => {
            if (com.status === 200) {
            this.user = com.body;
@@ -213,14 +212,7 @@ export class HomePage implements OnInit, AfterViewInit {
       this.menuControl = false;
     }
     localStorage.setItem('addressFull', this.input);
-    const modal2 = await this.modalController.create({
-      component: ProductComponent,
-      cssClass: 'custom-modal',
-    });
-    modal2.onDidDismiss().then((data) => {
-      console.log("exittttt");
-    });
-    return await modal2.present();
+    this.loginModal();
   }
   async modalSearch(){
     if (this.menuControl === true) {
@@ -228,7 +220,7 @@ export class HomePage implements OnInit, AfterViewInit {
     }
     const modal = await this.modalController.create({
       component: SearchComponent,
-      cssClass: 'custom-modal2'
+      cssClass: 'custom-modal'
     });
     modal.onDidDismiss().then((data) => {
       if (localStorage.getItem('address')) {
@@ -246,7 +238,32 @@ export class HomePage implements OnInit, AfterViewInit {
     return await modal.present();
   }
   clickMenu() {
-    this.menuControl = !this.menuControl;
+    if (this.humber) {
+      this.menuControl = !this.menuControl;
+    } else {
+      this.errorMsg = 'ابتدا وارد شوید:';
+      this.alertCtrl.create({
+        message: this.errorMsg, buttons: [
+          {
+            text: 'ورود',
+            handler: () => {
+              this.loginModal();
+              if (this.menuControl === true) {
+                this.menuControl = false;
+              }
+            }
+          },
+          {
+            text: 'بستن',
+            role: 'cancel'
+          }
+        ]
+      }).then(alertEl => {
+        alertEl.present();
+      });
+    }
+
+
   }
   clickMap() {
   }
@@ -381,5 +398,85 @@ export class HomePage implements OnInit, AfterViewInit {
       cssClass: 'custom-modal2'
     });
     return await modal.present();
+  }
+  async modalCode(){
+
+    const modal = await this.modalController.create({
+      component: CodePage,
+      cssClass: 'custom-modal'
+    });
+    modal.onDidDismiss().then((data) => {
+      console.log("exittttt");
+      console.log(data);
+      if (data.data.dismissed) {
+        if (data.data.type === 'new') {
+          this.modalConfirm();
+        } else {
+          this.modalCar();
+        }
+      }
+    });
+    return await modal.present();
+  }
+  async modalCar(){
+
+    const modal = await this.modalController.create({
+      component: AddComponent,
+      cssClass: 'custom-modal'
+    });
+    modal.onDidDismiss().then((data) => {
+      console.log("exittttt");
+      console.log(data);
+      if (data.data.dismissed) {
+        this.modalProduct();
+      }
+    });
+    return await modal.present();
+  }
+  async modalProduct(){
+
+    const modal = await this.modalController.create({
+      component: ProductComponent,
+      cssClass: 'custom-modal'
+    });
+    modal.onDidDismiss().then((data) => {
+      console.log("exittttt");
+      console.log(data);
+      if (data.data.dismissed) {
+        if (data.data.type === 'new') {
+
+        }
+      }
+    });
+    return await modal.present();
+  }
+  async modalConfirm(){
+
+    const modal = await this.modalController.create({
+      component: ConfirmPage,
+      cssClass: 'custom-modal'
+    });
+    modal.onDidDismiss().then((data) => {
+      console.log("exittttt");
+      console.log(data);
+      if (data.data.dismissed) {
+        this.modalCar();
+      }
+    });
+    return await modal.present();
+  }
+  async loginModal() {
+    const modal2 = await this.modalController.create({
+      component: LoginPage,
+      cssClass: 'custom-modal',
+    });
+    modal2.onDidDismiss().then((data) => {
+      console.log("exittttt");
+      console.log(data);
+      if (data.data.dismissed) {
+        this.modalCode();
+      }
+    });
+    return await modal2.present();
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Params, Route, Router} from '@angular/router';
-import {LoadingController, AlertController, ToastController} from '@ionic/angular';
+import {LoadingController, AlertController, ToastController, ModalController} from '@ionic/angular';
 import {loginRegister} from '../../shared/service/login-register';
 
 import {HttpResponse} from '@angular/common/http';
@@ -24,7 +24,8 @@ export class CodePage implements OnInit {
     private router: Router,
     private alertCtrl: AlertController,
     private route: ActivatedRoute,
-    private toastController: ToastController
+    private toastController: ToastController,
+    public modalCtrl: ModalController
     ) { }
    ngOnInit() {
     if (localStorage.getItem('phoneNumber') !== undefined && localStorage.getItem('phoneNumber') !== null) {
@@ -53,13 +54,19 @@ export class CodePage implements OnInit {
                   this.lock = false;
                   setTimeout(() => {
                     this.lock = true;
-                    this.router.navigate(['/', 'login', 'confirm', 'new']);
+                    this.modalCtrl.dismiss({
+                      'dismissed': true,
+                      'type': 'new'
+                    });
                   }, 2000)
                 }else {
                   this.lock = false;
                   setTimeout(() => {
                     this.lock = true;
-                    this.router.navigate(['/', 'location-permision']);
+                    this.modalCtrl.dismiss({
+                      'dismissed': true,
+                      'type': 'update'
+                    });
                   }, 2000)
 
                 }
@@ -97,7 +104,9 @@ export class CodePage implements OnInit {
 
   }
   backClick() {
-    this.router.navigate(['/', 'login']);
+    this.modalCtrl.dismiss({
+      'dismissed': false
+    });
   }
   restart() {
     this.loading.create({message: '...لطفا صبر کنید', keyboardClose: true}).then(load => {
