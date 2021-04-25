@@ -87,4 +87,8 @@ export class loginRegister {
   recipeEvent2() {
     this.recipeEvent.next(false);
   }
+  oneBattery() {
+      return this.http.get('https://bakian.ir/wp-json/wc/v3/products?status=publish&per_page=100&&include='+ localStorage.getItem('product_id')+'&_fields=id,name,price,images&attribute='+localStorage.getItem('company')+'&attribute_term='+ localStorage.getItem('car_id'), {
+        observe: 'response'}).pipe(take(1));
+  }
 }

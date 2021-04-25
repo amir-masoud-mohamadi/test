@@ -3,7 +3,7 @@ import {AlertController, LoadingController, ModalController} from '@ionic/angula
 
 import {loginRegister} from '../../shared/service/login-register';
 import {HttpResponse} from '@angular/common/http';
-import {Router} from "@angular/router";
+import {Params, Router} from "@angular/router";
 import {ShopComponent} from "../shop/shop.component";
 
 
@@ -19,6 +19,7 @@ export class ProductComponent implements OnInit {
   loading = false;
   payment = false;
   address;
+  listBaterryOne;
   product = true;
   listSearch = [];
   flagBaterry = false;
@@ -61,11 +62,29 @@ export class ProductComponent implements OnInit {
      localStorage.setItem('product_id', battery.id);
     /*this.dismiss();*/
     this.loading = true;
-    setTimeout(() => {
-      this.product = false;
-      this.loading = false;
-    },2000)
+        this.userService.oneBattery().subscribe((com: HttpResponse<any>) => {
+          if (com.status === 200) {
+            this.listBaterryOne = com.body;
+            console.log('sa');
+            console.log(this.listBaterryOne);
+            this.product = false;
+            this.loading = false;
 
+          }
+        }, err => {
+          this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+
+          this.alertCtrl.create({
+            message: this.errorMsg, buttons: [
+              {
+                text: 'تایید',
+                role: 'cancel'
+              }
+            ]
+          }).then(alertEl => {
+            alertEl.present();
+          });
+        });
 
   }
    loadingButton(){

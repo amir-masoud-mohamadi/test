@@ -15,7 +15,7 @@
           <ion-col size-md="12"  size-xs="12" class="button-grid2">
             <div>
               <ion-input class="input-register"
-                         (ionChange)="segmentChanged($event)" placeholder="کجا هستید؟" formControlName="town">
+                         (keypress)="onKeypressEvent($event)" (ionChange)="segmentChanged($event)" placeholder="کجا هستید؟" formControlName="town">
                 <ion-icon class="icon-input" name="search-outline"></ion-icon>
               </ion-input>
             </div>

@@ -130,17 +130,28 @@
           <ion-col size-md="6" size-sm="6" size-xs="6" style="text-align: center">
             <ion-button fill="outline" href="sms:09203185480" class="message-button color-login">پیام</ion-button>
           </ion-col>
-          <ion-col class="special-shop-row">
-            <h3 class="shop-h3 ">هزینه نهایی</h3>
-            <h5 class="shop-h3 ">12000 تومان</h5>
-          </ion-col>
+
         </ion-row>
       </ion-col>
     </ion-row>
-    <ion-row>
+<ion-row>
+  <ion-col class="special-shop-row">
+    <h3 class="shop-h3 ">سفارش شما:</h3>
+  </ion-col>
+</ion-row>
+      <ion-row class="box2" *ngFor="let battery2 of listBaterryOne">
+
+        <ion-col size-md="2" size-xs="3">
+          <p class="login-text product-text ">{{battery2.price | number:'3.0-0'}} تومان</p>
+        </ion-col>
+        <ion-col   size-md="10" size-xs="9" class="battery-image">
+          <img class="box-img"   src="{{battery2.images[0].src}}" alt="">
+          <p class="login-text product-text1">{{battery2.name}}</p>
+        </ion-col>
+
       <ion-col class="shop-third-row-s shop-abso" size-md="12" size-xs="12">
 
-        <ion-button (click)="payButton()" class="color-register2 "  type="submit">پرداخت<ion-icon name="card-outline"></ion-icon></ion-button>
+        <ion-button (click)="payButton()" class="color-register2 "  type="submit">پرداخت : {{battery2.price | number:'3.0-0'}} تومان<ion-icon name="card-outline"></ion-icon></ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

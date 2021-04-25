@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {loginRegister} from '../../shared/service/login-register';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {AlertController, ModalController} from '@ionic/angular';
+import {AlertController, ModalController, ToastController} from '@ionic/angular';
 import {Router} from '@angular/router';
 import {Map} from '../../shared/service/map';
 
@@ -23,6 +23,7 @@ export class SearchComponent implements OnInit {
               private router: Router,
               private alertCtrl: AlertController,
               public modalCtrl: ModalController,
+              private toastController: ToastController,
               private map: Map) { }
   ngOnInit() {
     this.form = new FormGroup({
@@ -31,6 +32,8 @@ export class SearchComponent implements OnInit {
   }
   segmentChanged(event){
     this.listSearch = [];
+    let code = event.detail.value.toString();
+
     if (event.detail.value.toString().length < 2) {
     } else {
       const address = {
@@ -41,16 +44,7 @@ export class SearchComponent implements OnInit {
         this.listSearch = com.value;
       }, err => {
         this.errorMsg = 'خطا در سیستم:' + err.status;
-        this.alertCtrl.create({
-          message: this.errorMsg, buttons: [
-            {
-              text: 'تایید',
-              role: 'cancel'
-            }
-          ]
-        }).then(alertEl => {
-          alertEl.present();
-        });
+        this.presentToast2(this.errorMsg);
       });
     }
   }
@@ -67,5 +61,38 @@ export class SearchComponent implements OnInit {
   }
   addRecipe() {
 
+  }
+  onKeypressEvent($event) {
+    console.log($event);
+    let find = null;
+    find = $event.key;
+    let code = find.charCodeAt(0);
+    console.log(code);
+    if (1575 <= code&& code <= 1576 || 1578 <= code && code <= 1594 || code === 1570 || code === 1662 || code === 1670|| code === 1601|| code === 1602|| code === 1705 || code === 1711 || 1604 <= code && code <= 1608 || code === 1740 || code === 1574 || code === 1688 || 1632 <= code && code <= 1641 || 48 <= code && code <= 57) {
+
+    } else {
+      this.presentToast2('لطفا حروف فارسی وارد نمایید');
+      $event.preventDefault();
+    }
+  }
+  async presentToast(messages) {
+    const toast = await this.toastController.create({
+      message: messages,
+      duration: 2000,
+      position: 'top',
+      color: 'success',
+      cssClass: 'toast-controller2'
+    });
+    toast.present();
+  }
+  async presentToast2(messages) {
+    const toast = await this.toastController.create({
+      message: messages,
+      duration: 2000,
+      position: 'top',
+      color: 'danger',
+      cssClass: 'toast-controller'
+    });
+    toast.present();
   }
 }
