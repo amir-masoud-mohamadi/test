@@ -33,10 +33,11 @@ export class HomePage implements OnInit, AfterViewInit {
   input;
   humber = false;
   user;
+  loadingFlag = false;
   show =false;
   center: any ;
   markerPosition: any = [51.3380649, 35.700179] ;
-  apiKey: string = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImNkN2ZlMTI0ZDVmMjRkYTA3ZDlmMWQ5MzM4NjAwYTljZGQ2MDAzYTg4MGE3NGE2ZmViNDg3OTUwMGUyNzdiNzNhMDNjMzEzYjlhMTc2OTA3In0.eyJhdWQiOiIxMjkxOCIsImp0aSI6ImNkN2ZlMTI0ZDVmMjRkYTA3ZDlmMWQ5MzM4NjAwYTljZGQ2MDAzYTg4MGE3NGE2ZmViNDg3OTUwMGUyNzdiNzNhMDNjMzEzYjlhMTc2OTA3IiwiaWF0IjoxNjE0MDYwMjM5LCJuYmYiOjE2MTQwNjAyMzksImV4cCI6MTYxNjU2MjIzOSwic3ViIjoiIiwic2NvcGVzIjpbImJhc2ljIl19.VimkTn40KxmYGKafT9zCVLZM_TRtGmqIdhq8PSED76iirwTsp8tomdpxJP9qd77udTNnDB5NYybH15vV7kqTuLMjXUd8CsEIpH08SSnwsTP2JJmnu5EyTlMPsdiWnt7bQaE1JJd51swFP5vjP-7myp6yu0uD8rA94LMmY2wbF3fUljO5UKVWZeDBoYhvowssysWzicZAZDLKHji1DwftyPuCrziO3pEt5qldQiJrGVq7TgnzsKSugbK-Dhtjimdt-l_S-xnXnrtx7iIeTHKJfGKIDzEc6X8Xu1GqSi5nNHjSAzPdPEGG3xQNDCO7tO4DVeq3matk5rq8lhIwAcmFaw';
+  apiKey: string = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImNmYjkzNmYzNzY5OWQzMThjMDBkYzc5NGNmZjM1YTdmNmJlNTllY2ZlYjg2ZDA1NjczODNlMWUxODEzZDY1ODcyOGFkYjJjYzA0ZGE4MjlmIn0.eyJhdWQiOiIxMzcyMCIsImp0aSI6ImNmYjkzNmYzNzY5OWQzMThjMDBkYzc5NGNmZjM1YTdmNmJlNTllY2ZlYjg2ZDA1NjczODNlMWUxODEzZDY1ODcyOGFkYjJjYzA0ZGE4MjlmIiwiaWF0IjoxNjE5NDE5MjA3LCJuYmYiOjE2MTk0MTkyMDcsImV4cCI6MTYyMjAxMTIwNywic3ViIjoiIiwic2NvcGVzIjpbImJhc2ljIl19.FdM-ON-0vS7zOGYvpD3yi6eJ4LxbTLY7UAZDErGQGJoRC91TP9O8W2XJBMpSZcl6ndLtMOkw60-ebb6OTQ0YTS0kEqpxEaEvlM3SnKSmJTqW2DzRONn6W3xWyf0BtGXLyulBeQh4fEl95iTUn7S_Rw4ojcmdjvcg9xsAd96pX8yswZyLLTwrWjr9XEvNeZedIURh88N2EF1XzKT2isY-6uE1YG3e1P9-Cfd470Lj0ojHTb29fkleaNH8yUG3lp8Hh9Ry0l_k66DqgUNiLcEoeuw5xWvcmu67hGTRjGz_cDDoR3PJ1eGCGILuUudjVldxpA-N2WKQcS2I3oEeJcCqCw';
   constructor(private modalController: ModalController,
               private router: Router,
               private userService: loginRegister,
@@ -49,19 +50,33 @@ export class HomePage implements OnInit, AfterViewInit {
         load.present();
 
         if (localStorage.getItem('token')) {
-          this.userService.getUser().subscribe((com: any) => {
+          this.userService.validToken().subscribe((com: any) => {
             if (com.status === 200) {
-              this.user = com.body;
-              this.humber = true;
-              this.login = true;
-              this.loading.dismiss();
+              this.loadingFlag = true;
+              this.userService.getUser().subscribe((com: any) => {
+                if (com.status === 200) {
+                  this.user = com.body;
+                  this.humber = true;
+                  this.login = true;
+
+                  this.loading.dismiss();
+                }
+
+
+              });
+            } else {
+              this.loadingFlag = false;
             }
-
-
+          }, err => {
+            this.loadingFlag = false;
+            this.loading.dismiss();
           });
 
+
         } else {
+          this.loadingFlag = false;
           this.humber = false;
+          this.loading.dismiss();
         }
 
       });
@@ -211,8 +226,14 @@ export class HomePage implements OnInit, AfterViewInit {
     if (this.menuControl === true) {
       this.menuControl = false;
     }
-    localStorage.setItem('addressFull', this.input);
-    this.loginModal();
+    if  (this.loadingFlag) {
+      localStorage.setItem('addressFull', this.input);
+      this.modalCar();
+    } else {
+      localStorage.setItem('addressFull', this.input);
+      this.loginModal();
+    }
+
   }
   async modalSearch(){
     if (this.menuControl === true) {
@@ -271,7 +292,9 @@ export class HomePage implements OnInit, AfterViewInit {
     if (localStorage.getItem('token')) {
       localStorage.removeItem('token');
     }
-    this.router.navigate(['/', 'register-login']);
+    if (this.menuControl === true) {
+      this.menuControl = false;
+    }
   }
 
 
@@ -284,12 +307,14 @@ export class HomePage implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.show = true;
-      console.log('salam');
+      console.log('1');
       this.markerPosition = [51.338064963919834, 35.70017923069952];
       this.center = [51.338064963919834, 35.70017923069952];
       this.loading.create({message: '...لطفا صبر کنید', keyboardClose: true}).then(load => {
         load.present();
+        console.log('2');
         if (localStorage.getItem('latitude')) {
+          console.log('3');
           this.markerPosition = [+localStorage.getItem('long'), +localStorage.getItem('latitude')];
           this.center = [+localStorage.getItem('long'), +localStorage.getItem('latitude')];
           const address = {
@@ -300,11 +325,13 @@ export class HomePage implements OnInit, AfterViewInit {
           this.map.address(address).subscribe((com: any) => {
             if (com.status === 200) {
               this.input = com.body.address_compact;
+              console.log('4');
 
             }
 
 
           }, err => {
+            console.log('5');
             this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
             this.alertCtrl.create({
               message: this.errorMsg, buttons: [
@@ -318,6 +345,7 @@ export class HomePage implements OnInit, AfterViewInit {
             });
           });
         } else {
+          console.log('6');
           const address = {
             lat: '35.70017923069952',
             lng: '51.338064963919834',
@@ -326,11 +354,13 @@ export class HomePage implements OnInit, AfterViewInit {
           this.map.address(address).subscribe((com: any) => {
             if (com.status === 200) {
               this.input = com.body.address_compact;
+              console.log('7');
 
             }
 
 
           }, err => {
+            console.log('8');
             this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
             this.alertCtrl.create({
               message: this.errorMsg, buttons: [
@@ -344,10 +374,11 @@ export class HomePage implements OnInit, AfterViewInit {
             });
           });
         }
+        console.log('10');
         this.loading.dismiss();
       });
 
-
+      console.log('11');
       if (localStorage.getItem('lat')) {
         localStorage.removeItem('lng');
         localStorage.removeItem('lat');
@@ -355,7 +386,7 @@ export class HomePage implements OnInit, AfterViewInit {
 
 
       }
-
+      console.log('12 ');
     }, 2000);
   }
 

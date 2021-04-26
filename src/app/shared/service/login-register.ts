@@ -91,4 +91,10 @@ export class loginRegister {
       return this.http.get('https://bakian.ir/wp-json/wc/v3/products?status=publish&per_page=100&&include='+ localStorage.getItem('product_id')+'&_fields=id,name,price,images&attribute='+localStorage.getItem('company')+'&attribute_term='+ localStorage.getItem('car_id'), {
         observe: 'response'}).pipe(take(1));
   }
+  validToken() {
+    let nin = null;
+    let auth = 'Bearer '+ localStorage.getItem('token');
+    return this.http.post('https://bakian.ir/wp-json/jwt/token/validate', undefined,{
+      observe: 'response', headers: new HttpHeaders().set('Authorization', auth)}).pipe(take(1));
+  }
 }

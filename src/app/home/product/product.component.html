@@ -142,7 +142,7 @@
       <ion-row class="box2" *ngFor="let battery2 of listBaterryOne">
 
         <ion-col size-md="2" size-xs="3">
-          <p class="login-text product-text ">{{battery2.price | number:'3.0-0'}} تومان</p>
+          <p class="login-text product-text "><span>هزینه کلی: </span> {{battery2.price | number:'3.0-0'}} تومان</p>
         </ion-col>
         <ion-col   size-md="10" size-xs="9" class="battery-image">
           <img class="box-img"   src="{{battery2.images[0].src}}" alt="">
