@@ -8,6 +8,8 @@ import {Subject} from "rxjs";
 })
 export class loginRegister {
   recipeEvent = new Subject<boolean>();
+  loginEvent = new Subject<boolean>();
+  userInfo = new Subject<any>();
   user;
   company(){
     return this.http.get('https://bakian.ir/sb/services/getCompanies.php').pipe(take(1));
@@ -86,6 +88,18 @@ export class loginRegister {
   }
   recipeEvent2() {
     this.recipeEvent.next(false);
+  }
+  loginEvent1() {
+    this.loginEvent.next(true);
+  }
+  loginEvent2() {
+    this.loginEvent.next(false);
+  }
+  infoEvent1(user) {
+    this.userInfo.next(user);
+  }
+  infoEvent2() {
+    this.userInfo.next(undefined);
   }
   oneBattery() {
       return this.http.get('https://bakian.ir/wp-json/wc/v3/products?status=publish&per_page=100&&include='+ localStorage.getItem('product_id')+'&_fields=id,name,price,images&attribute='+localStorage.getItem('company')+'&attribute_term='+ localStorage.getItem('car_id'), {

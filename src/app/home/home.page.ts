@@ -14,6 +14,7 @@ import {RunningComponent} from "../history/running/running.component";
 import {LoginPage} from "../login/login.page";
 import {CodePage} from "../login/code/code.page";
 import {ConfirmPage} from "../login/confirm/confirm.page";
+
 const { Geolocation } = Plugins;
 
 
@@ -29,8 +30,10 @@ export class HomePage implements OnInit, AfterViewInit {
   flag = false;
   menuControl = false;
   errorMsg;
+  recipe;
   subscription: Subscription;
   input;
+  users;
   humber = false;
   user;
   loadingFlag = false;
@@ -46,16 +49,37 @@ export class HomePage implements OnInit, AfterViewInit {
               private viewContainerRef: ViewContainerRef,
               private loading: LoadingController,) { }
     async ngOnInit() {
+      this.subscription = this.userService.loginEvent.subscribe(
+        (recipes)=> {
+
+
+          this.recipe = recipes;
+
+        });
+      this.subscription = this.userService.userInfo.subscribe(
+        (recipes)=> {
+          console.log('subject2');
+
+          this.users = recipes;
+          console.log(this.users);
+        });
       this.loading.create({message: '...لطفا صبر کنید', keyboardClose: true}).then(load => {
         load.present();
-
+        console.log('masoud');
         if (localStorage.getItem('token')) {
+          console.log('masoud1');
           this.userService.validToken().subscribe((com: any) => {
+            console.log('masoud3');
             if (com.status === 200) {
+              console.log('masoud4');
               this.loadingFlag = true;
+              this.userService.loginEvent1();
               this.userService.getUser().subscribe((com: any) => {
                 if (com.status === 200) {
                   this.user = com.body;
+                  this.userService.infoEvent1(com.body);
+                  console.log('masoud2');
+                  console.log(com.body);
                   this.humber = true;
                   this.login = true;
 
@@ -66,8 +90,10 @@ export class HomePage implements OnInit, AfterViewInit {
               });
             } else {
               this.loadingFlag = false;
+              this.userService.loginEvent2();
             }
           }, err => {
+            this.userService.loginEvent2();
             this.loadingFlag = false;
             this.loading.dismiss();
           });
@@ -226,14 +252,78 @@ export class HomePage implements OnInit, AfterViewInit {
     if (this.menuControl === true) {
       this.menuControl = false;
     }
+    console.log('1');
+    if (this.recipe) {
+      this.loadingFlag = true;
+      this.humber = true;
+
+
+    } else {
+      this.loadingFlag = false;
+      this.humber = false;
+    }
     if  (this.loadingFlag) {
+      console.log('6');
       localStorage.setItem('addressFull', this.input);
       this.modalCar();
     } else {
+      console.log('7');
       localStorage.setItem('addressFull', this.input);
       this.loginModal();
     }
+    /*this.loading.create({message: '...لطفا صبر کنید', keyboardClose: true}).then(load => {
+      load.present();
+      console.log('2');
+      if (localStorage.getItem('token')) {
+        this.userService.validToken().subscribe((com: any) => {
+          if (com.status === 200) {
+            console.log('3');
+            this.loadingFlag = true;
 
+              this.humber = true;
+              this.login = true;
+          } else {
+            console.log('4');
+            this.loadingFlag = false;
+            this.humber = false;
+
+          }
+          console.log('5');
+          this.loading.dismiss();
+          if  (this.loadingFlag) {
+            console.log('6');
+            localStorage.setItem('addressFull', this.input);
+            this.modalCar();
+          } else {
+            console.log('7');
+            localStorage.setItem('addressFull', this.input);
+            this.loginModal();
+          }
+        }, err => {
+          console.log('8');
+          this.loadingFlag = false;
+          this.humber = false;
+          this.loading.dismiss();
+          if  (this.loadingFlag) {
+            localStorage.setItem('addressFull', this.input);
+            this.modalCar();
+          } else {
+            localStorage.setItem('addressFull', this.input);
+            this.loginModal();
+          }
+
+        });
+
+
+      } else {
+        this.loadingFlag = false;
+        this.humber = false;
+        this.loading.dismiss();
+        localStorage.setItem('addressFull', this.input);
+        this.loginModal();
+      }
+
+    });*/
   }
   async modalSearch(){
     if (this.menuControl === true) {
@@ -258,7 +348,25 @@ export class HomePage implements OnInit, AfterViewInit {
     });
     return await modal.present();
   }
+  clickMenu2() {
+    if (this.menuControl === true) {
+      this.menuControl = false;
+    }
+  }
+
   clickMenu() {
+    console.log(this.users);
+    if (this.users && this.users != undefined) {
+      this.loadingFlag = true;
+      this.humber = true;
+      this.login = true;
+
+
+    } else {
+      this.loadingFlag = false;
+      this.humber = false;
+      this.login = false;
+    }
     if (this.humber) {
       this.menuControl = !this.menuControl;
     } else {
@@ -284,13 +392,14 @@ export class HomePage implements OnInit, AfterViewInit {
       });
     }
 
-
   }
   clickMap() {
   }
   exit() {
     if (localStorage.getItem('token')) {
       localStorage.removeItem('token');
+      this.userService.loginEvent2();
+      this.userService.infoEvent2();
     }
     if (this.menuControl === true) {
       this.menuControl = false;
@@ -299,8 +408,6 @@ export class HomePage implements OnInit, AfterViewInit {
 
 
   onMapLoaded(event) {
-    console.log('event');
-    console.log(event);
     event.map.resize();
   }
 
@@ -332,6 +439,7 @@ export class HomePage implements OnInit, AfterViewInit {
 
           }, err => {
             console.log('5');
+            this.loading.dismiss();
             this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
             this.alertCtrl.create({
               message: this.errorMsg, buttons: [

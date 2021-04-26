@@ -14,6 +14,7 @@ export class CodePage implements OnInit {
   phoneNumber;
   id;
   lock = true;
+  phone;
   flag = false;
   form: FormGroup;
   errorMsg;
@@ -47,6 +48,15 @@ export class CodePage implements OnInit {
           this.userService.getToken(this.form.value.code).subscribe((com: HttpResponse<any>) => {
             if (com.status === 200) {
                 localStorage.setItem('token', com.body.token);
+              this.userService.loginEvent1();
+              this.userService.getUser().subscribe((com: any) => {
+                if (com.status === 200) {
+                  this.userService.infoEvent1(com.body);
+                  this.loading.dismiss();
+                }
+
+
+              });
                 localStorage.setItem('id', com.body.user_id);
                 this.flagLoad = true;
                 this.presentToast('خوش آمدید!');
@@ -73,6 +83,7 @@ export class CodePage implements OnInit {
 
               }
           }, err => {
+            this.userService.loginEvent2();
             this.flagLoad = true;
             this.errorMsg = err.error.message;
 
@@ -158,5 +169,8 @@ export class CodePage implements OnInit {
 
     });
     toast.present();
+  }
+  onChange(phone) {
+    console.log(phone)
   }
 }

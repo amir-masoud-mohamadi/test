@@ -14,6 +14,7 @@ import {ShopComponent} from "../shop/shop.component";
 })
 export class ProductComponent implements OnInit {
   errorMsg;
+  flagLoad = true;
   listBaterry;
   user;
   loading = false;
@@ -101,93 +102,97 @@ export class ProductComponent implements OnInit {
     this.product=true;
  }
   payButton(){
-    this.loading2.create({message: '...لطفا صبر کنید', keyboardClose: true}).then(load => {
-      load.present();
-      this.userService.getUser().subscribe((com: HttpResponse<any>) => {
-        if (com.status === 200) {
-          this.user = com.body;
-          console.log('userInfo');
-          console.log(this.user);
-          let body = {
-            "customer_id": this.user.id,
-            "payment_method": "zarinpal_json",
-            "set_paid": false,
-            "shipping": {
-              "first_name": this.user.first_name,
-              "last_name": this.user.last_name,
-              "address_1": localStorage.getItem('addressFull'),
-              "address_2": "[ "+localStorage.getItem('latitude') +","+localStorage.getItem('long') +"]",
-              "phone": this.user.name
-            },
-            "line_items": [
-              {
-                "product_id": localStorage.getItem('product_id'),
-                "quantity": 1
-              }
-            ]
-          };
-          this.userService.createOrder(body).subscribe((com2: HttpResponse<any>) => {
-            if (com2.status === 201) {
-              console.log(com2);
-              let id = {
-                "order_id": com2.body.id,
-                "payment_method": "zarinpal_json",
-                "callback_url": "http://localhost:8100/home"
-              };
-              console.log('com2');
-              this.userService.paymentOrder(id).subscribe((com3: HttpResponse<any>) => {
-                if (com3.status === 200) {
-                  if(com3.body.result) {
-                    console.log(com3.body.redirect);
-                    /*this.router.navigate([com3.body.redirect])*/
-                    window.location.href = com3.body.redirect;
-                  }
-                  console.log('payment');
-                  this.loading2.dismiss();
-                  console.log(com3);
-                }
-              }, err => {
-                this.loading2.dismiss();
-                this.alertCtrl.create({
-                  message:'خطا در ورود به سامانه:', buttons: [
-                    {
-                      text: 'تایید',
-                      role: 'cancel'
-                    }
-                  ]
-                }).then(alertEl => {
-                  alertEl.present();
-                });
-              });
-            }
-          }, err => {
-            this.loading2.dismiss();
-            this.alertCtrl.create({
-              message:'خطا در ورود به سامانه:', buttons: [
-                {
-                  text: 'تایید',
-                  role: 'cancel'
-                }
-              ]
-            }).then(alertEl => {
-              alertEl.present();
-            });
-          });
-        }
-      }, err => {
-        this.loading2.dismiss();
-        this.alertCtrl.create({
-          message:'خطا در ورود به سامانه:', buttons: [
+    this.flagLoad = false;
+    this.userService.getUser().subscribe((com: HttpResponse<any>) => {
+      if (com.status === 200) {
+        this.user = com.body;
+        console.log('userInfo');
+        console.log(this.user);
+        let body = {
+          "customer_id": this.user.id,
+          "payment_method": "zarinpal_json",
+          "set_paid": false,
+          "shipping": {
+            "first_name": this.user.first_name,
+            "last_name": this.user.last_name,
+            "address_1": localStorage.getItem('addressFull'),
+            "address_2": "[ "+localStorage.getItem('latitude') +","+localStorage.getItem('long') +"]",
+            "phone": this.user.name
+          },
+          "line_items": [
             {
-              text: 'تایید',
-              role: 'cancel'
+              "product_id": localStorage.getItem('product_id'),
+              "quantity": 1
             }
           ]
-        }).then(alertEl => {
-          alertEl.present();
-        });
-      });
+        };
+        this.userService.createOrder(body).subscribe((com2: HttpResponse<any>) => {
+          if (com2.status === 201) {
+            console.log(com2);
+            let id = {
+              "order_id": com2.body.id,
+              "payment_method": "zarinpal_json",
+              "callback_url": "http://localhost:8100/home"
+            };
+            console.log('com2');
+            this.userService.paymentOrder(id).subscribe((com3: HttpResponse<any>) => {
+              if (com3.status === 200) {
+                if(com3.body.result) {
+                  console.log(com3.body.redirect);
+                  this.flagLoad = true;
+                  /*this.router.navigate([com3.body.redirect])*/
+                  window.location.href = com3.body.redirect;
+                }
+                console.log('payment');
 
+                console.log(com3);
+              }
+            }, err => {
+              this.flagLoad = true;
+              console.log('sepide === mamad');
+              this.flagLoad = true;
+              this.alertCtrl.create({
+                message:'خطا در ورود به سامانه:', buttons: [
+                  {
+                    text: 'تایید',
+                    role: 'cancel'
+                  }
+                ]
+              }).then(alertEl => {
+                alertEl.present();
+              });
+            });
+          }
+        }, err => {
+          console.log('sepide === karajiye');
+          this.flagLoad = true;
+          
+          this.alertCtrl.create({
+            message:'خطا در ورود به سامانه:', buttons: [
+              {
+                text: 'تایید',
+                role: 'cancel'
+              }
+            ]
+          }).then(alertEl => {
+            alertEl.present();
+          });
+        });
+      }
+    }, err => {
+      console.log('sepide === mehdi');
+      this.flagLoad = true;
+
+      this.alertCtrl.create({
+        message:'خطا در ورود به سامانه:', buttons: [
+          {
+            text: 'تایید',
+            role: 'cancel'
+          }
+        ]
+      }).then(alertEl => {
+        alertEl.present();
+      });
     });
 
  }

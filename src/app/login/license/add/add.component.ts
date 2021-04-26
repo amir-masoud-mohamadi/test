@@ -576,9 +576,9 @@ export class AddComponent implements OnInit {
     toast.present();
   }
   backClick() {
-    if (this.update === 'new') {
+    /*if (this.update === 'new') {
       localStorage.removeItem('token');
-    }
+    }*/
 
     this.modalCtrl.dismiss({
       'dismissed': false

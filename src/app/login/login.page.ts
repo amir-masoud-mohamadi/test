@@ -13,6 +13,7 @@ export class LoginPage implements OnInit {
   form: FormGroup;
   errorMsg;
   lock = true;
+  phone;
   flagLoad2 = true;
   flagLoad = true;
   constructor(
@@ -26,16 +27,18 @@ export class LoginPage implements OnInit {
 
   ngOnInit() {
     this.form = new FormGroup({
-      phone: new FormControl(null, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]),
+      phone: new FormControl(null, [Validators.required]),
     });
     console.log(this.form);
   }
   addRecipe(){
     console.log(this.form);
     this.flagLoad = false;
-    if (this.form.value.phone !== null && this.form.value.phone !== undefined) {
-      if (this.form.value.phone.toString().length === 11){
-        let phone = this.form.value.phone.toString();
+    let myString= '0';
+    myString += this.form.value.phone.toString();
+    if (myString !== null && myString !== undefined) {
+      if (myString.length === 11){
+        let phone = myString;
         this.userService.generate(phone).subscribe((com: HttpResponse<any>) => {
           if (com.status === 200) {
             localStorage.setItem('phoneNumber', phone);
@@ -103,5 +106,8 @@ export class LoginPage implements OnInit {
       cssClass: 'toast-controller'
     });
     toast.present();
+  }
+  onChange(e) {
+    console.log(e);
   }
 }
