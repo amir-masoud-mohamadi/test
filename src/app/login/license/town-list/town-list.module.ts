@@ -4,20 +4,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { LoginPageRoutingModule } from './login-routing.module';
+import { TownListPageRoutingModule } from './town-list-routing.module';
 
-import { LoginPage } from './login.page';
-
+import { TownListPage } from './town-list.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    LoginPageRoutingModule,
-    ReactiveFormsModule,
-
+    TownListPageRoutingModule,
+    ReactiveFormsModule
   ],
-  declarations: [LoginPage]
+  declarations: [TownListPage]
 })
-export class LoginPageModule {}
+export class TownListPageModule {}

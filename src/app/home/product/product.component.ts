@@ -59,17 +59,45 @@ export class ProductComponent implements OnInit {
       {message: 'close'}, 'close');
   }
    batteryChoose(battery){
-     console.log(battery);
+
      localStorage.setItem('product_id', battery.id);
+
     /*this.dismiss();*/
     this.loading = true;
         this.userService.oneBattery().subscribe((com: HttpResponse<any>) => {
           if (com.status === 200) {
             this.listBaterryOne = com.body;
-            console.log('sa');
-            console.log(this.listBaterryOne);
-            this.product = false;
-            this.loading = false;
+            let request = {
+              address: localStorage.getItem('addressFull'),
+              batteryid: localStorage.getItem('product_id'),
+              token: localStorage.getItem('token'),
+              centerid: 0,
+              userid: localStorage.getItem('id'),
+              x: localStorage.getItem('long'),
+              y: localStorage.getItem('lat'),
+            };
+            this.userService.createRequest(request).subscribe((com2: HttpResponse<any>) => {
+              if (com.status === 200) {
+                console.log('salam');
+                console.log(com2);
+                this.product = false;
+                this.loading = false;
+
+              }
+            }, err => {
+              this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+
+              this.alertCtrl.create({
+                message: this.errorMsg, buttons: [
+                  {
+                    text: 'تایید',
+                    role: 'cancel'
+                  }
+                ]
+              }).then(alertEl => {
+                alertEl.present();
+              });
+            });
 
           }
         }, err => {
@@ -166,7 +194,7 @@ export class ProductComponent implements OnInit {
         }, err => {
           console.log('sepide === karajiye');
           this.flagLoad = true;
-          
+
           this.alertCtrl.create({
             message:'خطا در ورود به سامانه:', buttons: [
               {

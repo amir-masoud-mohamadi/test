@@ -58,7 +58,7 @@ export class HomePage implements OnInit, AfterViewInit {
         });
       this.subscription = this.userService.userInfo.subscribe(
         (recipes)=> {
-          console.log('subject2');
+          console.log('info update');
 
           this.users = recipes;
           console.log(this.users);
@@ -87,6 +87,10 @@ export class HomePage implements OnInit, AfterViewInit {
                 }
 
 
+              }, err => {
+                this.userService.loginEvent2();
+                this.loadingFlag = false;
+                this.loading.dismiss();
               });
             } else {
               this.loadingFlag = false;
@@ -265,10 +269,14 @@ export class HomePage implements OnInit, AfterViewInit {
     if  (this.loadingFlag) {
       console.log('6');
       localStorage.setItem('addressFull', this.input);
+      localStorage.setItem('long', this.markerPosition[0]);
+      localStorage.setItem('lat', this.markerPosition[1]);
       this.modalCar();
     } else {
       console.log('7');
       localStorage.setItem('addressFull', this.input);
+      localStorage.setItem('long', this.markerPosition[0]);
+      localStorage.setItem('lat', this.markerPosition[1]);
       this.loginModal();
     }
     /*this.loading.create({message: '...لطفا صبر کنید', keyboardClose: true}).then(load => {
@@ -511,7 +519,7 @@ export class HomePage implements OnInit, AfterViewInit {
     }
     const modal = await this.modalController.create({
       component: AddComponent,
-      cssClass: 'custom-modal2',
+      cssClass: 'custom-modal',
       componentProps: {
         update: 'new'
       }
@@ -523,8 +531,8 @@ export class HomePage implements OnInit, AfterViewInit {
       this.menuControl = false;
     }
     const modal = await this.modalController.create({
-      component: RunningComponent,
-      cssClass: 'custom-modal2'
+      component: HistoryPage,
+      cssClass: 'custom-modal',
     });
     return await modal.present();
   }
@@ -532,9 +540,43 @@ export class HomePage implements OnInit, AfterViewInit {
     if (this.menuControl === true) {
       this.menuControl = false;
     }
+
     const modal = await this.modalController.create({
-      component: RunningComponent,
-      cssClass: 'custom-modal2'
+      component: ConfirmPage,
+      cssClass: 'custom-modal',
+      componentProps: {
+        update: 'new'
+      }
+    });
+    modal.onDidDismiss().then((data) => {
+
+      if (data.data.dismissed) {
+
+      } else {
+        console.log('remove token');
+        localStorage.removeItem('token');
+      }
+    });
+    return await modal.present();
+  }
+  async edit2(){
+
+
+    const modal = await this.modalController.create({
+      component: ConfirmPage,
+      cssClass: 'custom-modal',
+      componentProps: {
+        update: 'update'
+      }
+    });
+    modal.onDidDismiss().then((data) => {
+      console.log('edit2 first');
+      if (data.data.dismissed) {
+        if (this.menuControl === true) {
+          this.menuControl = false;
+          console.log('edit2');
+        }
+      }
     });
     return await modal.present();
   }
@@ -549,7 +591,7 @@ export class HomePage implements OnInit, AfterViewInit {
       console.log(data);
       if (data.data.dismissed) {
         if (data.data.type === 'new') {
-          this.modalConfirm();
+          this.edit();
         } else {
           this.modalCar();
         }
@@ -558,7 +600,7 @@ export class HomePage implements OnInit, AfterViewInit {
     return await modal.present();
   }
   async modalCar(){
-
+      console.log('asdasdasdasd')
     const modal = await this.modalController.create({
       component: AddComponent,
       cssClass: 'custom-modal'

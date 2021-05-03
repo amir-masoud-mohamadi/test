@@ -3,22 +3,23 @@
     <ion-toolbar color="light">
       <ion-buttons  slot="start">
         <ion-button  (click)="backClick()">
-          <ion-icon class="home-close-button"  name="arrow-forward-outline"></ion-icon>
+          <ion-icon class="home-close-button"  name="close-outline"></ion-icon>
         </ion-button>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
-  <ion-tabs>
-    <ion-tab-bar slot="bottom">
-      <ion-tab-button tab="done">
-        <ion-icon name="checkmark-done-outline"></ion-icon>
-        <ion-label>انجام شده</ion-label>
-      </ion-tab-button>
-      <ion-tab-button tab="running">
-        <ion-icon name="refresh-outline"></ion-icon>
-        <ion-label>در حال انجام</ion-label>
-      </ion-tab-button>
-    </ion-tab-bar>
-  </ion-tabs>
+
+  <app-running *ngIf="flag"></app-running>
+  <app-done *ngIf="!flag"></app-done>
+  <ion-segment style="position: fixed;bottom:0;" (ionChange)="segmentChanged($event)" value="running">
+    <ion-segment-button value="completed">
+      <ion-label> <ion-icon name="checkmark-done-outline"></ion-icon>انجام شده</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="running">
+      <ion-label><ion-icon name="refresh-outline"></ion-icon>در حال انجام</ion-label>
+    </ion-segment-button>
+
+  </ion-segment>
+
 </ion-content>
 

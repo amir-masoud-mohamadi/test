@@ -2,9 +2,7 @@
 
   <ion-toolbar  color="light">
     <ion-buttons slot="start">
-      <ion-button (click)="backClick()">
-        <ion-icon class="home-close-button" name="close-outline"></ion-icon>
-      </ion-button>
+
     </ion-buttons>
     <ion-buttons slot="end">
       <ion-button class="payment-button" (click)="addRecipe()" [disabled]="!form.valid">
@@ -54,14 +52,14 @@
           </div>
         </ion-col>
 
-        <ion-col size-md="1" offset-md="4" size-xs="12" class="offer-float">
+        <ion-col *ngIf="mode2" size-md="1" offset-md="4" size-xs="12" class="offer-float">
           <ion-button (click)="onPickImage()" class="color-register3 " fill="outline" ><ion-icon name="camera-outline"></ion-icon>تصویر</ion-button>
-        </ion-col>
-        <ion-col size-md="3"  size-xs="12">
+        </ion-col >
+        <ion-col size-md="3" *ngIf="mode2"  size-xs="12">
           <input type="file" hidden #filePicker (change)="onFileChoosen($event)" formControlName="avatar">
           <ion-input [disabled]="true" class="input-register " placeholder="تصویر" formControlName="nameImage"></ion-input>
         </ion-col>
-        <ion-col size-md="1" offset-md="4" size-xs="12" class="offer-float2">
+        <ion-col *ngIf="mode2" size-md="1" offset-md="4" size-xs="12" class="offer-float2">
           <ion-button (click)="onPickImage()" class="color-register3 " fill="outline" ><ion-icon name="camera-outline"></ion-icon>تصویر</ion-button>
         </ion-col>
 

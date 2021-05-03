@@ -1,0 +1,85 @@
+
+  <ion-content class="main-all">
+    <ion-header class="haeder-all">
+      <ion-toolbar color="light">
+        <ion-buttons class="toolbar-rel" slot="start" >
+          <ion-button (click)="backClick()"><ion-icon style="font-size: 28px" name="close-outline"></ion-icon></ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-grid>
+      <ion-row>
+        <ion-col size-md="4" offset-md="4" size-xs="12">
+          <h3 class="header-register">انتخاب کمپانی</h3>
+        </ion-col>
+      </ion-row>
+      <form [formGroup]="form" (ngSubmit)="addRecipe()">
+        <ion-row>
+          <ion-col size-md="4" offset-md="4" size-xs="12" class="button-grid2">
+            <!--<ion-searchbar showCancelButton="always" palceholder="جستجو بر اساس استان"></ion-searchbar>-->
+
+            <div>
+
+              <ion-input *ngIf="!car" class="input-register"
+                         (ionChange)="segmentChanged($event)" placeholder="جستجو بر اساس کمپانی" formControlName="town">
+                <ion-icon class="icon-input" name="menu-outline"></ion-icon>
+
+              </ion-input>
+              <ion-input *ngIf="car" class="input-register"
+                         (ionChange)="segmentChanged2($event)" placeholder="جستجو بر اساس نوع خودرو" formControlName="town">
+                <ion-icon class="icon-input" name="menu-outline"></ion-icon>
+              </ion-input>
+            </div>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col size-md="4" offset-md="4" size-xs="12">
+            <ion-list *ngIf="!flag && flagTown && !car" style="direction: rtl">
+              <ion-item  *ngFor="let s of brands" style="cursor: pointer" (click)="onClickTown(s)">
+                <ion-label>{{s.name}}</ion-label>
+              </ion-item>
+
+            </ion-list>
+            <ion-list *ngIf="flag && flagTown && !car" style="direction: rtl">
+              <ion-item  *ngFor="let s of brandSearch" style="cursor: pointer" (click)="onClickTown(s)">
+                <ion-label>{{s.name}}</ion-label>
+              </ion-item>
+
+            </ion-list>
+            <ion-list *ngIf="!flag && flagTown && car" style="direction: rtl">
+              <ion-item  *ngFor="let s of listModels" style="cursor: pointer" (click)="onClickTown2(s)">
+                <ion-label>{{s.name}}</ion-label>
+              </ion-item>
+
+            </ion-list>
+            <ion-list *ngIf="flag && flagTown && car" style="direction: rtl">
+              <ion-item  *ngFor="let s of carSearch" style="cursor: pointer" (click)="onClickTown(s)">
+                <ion-label>{{s.name}}</ion-label>
+              </ion-item>
+
+            </ion-list>
+            <ion-list *ngIf="!flagTown" style="direction: rtl">
+              <ion-item (click)="onClickTown(s)">
+                <ion-label>داده ای یافت نشد</ion-label>
+              </ion-item>
+
+            </ion-list>
+
+          </ion-col>
+        </ion-row>
+      </form>
+      <!--<ion-row>
+        <ion-col size="12" class="button-grid3">
+          <p class="text-color">یا ثبت نام شبکه های اجتماعی</p>
+        </ion-col>
+        <ion-col size="6" class="grid-twiiter">
+          <button class="color-twitter" expand="full" [routerLink]="['/', 'register']"> توییتر <ion-icon name="logo-twitter"></ion-icon></button>
+        </ion-col>
+
+        <ion-col size="6" class="grid-facebook">
+          <button class="color-facebook" expand="full" [routerLink]="['/', 'register']"> فیس بوک<ion-icon name="logo-facebook"></ion-icon></button>
+        </ion-col>
+      </ion-row>-->
+    </ion-grid>
+
+  </ion-content>

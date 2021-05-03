@@ -23,7 +23,7 @@
     <!--</ion-row>-->
     <ion-row>
       <ion-col class="tarikhrun" size-md="4" offset-md="4" size-xs="12">
-        <p style="float: left">99/2/8 ، ساعت 16:48</p> <p>شماره سفارش:۵۲۷</p>
+        <!-- <p style="float: left">99/2/8 ، ساعت 16:48</p>--> <p>شماره سفارش:{{history.id}}</p>
       </ion-col>
     </ion-row>
     <ion-row >
@@ -34,7 +34,7 @@
           <li class="li-padding"> {{history.shipping.address_1}}</li>
         </ul>
 
-        <img class="shop-img" src="../../../assets/img/person.png" alt="">
+        <img class="shop-img" src="{{history.line_items[0].product_data.images[0].src}}" alt="">
         <div class="shop-all">
           <p class="shop-p2">{{history.line_items[0].name}}</p>
         </div>
@@ -43,27 +43,6 @@
         </div>
       </ion-col>
     </ion-row>
-    <ion-row>
-      <ion-col class="tarikhrun" size-md="4" offset-md="4" size-xs="12">
-        <p style="float: left">99/2/8 ، ساعت 16:48</p> <p>شماره سفارش:۵۲۷</p>
-      </ion-col>
-    </ion-row>
-    <ion-row >
-      <ion-col class="rowrun box " size-md="4" offset-md="4" size-xs="12">
 
-        <ul class="li2rec">
-
-          <li class="li-padding"> {{history.shipping.address_1}}</li>
-        </ul>
-
-        <img class="shop-img" src="../../../assets/img/person.png" alt="">
-        <div class="shop-all">
-          <p class="shop-p2">{{history.line_items[0].name}}</p>
-        </div>
-        <div class="hazinerun">
-          <p class="prun"><span class="spanrun">هزینه نهایی</span><br> {{  history.total | number:'3.0-0' }} </p>
-        </div>
-      </ion-col>
-    </ion-row>
   </ion-grid>
 </ion-content>

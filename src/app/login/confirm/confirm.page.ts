@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {loginRegister} from "../../shared/service/login-register";
-import {LoadingController, AlertController, ToastController, ModalController} from '@ionic/angular';
+import {LoadingController, AlertController, ToastController, ModalController, NavParams} from '@ionic/angular';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {HttpResponse} from '@angular/common/http';
 import { Plugins } from '@capacitor/core';
@@ -17,6 +17,7 @@ export class ConfirmPage implements OnInit {
   errorMsg;
   mode;
   mode2;
+  update;
   file;
   user;
   load = false;
@@ -29,6 +30,7 @@ export class ConfirmPage implements OnInit {
     private alertCtrl: AlertController,
     private toastController: ToastController,
     public modalCtrl: ModalController,
+    private navParams: NavParams,
     private route: ActivatedRoute
   ) {
     this.form = new FormGroup({
@@ -41,7 +43,43 @@ export class ConfirmPage implements OnInit {
   async ngOnInit() {
     this.loading.create({message: ' ... لطفا صبر کنید', keyboardClose: true}).then(load => {
       load.present();
-      this.route.params.subscribe(
+      console.log('update modal');
+      console.log(this.navParams.data.update);
+      if (this.navParams.data.update === 'update') {
+        this.update = this.navParams.data.update;
+        this.mode2 = true;
+        this.userService.getUser().subscribe((com: any) => {
+          if (com.status === 200) {
+            this.user = com.body;
+            this.load = true;
+            this.loading.dismiss();
+            console.log('user');
+            console.log(this.user);
+
+            this.form.patchValue(
+              {first_name: this.user.first_name,
+                last_name: this.user.last_name});
+          }
+        }, err => {
+          this.loading.dismiss();
+          this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+          this.alertCtrl.create({
+            message: this.errorMsg, buttons: [
+              {
+                text: 'تایید',
+                role: 'cancel'
+              }
+            ]
+          }).then(alertEl => {
+            alertEl.present();
+          });
+        });
+      } else {
+        this.loading.dismiss();
+        this.mode2 = false;
+        this.load = true;
+      }
+      /*this.route.params.subscribe(
         (params: Params) =>{
           this.mode = params.update;
           console.log(params);
@@ -80,7 +118,7 @@ export class ConfirmPage implements OnInit {
             });
           }
         }
-      );
+      );*/
     });
 
   }
@@ -90,38 +128,70 @@ export class ConfirmPage implements OnInit {
       if (this.form.value.last_name !== undefined && this.form.value.last_name !== null) {
         this.loading.create({message: 'ذخیره سازی ...', keyboardClose: true}).then(load => {
           load.present();
+          console.log('1');
           let send ;
           const formData = new FormData();
           if (this.mode2) {
+            console.log('2');
             if (this.form.value.nameImage === null || this.form.value.nameImage === undefined) {
+              console.log('3');
               formData.append('first_name', this.form.value.first_name);
               formData.append('last_name', this.form.value.last_name);
             } else {
+              console.log('4');
               formData.append('first_name', this.form.value.first_name);
               formData.append('last_name', this.form.value.last_name);
               formData.append('avatar', this.file, this.file.name );
             }
 
           } else {
+            console.log('5');
             formData.append('first_name', this.form.value.first_name);
             formData.append('last_name', this.form.value.last_name);
           }
-
+          console.log('6');
           this.userService.updateUser(formData).subscribe((com: HttpResponse<any>) => {
             if (com.status === 200) {
-                this.loading.dismiss();
-              this.presentToast('اطلاعات ثبت شد');
+              console.log('7');
+
+              let user;
               if (this.mode2) {
-                this.router.navigate(['/', 'home']);
+                 user = {
+                  id: com.body.id,
+                  avatar: com.body.avatar,
+                  first_name: com.body.first_name,
+                  name: com.body.name,
+                  last_name: com.body.last_name,
+                };
+                this.userService.infoEvent1(user);
+                console.log('8');
+                this.modalCtrl.dismiss({
+                  'dismissed': true,
+                  'mode': this.mode2
+                });
                 this.userService.recipeEvent1();
               } else {
-                this.router.navigate(['/', 'login', 'license', 'add-car', 'new']);
+                 user = {
+                  id: com.body.id,
+                  avatar: com.body.avatar,
+                  first_name: com.body.first_name,
+                  name: com.body.name,
+                  last_name: com.body.last_name,
+                };
+                this.userService.infoEvent1(user);
+                console.log('9');
+                this.loading.dismiss();
+                this.modalCtrl.dismiss({
+                  'dismissed': true,
+                  'mode': this.mode2
+                });
               }
-
             } else {
               this.loading.dismiss();
+              console.log('10');
             }
           }, err => {
+            console.log('11');
             this.loading.dismiss();
             this.errorMsg = err.error.message;
             this.alertCtrl.create({

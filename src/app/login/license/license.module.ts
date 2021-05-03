@@ -10,13 +10,15 @@ import { LicensePage } from './license.page';
 import {AddComponent} from "./add/add.component";
 
 
+
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
     LicensePageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+
 
   ],
   declarations: [LicensePage, AddComponent]

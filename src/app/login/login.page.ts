@@ -12,6 +12,8 @@ import {Router} from '@angular/router';
 export class LoginPage implements OnInit {
   form: FormGroup;
   errorMsg;
+  ports: any ;
+  port: any;
   lock = true;
   phone;
   flagLoad2 = true;
@@ -23,7 +25,9 @@ export class LoginPage implements OnInit {
     private router: Router,
     private toastController: ToastController,
     public modalCtrl: ModalController
-  ) { }
+  ) {
+
+  }
 
   ngOnInit() {
     this.form = new FormGroup({

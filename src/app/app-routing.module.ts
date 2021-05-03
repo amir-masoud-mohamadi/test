@@ -31,8 +31,15 @@ const routes: Routes = [
     path: 'payment',
     loadChildren: () => import('./payment/payment.module').then( m => m.PaymentPageModule)
   },
-
-
+  {
+    path: 'town-list',
+    loadChildren: () => import('./login/license/town-list/town-list.module').then( m => m.TownListPageModule)
+  },
+  {
+    path        : '**',
+    pathMatch   : 'full',
+    loadChildren: () => import('./not-found/not-found.module').then( m => m.NotFoundPageModule)
+  }
 ];
 @NgModule({
   imports: [

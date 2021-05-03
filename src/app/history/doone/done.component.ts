@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpResponse} from "@angular/common/http";
 import {loginRegister} from "../../shared/service/login-register";
-import {AlertController, LoadingController} from "@ionic/angular";
+import {AlertController, LoadingController, ModalController} from "@ionic/angular";
 
 @Component({
   selector: 'app-done',
@@ -12,7 +12,7 @@ export class DoneComponent implements OnInit {
   listDone;
   flagBaterry = false;
   errorMsg;
-  constructor(private userService: loginRegister, private loading: LoadingController, private alertCtrl: AlertController) { }
+  constructor(private userService: loginRegister,public modalCtrl: ModalController, private loading: LoadingController, private alertCtrl: AlertController) { }
 
    ngOnInit() {
     this.loading.create({message: '...لطفا صبر کنید', keyboardClose: true}).then(load => {

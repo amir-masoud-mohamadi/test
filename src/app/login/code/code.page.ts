@@ -52,7 +52,7 @@ export class CodePage implements OnInit {
               this.userService.getUser().subscribe((com: any) => {
                 if (com.status === 200) {
                   this.userService.infoEvent1(com.body);
-                  this.loading.dismiss();
+
                 }
 
 

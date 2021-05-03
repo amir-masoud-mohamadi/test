@@ -1,22 +1,104 @@
+<script src="../../../../../../../backupImportant/src/app/login/license/add/add.component.ts"></script>
 <ion-content class="main-all">
   <ion-header class="haeder-all">
     <ion-toolbar color="light">
-  <p class="title-license">لیست خودرو های ثبت شده:</p>
+      <ion-buttons class="toolbar-rel" slot="start" >
+        <ion-button (click)="backClick()"><ion-icon style="font-size: 28px" name="close-outline"></ion-icon></ion-button>
+      </ion-buttons>
+      <!--<ion-buttons slot="end">
+        <ion-button class="payment-button" style="color: #3CD0FC" (click)="setCar()">
+          ثبت<ion-icon name="create-outline" style="color: #3CD0FC"></ion-icon>
+        </ion-button>
+      </ion-buttons>-->
+
+      <ion-title class="home-message" *ngIf="mode2 && carName">  خودرو ثبت شده شما: {{carName}} می باشد</ion-title>
+      <ion-title class="home-message" *ngIf="!mode2">مدل خودرو خود را انتخاب نمایید</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ion-grid>
-    <ion-row>
-      <ion-col *ngFor="let car of carList" style="cursor: pointer" (click)="setCar(car)"  class="box" size-md="4" offset-md="4" size-xs="12">
-        <div>
-          <ion-icon  class="license-float" name="car-outline" class="box-img" ></ion-icon>
-          <h6 class="header-register box-h2" style="float: right;">{{car.name}}</h6>
-        </div>
-      </ion-col>
-      <ion-col class="sale"  size-md="4" offset-md="4" size-xs="12">
-        <p class="curser" [routerLink]="['/', 'login', 'license', 'add-car']">
-          <ion-icon class="plus-icon" name="add-outline"></ion-icon> افزودن خودرو جدید
-        </p>
+  <ion-grid style="position:relative;">
+    <ion-row >
+      <ion-col size-md="4" offset-md="4" size-xs="12">
+        <img class="login-code-gif" src="./assets/img/car500.375.gif" alt="" style="">
       </ion-col>
     </ion-row>
+  </ion-grid>
+  <ion-grid >
+    <form [formGroup]="form" >
+      <ion-row>
+        <ion-col size-md="4" offset-md="4" size-xs="12">
+          <h3 class="header-register">اطلاعات خودرو</h3>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="4" offset-md="4" size-xs="12" class="button-grid2">
+          <!--<select name="company" formControlName="company" id="company" class="input-register5" (change)="onChange($event)">
+            &lt;!&ndash;<option *ngFor="let select of listCompany" value="{{select.id}}">{{select.name}}</option>&ndash;&gt;
+            <option value="0">کمپانی خودرو</option>
+            <option  *ngFor="let brand of brands" value="{{brand.id}}">{{brand.name}}</option>
+          </select>-->
+
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size-md="4" offset-md="4" size-xs="12" class="button-grid2">
+          <select name="company" class="input-register5" formControlName="model">
+            <option value="{{s.id}}"  *ngFor="let s of listModels" >{{s.name}}</option>
+          </select>
+        </ion-col>
+      </ion-row>
+      <ion-row formGroupName="plate">
+        <ion-col size-md="4" offset-md="4" size-xs="12">
+          <h3>پلاک خودرو</h3>
+        </ion-col>
+        <ion-col size-md="4" size-xs="0"></ion-col>
+        <!--<ion-col size-xs="3">
+
+        </ion-col>-->
+        <ion-col size-md="4" offset-md="4" size-xs="12" class="image-plate">
+          <img src="../../../assets/img/plate.png" alt="">
+
+          <input class="number-plate1" formControlName="plate1" maxlength="2" placeholder="33">
+
+
+          <input class="number-plate2" formControlName="plate3" maxlength="3" placeholder="333">
+
+          <select name="company"  class="number-plate3"  formControlName="plate2">
+            <option value="{{select.name}}"  *ngFor="let select of plak" >{{select.name}}</option>
+          </select>
+
+          <input class="number-plate4" formControlName="plate4" maxlength="2" placeholder="33">
+
+        </ion-col>
+        <!--<ion-col size-xs="3">
+
+        </ion-col>
+
+        <ion-col size-xs="3">
+
+        </ion-col>-->
+      </ion-row>
+      <!--<ion-row>
+        <ion-col size-md="4" offset-md="4" size-xs="12" class="button-grid abso-button">
+          <ion-button class="color-register2 " fill="outline" (click)="setCar()" type="submit"><ion-icon name="checkmark-outline"></ion-icon>تایید</ion-button>
+        </ion-col>
+      </ion-row>-->
+      <ion-row>
+        <ion-col size-md="4" offset-md="4" size-xs="12" class="button-grid ">
+          <ion-button *ngIf="!mode2" class="color-register2 " fill="outline" (click)="setCar()" type="submit"><ion-icon name="create-outline"></ion-icon>ثبت</ion-button>
+          <ion-button *ngIf="mode2" class="color-register2 " fill="outline" (click)="setCar()" type="submit"><ion-icon name="create-outline"></ion-icon>ویرایش</ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+    <ion-item>
+      <ion-label>کمپانی خودرو</ion-label>
+      <ionic-selectable
+        [(ngModel)]="port"
+        [items]="ports"
+        itemValueField="id"
+        itemTextField="name"
+        [canSearch]="true"
+        (onChange)="portChange($event)">
+      </ionic-selectable>
+    </ion-item>
   </ion-grid>
 </ion-content>
