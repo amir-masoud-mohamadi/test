@@ -115,4 +115,12 @@ export class loginRegister {
     return this.http.post('http://95.217.50.109:6060/wps/createRequest',request, {
       observe: 'response'}).pipe(take(1));
   }
+  getNear() {
+    return this.http.get('http://95.217.50.109:6060/wps/getNearestSaba?coor='+ localStorage.getItem('long')+ ' ' + localStorage.getItem('lat') , {
+      observe: 'response'}).pipe(take(1));
+  }
+  getTimeNear(geo) {
+    return this.http.get('http://95.217.50.109:6060/wps/shortestPath?coor='+ localStorage.getItem('long')+ ',' + localStorage.getItem('lat')+';'+ geo.x+','+geo.y, {
+      observe: 'response'}).pipe(take(1));
+  }
 }

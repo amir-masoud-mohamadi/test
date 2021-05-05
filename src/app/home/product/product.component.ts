@@ -17,12 +17,15 @@ export class ProductComponent implements OnInit {
   flagLoad = true;
   listBaterry;
   user;
+  numberRequest;
   loading = false;
   payment = false;
   address;
   listBaterryOne;
   product = true;
   listSearch = [];
+  namayandegi;
+  duration;
   flagBaterry = false;
   constructor(public modalCtrl: ModalController,
               private userService: loginRegister,
@@ -69,19 +72,83 @@ export class ProductComponent implements OnInit {
             this.listBaterryOne = com.body;
             let request = {
               address: localStorage.getItem('addressFull'),
-              batteryid: localStorage.getItem('product_id'),
+              battryid: +localStorage.getItem('product_id'),
               token: localStorage.getItem('token'),
-              centerid: 0,
-              userid: localStorage.getItem('id'),
-              x: localStorage.getItem('long'),
-              y: localStorage.getItem('lat'),
+              centerid: '0',
+              userid: +localStorage.getItem('id'),
+              x: +localStorage.getItem('long'),
+              y: +localStorage.getItem('lat'),
             };
             this.userService.createRequest(request).subscribe((com2: HttpResponse<any>) => {
-              if (com.status === 200) {
+              if (com2.status === 200) {
                 console.log('salam');
-                console.log(com2);
-                this.product = false;
-                this.loading = false;
+                this.numberRequest = com2;
+                this.userService.getNear().subscribe((com3: HttpResponse<any>) => {
+                  if (com3.status === 200) {
+                    console.log('salam3');
+
+                    this.namayandegi = com3.body;
+                    let geom = this.namayandegi.result.geom;
+                    let newtext = geom.slice(6);
+                    console.log('test string');
+                    console.log(newtext);
+                    let num = newtext.indexOf(" ");
+                    let number1 = newtext.slice(0,num);
+                    console.log(number1);
+                    console.log(newtext.slice(num+1));
+                    let number2with = newtext.slice(num+1);
+                    console.log(number2with.indexOf(")"));
+
+                    let number2 = number2with.slice(0,number2with.indexOf(")"));
+                    console.log(number2);
+                    let address ={
+                      x: number1,
+                      y: number2
+                    };
+                    this.userService.getTimeNear(address).subscribe((com4: HttpResponse<any>) => {
+                      if (com3.status === 200) {
+                        console.log('salam4');
+                        let time = com4.body.routes[0].duration/60+1;
+
+                        this.duration = {
+                          time: time.toFixed(0),
+                          distance: com4.body.routes[0].distance
+                        };
+                        console.log(this.duration);
+                        this.product = false;
+                        this.loading = false;
+
+                      }
+                    }, err => {
+                      this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+
+                      this.alertCtrl.create({
+                        message: this.errorMsg, buttons: [
+                          {
+                            text: 'تایید',
+                            role: 'cancel'
+                          }
+                        ]
+                      }).then(alertEl => {
+                        alertEl.present();
+                      });
+                    });
+
+                  }
+                }, err => {
+                  this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+
+                  this.alertCtrl.create({
+                    message: this.errorMsg, buttons: [
+                      {
+                        text: 'تایید',
+                        role: 'cancel'
+                      }
+                    ]
+                  }).then(alertEl => {
+                    alertEl.present();
+                  });
+                });
 
               }
             }, err => {

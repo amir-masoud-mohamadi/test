@@ -27,7 +27,7 @@
     <div *ngIf="flagBaterry" >
       <ion-row class="box" *ngFor="let battery of listBaterry" (click)="batteryChoose(battery)">
         <ion-col size-md="2" size-xs="3">
-          <p class="login-text product-text ">{{battery.price | number:'3.0-0'}} تومان</p>
+          <p class="login-text2 product-text ">{{battery.price | number:'3.0-0'}} تومان</p>
         </ion-col>
         <ion-col   size-md="10" size-xs="9" class="battery-image">
           <img class="box-img"   src="{{battery.images[0].src}}" alt="">
@@ -97,12 +97,12 @@
     <ion-buttons slot="start">
 
     </ion-buttons>
-    <ion-title slot="start" class="shop-p1">
-      نماینده شما تا دو دقیقه دیگر به شما میرسد
+    <ion-title *ngIf="duration" slot="start" class="shop-p1">
+      نماینده شما تا {{duration.time}} دقیقه دیگر به شما میرسد
     </ion-title>
 
-    <ion-buttons slot="end" class="shop-top-button">
-      <ion-button (click)="cancelButton()" class="shop-top-button-font" >
+    <ion-buttons slot="end" class="shop-top-button" >
+      <ion-button (click)="cancelButton()" class="shop-top-button-font laghvButton" >
         لغو درخواست
       </ion-button>
     </ion-buttons>
@@ -115,43 +115,38 @@
       <ion-col class="shop-second-row" size-md="12" size-xs="12" >
         <img class="shop-img" src="../../../assets/img/person.png" alt="">
         <div class="shop-all">
-          <p class="shop-p2">حسام خردمند</p>
-          <p class="shop-p3">آدرس نمایندگی:خیابان ولیعصر...</p>
+          <p class="shop-p2">{{namayandegi.result.name}}</p>
+          <p class="shop-p3">آدرس نمایندگی:{{namayandegi.result.addres}}</p>
         </div>
       </ion-col>
+
 
     </ion-row>
     <ion-row class="box2" *ngFor="let battery2 of listBaterryOne">
 
       <ion-col size-md="2" size-xs="3">
-        <p class="login-text product-text "><span>هزینه کلی: </span> {{battery2.price | number:'3.0-0'}} تومان</p>
+        <p class="login-text2 product-text "> {{battery2.price | number:'3.0-0'}} تومان</p>
       </ion-col>
       <ion-col   size-md="10" size-xs="9" class="battery-image">
         <img class="box-img"   src="{{battery2.images[0].src}}" alt="">
-        <p class="login-text product-text1">{{battery2.name}}</p>
+        <p class="login-text product-text">{{battery2.name}}</p>
       </ion-col>
     </ion-row>
     <ion-row>
       <img class="login-code-gif" src="../../../assets/img/bakian1.gif" alt="">
     </ion-row>
-    <ion-row >
-      <ion-col class="shop-buttons-row" size-md="12" size-xs="12">
-        <ion-row>
+
+        <ion-row class="two-button">
           <ion-col size-md="6" size-sm="6" size-xs="6" style="text-align: center">
-            <ion-button href="tel:09203185480" fill="outline" class="call-button" fill="outline">تماس</ion-button>
+            <ion-button href="tel:{{namayandegi.result.phone}}" fill="outline" class="call-button" fill="outline">تماس</ion-button>
           </ion-col>
           <ion-col size-md="6" size-sm="6" size-xs="6" style="text-align: center">
-            <ion-button fill="outline" href="sms:09203185480" class="message-button color-login">پیام</ion-button>
+            <ion-button fill="outline" href="sms:{{namayandegi.result.phone}}" class="message-button color-login">پیام</ion-button>
           </ion-col>
 
         </ion-row>
-      </ion-col>
-    </ion-row>
-<ion-row>
-  <ion-col class="special-shop-row">
-    <h3 class="shop-h3 ">سفارش شما:</h3>
-  </ion-col>
-</ion-row>
+
+
       <ion-row *ngFor="let battery2 of listBaterryOne">
 
         <!--<ion-col size-md="2" size-xs="3">

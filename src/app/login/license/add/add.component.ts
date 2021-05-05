@@ -336,6 +336,8 @@ export class AddComponent implements OnInit {
       }
     });
     modal.onDidDismiss().then((data) => {
+      this.carId = undefined;
+      this.form.patchValue({model: null});
       console.log("exittttt");
 
       if (data.data.dismissed) {
