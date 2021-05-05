@@ -1,17 +1,18 @@
+<ion-header class="haeder-all">
+  <ion-toolbar color="light">
+    <ion-buttons  slot="start">
+      <ion-button  (click)="backClick()">
+        <ion-icon class="home-close-button"  name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 <ion-content class="main-all">
-  <ion-header class="haeder-all">
-    <ion-toolbar color="light">
-      <ion-buttons  slot="start">
-        <ion-button  (click)="backClick()">
-          <ion-icon class="home-close-button"  name="close-outline"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-    </ion-toolbar>
-  </ion-header>
+
 
   <app-running *ngIf="flag"></app-running>
   <app-done *ngIf="!flag"></app-done>
-  <ion-segment style="position: fixed;bottom:0;" (ionChange)="segmentChanged($event)" value="running">
+  <ion-segment style="position: fixed;bottom:0;background-color: #fff" (ionChange)="segmentChanged($event)" value="running">
     <ion-segment-button value="completed">
       <ion-label> <ion-icon name="checkmark-done-outline"></ion-icon>انجام شده</ion-label>
     </ion-segment-button>
