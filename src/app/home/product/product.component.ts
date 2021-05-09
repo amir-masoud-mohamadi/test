@@ -105,6 +105,8 @@ export class ProductComponent implements OnInit {
                       x: number1,
                       y: number2
                     };
+                    localStorage.setItem('customer-lat', number1);
+                    localStorage.setItem('customer-lng', number2);
                     this.userService.getTimeNear(address).subscribe((com4: HttpResponse<any>) => {
                       if (com3.status === 200) {
                         console.log('salam4');
@@ -114,6 +116,7 @@ export class ProductComponent implements OnInit {
                           time: time.toFixed(0),
                           distance: com4.body.routes[0].distance
                         };
+                        localStorage.setItem('customer-time', this.duration.time);
                         console.log(this.duration);
                         this.product = false;
                         this.loading = false;

@@ -6,7 +6,7 @@ import {Map} from '../shared/service/map';
 import {SearchComponent} from './search/search.component';
 import {loginRegister} from '../shared/service/login-register';
 import { Plugins } from '@capacitor/core';
-import {Router} from "@angular/router";
+import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {AddComponent} from "../login/license/add/add.component";
 import {HistoryPage} from "../history/history.page";
@@ -14,6 +14,7 @@ import {RunningComponent} from "../history/running/running.component";
 import {LoginPage} from "../login/login.page";
 import {CodePage} from "../login/code/code.page";
 import {ConfirmPage} from "../login/confirm/confirm.page";
+import {HttpResponse} from "@angular/common/http";
 
 const { Geolocation } = Plugins;
 
@@ -34,23 +35,30 @@ export class HomePage implements OnInit, AfterViewInit {
   subscription: Subscription;
   input;
   users;
+  time;
+  tansaction;
+  stausMethod;
   humber = false;
   user;
   loadingFlag = false;
   show =false;
   center: any;
+  process = false;
   geom = 'POINT(51.3379870719648 35.6986831795255)';
   markerPosition: any = [51.3380649, 35.700179] ;
+  markerPosition2: any ;
+
   apiKey: string = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImNmYjkzNmYzNzY5OWQzMThjMDBkYzc5NGNmZjM1YTdmNmJlNTllY2ZlYjg2ZDA1NjczODNlMWUxODEzZDY1ODcyOGFkYjJjYzA0ZGE4MjlmIn0.eyJhdWQiOiIxMzcyMCIsImp0aSI6ImNmYjkzNmYzNzY5OWQzMThjMDBkYzc5NGNmZjM1YTdmNmJlNTllY2ZlYjg2ZDA1NjczODNlMWUxODEzZDY1ODcyOGFkYjJjYzA0ZGE4MjlmIiwiaWF0IjoxNjE5NDE5MjA3LCJuYmYiOjE2MTk0MTkyMDcsImV4cCI6MTYyMjAxMTIwNywic3ViIjoiIiwic2NvcGVzIjpbImJhc2ljIl19.FdM-ON-0vS7zOGYvpD3yi6eJ4LxbTLY7UAZDErGQGJoRC91TP9O8W2XJBMpSZcl6ndLtMOkw60-ebb6OTQ0YTS0kEqpxEaEvlM3SnKSmJTqW2DzRONn6W3xWyf0BtGXLyulBeQh4fEl95iTUn7S_Rw4ojcmdjvcg9xsAd96pX8yswZyLLTwrWjr9XEvNeZedIURh88N2EF1XzKT2isY-6uE1YG3e1P9-Cfd470Lj0ojHTb29fkleaNH8yUG3lp8Hh9Ry0l_k66DqgUNiLcEoeuw5xWvcmu67hGTRjGz_cDDoR3PJ1eGCGILuUudjVldxpA-N2WKQcS2I3oEeJcCqCw';
   constructor(private modalController: ModalController,
               private router: Router,
+              private route: ActivatedRoute,
               private userService: loginRegister,
               private map: Map,
               private alertCtrl: AlertController,
               private viewContainerRef: ViewContainerRef,
               private loading: LoadingController,) { }
     async ngOnInit() {
-      console.log(new Date(2019,2,21).toLocaleDateString('fa-Ir'));
+      this.dis();
 
       this.subscription = this.userService.loginEvent.subscribe(
         (recipes)=> {
@@ -69,12 +77,47 @@ export class HomePage implements OnInit, AfterViewInit {
       this.loading.create({message: '...لطفا صبر کنید', keyboardClose: true}).then(load => {
         load.present();
         console.log('masoud');
+
         if (localStorage.getItem('token')) {
           console.log('masoud1');
           this.userService.validToken().subscribe((com: any) => {
             console.log('masoud3');
             if (com.status === 200) {
               console.log('masoud4');
+              this.userService.getRunningHistory().subscribe((com: HttpResponse<any>) => {
+                if (com.status === 200) {
+                  if (com.body.length>0) {
+                    console.log(com.body);
+                    console.log('process');
+
+                    this.process = true;
+
+                    this.markerPosition2 = [+localStorage.getItem('customer-lat'), +localStorage.getItem('customer-lng')];
+                    this.markerPosition = [+localStorage.getItem('long'), +localStorage.getItem('latitude')];
+                    this.time = localStorage.getItem('customer-time');
+                    console.log('this.time');
+                    console.log(this.markerPosition2);
+                    console.log(this.time);
+                  } else {
+                    this.process = false;
+                  }
+                  this.loading.dismiss();
+                }
+              }, err => {
+                this.loading.dismiss();
+                this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+
+                this.alertCtrl.create({
+                  message: this.errorMsg, buttons: [
+                    {
+                      text: 'تایید',
+                      role: 'cancel'
+                    }
+                  ]
+                }).then(alertEl => {
+                  alertEl.present();
+                });
+              });
               this.loadingFlag = true;
               this.userService.loginEvent1();
               this.userService.getUser().subscribe((com: any) => {
@@ -162,7 +205,23 @@ export class HomePage implements OnInit, AfterViewInit {
         }
       )
   }
+  async dis() {
 
+    await this.route.params.subscribe(
+      (params: Params) => {
+        if(params.status && params.transaction_id) {
+          this.stausMethod = params.status;
+          this.tansaction = params.transaction_id;
+          console.log('process');
+          console.log(this.process);
+          this.process = true;
+          this.markerPosition = [+localStorage.getItem('long'), +localStorage.getItem('latitude')];
+          this.markerPosition2 = [+localStorage.getItem('customer-lat'), +localStorage.getItem('customer-lng')];
+          this.time = localStorage.getItem('customer-time');
+        }
+      }
+    );
+  }
   async clickGps() {
     const position = await Geolocation.getCurrentPosition().then((resp) => {
       this.markerPosition = [resp.coords.longitude, resp.coords.latitude];
@@ -198,34 +257,37 @@ export class HomePage implements OnInit, AfterViewInit {
     if (this.menuControl === true) {
       this.menuControl = false;
     }
-    if ('lngLat' in e) {
-      this.markerPosition = [e.lngLat.lng, e.lngLat.lat];
-      this.center = [e.lngLat.lng, e.lngLat.lat];
-      const address = {
-        lat: e.lngLat.lat,
-        lng: e.lngLat.lng,
-        api: this.apiKey
-      };
-      this.map.address(address).subscribe((com: any) => {
-        if (com.status === 200) {
-          this.input = com.body.address_compact;
-        }
-      }, err => {
-        this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
-        this.alertCtrl.create({
-          message: this.errorMsg, buttons: [
-            {
-              text: 'تایید',
-              role: 'cancel'
-            }
-          ]
-        }).then(alertEl => {
-          alertEl.present();
+    if (!this.process) {
+      if ('lngLat' in e) {
+        this.markerPosition = [e.lngLat.lng, e.lngLat.lat];
+        this.center = [e.lngLat.lng, e.lngLat.lat];
+        const address = {
+          lat: e.lngLat.lat,
+          lng: e.lngLat.lng,
+          api: this.apiKey
+        };
+        this.map.address(address).subscribe((com: any) => {
+          if (com.status === 200) {
+            this.input = com.body.address_compact;
+          }
+        }, err => {
+          this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+          this.alertCtrl.create({
+            message: this.errorMsg, buttons: [
+              {
+                text: 'تایید',
+                role: 'cancel'
+              }
+            ]
+          }).then(alertEl => {
+            alertEl.present();
+          });
         });
-      });
+      }
     }
   }
   dragged(e: any) {
+
     if (this.menuControl === true) {
       this.menuControl = false;
     }
