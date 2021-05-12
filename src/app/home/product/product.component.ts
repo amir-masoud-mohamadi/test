@@ -26,6 +26,7 @@ export class ProductComponent implements OnInit {
   listSearch = [];
   namayandegi;
   duration;
+  orderId;
   flagBaterry = false;
   constructor(public modalCtrl: ModalController,
               private userService: loginRegister,
@@ -67,123 +68,200 @@ export class ProductComponent implements OnInit {
 
     /*this.dismiss();*/
     this.loading = true;
-        this.userService.oneBattery().subscribe((com: HttpResponse<any>) => {
-          if (com.status === 200) {
-            this.listBaterryOne = com.body;
-            let request = {
-              address: localStorage.getItem('addressFull'),
-              battryid: +localStorage.getItem('product_id'),
-              token: localStorage.getItem('token'),
-              centerid: '0',
-              userid: +localStorage.getItem('id'),
-              x: +localStorage.getItem('long'),
-              y: +localStorage.getItem('lat'),
-            };
-            this.userService.createRequest(request).subscribe((com2: HttpResponse<any>) => {
-              if (com2.status === 200) {
-                console.log('salam');
-                this.numberRequest = com2;
-                this.userService.getNear().subscribe((com3: HttpResponse<any>) => {
-                  if (com3.status === 200) {
-                    console.log('salam3');
+     let body ;
+     this.userService.getUser().subscribe((com: HttpResponse<any>) => {
+       if (com.status === 200) {
+         this.user = com.body;
+         body = {
+           "customer_id": this.user.id,
+           "payment_method": "zarinpal_json",
+           "set_paid": false,
+           "shipping": {
+             "first_name": this.user.first_name,
+             "last_name": this.user.last_name,
+             "address_1": localStorage.getItem('addressFull'),
+             "address_2": "[ "+localStorage.getItem('latitude') +","+localStorage.getItem('long') +"]",
+             "phone": this.user.name
+           },
+           "line_items": [
+             {
+               "product_id": localStorage.getItem('product_id'),
+               "quantity": 1
+             }
+           ]
+         };
 
-                    this.namayandegi = com3.body;
-                    let geom = this.namayandegi.result.geom;
-                    let newtext = geom.slice(6);
-                    console.log('test string');
-                    console.log(newtext);
-                    let num = newtext.indexOf(" ");
-                    let number1 = newtext.slice(0,num);
-                    console.log(number1);
-                    console.log(newtext.slice(num+1));
-                    let number2with = newtext.slice(num+1);
-                    console.log(number2with.indexOf(")"));
+         this.userService.createOrder(body).subscribe((com2: HttpResponse<any>) => {
+           if (com2.status === 201) {
+             console.log(com2);
+             this.orderId= com2.body.id;
+             let request = {
+               address: localStorage.getItem('addressFull'),
+               battryid: +localStorage.getItem('product_id'),
+               token: localStorage.getItem('token'),
+               date: new Date(),
+               centerid: '0',
+               userid:this.user.id,
+               orderid:this.orderId,
+               username:this.user.name,
+               customer_name:this.user.first_name+' '+this.user.last_name,
+               price: this.listBaterry[0].price,
+               batry_name: this.listBaterry[0].name,
+               x: +localStorage.getItem('long'),
+               y: +localStorage.getItem('latitude'),
+             };
+             console.log('this.orderId');
+             console.log(this.orderId);
+             this.userService.oneBattery().subscribe((com: HttpResponse<any>) => {
+               if (com.status === 200) {
+                 this.listBaterryOne = com.body;
 
-                    let number2 = number2with.slice(0,number2with.indexOf(")"));
-                    console.log(number2);
-                    let address ={
-                      x: number1,
-                      y: number2
-                    };
-                    localStorage.setItem('customer-lat', number1);
-                    localStorage.setItem('customer-lng', number2);
-                    this.userService.getTimeNear(address).subscribe((com4: HttpResponse<any>) => {
-                      if (com3.status === 200) {
-                        console.log('salam4');
-                        let time = com4.body.routes[0].duration/60+1;
 
-                        this.duration = {
-                          time: time.toFixed(0),
-                          distance: com4.body.routes[0].distance
-                        };
-                        localStorage.setItem('customer-time', this.duration.time);
-                        console.log(this.duration);
-                        this.product = false;
-                        this.loading = false;
 
-                      }
-                    }, err => {
-                      this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+                 this.userService.createRequest(request).subscribe((com2: HttpResponse<any>) => {
+                   if (com2.status === 200) {
 
-                      this.alertCtrl.create({
-                        message: this.errorMsg, buttons: [
-                          {
-                            text: 'تایید',
-                            role: 'cancel'
-                          }
-                        ]
-                      }).then(alertEl => {
-                        alertEl.present();
-                      });
-                    });
+                     console.log('request');
+                     console.log(request);
+                     this.numberRequest = com2;
+                     this.userService.getNear().subscribe((com3: HttpResponse<any>) => {
+                       if (com3.status === 200) {
+                         console.log('salam3');
 
-                  }
-                }, err => {
-                  this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+                         this.namayandegi = com3.body;
+                         let geom = this.namayandegi.result.geom;
+                         let newtext = geom.slice(6);
+                         console.log('test string');
+                         console.log(newtext);
+                         let num = newtext.indexOf(" ");
+                         let number1 = newtext.slice(0,num);
+                         console.log(number1);
+                         console.log(newtext.slice(num+1));
+                         let number2with = newtext.slice(num+1);
+                         console.log(number2with.indexOf(")"));
 
-                  this.alertCtrl.create({
-                    message: this.errorMsg, buttons: [
-                      {
-                        text: 'تایید',
-                        role: 'cancel'
-                      }
-                    ]
-                  }).then(alertEl => {
-                    alertEl.present();
-                  });
-                });
+                         let number2 = number2with.slice(0,number2with.indexOf(")"));
+                         console.log(number2);
+                         let address ={
+                           x: number1,
+                           y: number2
+                         };
+                         localStorage.setItem('customer-lat', number1);
+                         localStorage.setItem('customer-lng', number2);
+                         this.userService.getTimeNear(address).subscribe((com4: HttpResponse<any>) => {
+                           if (com3.status === 200) {
+                             console.log('salam4');
+                             let time = com4.body.routes[0].duration/60+1;
 
-              }
-            }, err => {
-              this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+                             this.duration = {
+                               time: time.toFixed(0),
+                               distance: com4.body.routes[0].distance
+                             };
+                             localStorage.setItem('customer-time', this.duration.time);
+                             console.log(this.duration);
+                             this.product = false;
+                             this.loading = false;
 
-              this.alertCtrl.create({
-                message: this.errorMsg, buttons: [
-                  {
-                    text: 'تایید',
-                    role: 'cancel'
-                  }
-                ]
-              }).then(alertEl => {
-                alertEl.present();
-              });
-            });
+                           }
+                         }, err => {
+                           this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
 
-          }
-        }, err => {
-          this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+                           this.alertCtrl.create({
+                             message: this.errorMsg, buttons: [
+                               {
+                                 text: 'تایید',
+                                 role: 'cancel'
+                               }
+                             ]
+                           }).then(alertEl => {
+                             alertEl.present();
+                           });
+                         });
 
-          this.alertCtrl.create({
-            message: this.errorMsg, buttons: [
-              {
-                text: 'تایید',
-                role: 'cancel'
-              }
-            ]
-          }).then(alertEl => {
-            alertEl.present();
-          });
-        });
+                       }
+                     }, err => {
+                       this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+
+                       this.alertCtrl.create({
+                         message: this.errorMsg, buttons: [
+                           {
+                             text: 'تایید',
+                             role: 'cancel'
+                           }
+                         ]
+                       }).then(alertEl => {
+                         alertEl.present();
+                       });
+                     });
+
+                   }
+                 }, err => {
+                   this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+
+                   this.alertCtrl.create({
+                     message: this.errorMsg, buttons: [
+                       {
+                         text: 'تایید',
+                         role: 'cancel'
+                       }
+                     ]
+                   }).then(alertEl => {
+                     alertEl.present();
+                   });
+                 });
+
+               }
+             }, err => {
+               this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+
+               this.alertCtrl.create({
+                 message: this.errorMsg, buttons: [
+                   {
+                     text: 'تایید',
+                     role: 'cancel'
+                   }
+                 ]
+               }).then(alertEl => {
+                 alertEl.present();
+               });
+             });
+
+             console.log('com2');
+
+           }
+         }, err => {
+           console.log('sepide === karajiye');
+           this.flagLoad = true;
+
+           this.alertCtrl.create({
+             message:'خطا در ورود به سامانه:', buttons: [
+               {
+                 text: 'تایید',
+                 role: 'cancel'
+               }
+             ]
+           }).then(alertEl => {
+             alertEl.present();
+           });
+         });
+       }
+     }, err => {
+       console.log('sepide === mehdi');
+       this.flagLoad = true;
+
+       this.alertCtrl.create({
+         message:'خطا در ورود به سامانه:', buttons: [
+           {
+             text: 'تایید',
+             role: 'cancel'
+           }
+         ]
+       }).then(alertEl => {
+         alertEl.present();
+       });
+     });
+
+
 
   }
    loadingButton(){
@@ -206,65 +284,27 @@ export class ProductComponent implements OnInit {
         this.user = com.body;
         console.log('userInfo');
         console.log(this.user);
-        let body = {
-          "customer_id": this.user.id,
+        let id = {
+          "order_id": this.orderId,
           "payment_method": "zarinpal_json",
-          "set_paid": false,
-          "shipping": {
-            "first_name": this.user.first_name,
-            "last_name": this.user.last_name,
-            "address_1": localStorage.getItem('addressFull'),
-            "address_2": "[ "+localStorage.getItem('latitude') +","+localStorage.getItem('long') +"]",
-            "phone": this.user.name
-          },
-          "line_items": [
-            {
-              "product_id": localStorage.getItem('product_id'),
-              "quantity": 1
-            }
-          ]
+          "callback_url": "https://takstart.shop/tak/tak.html"
         };
-        this.userService.createOrder(body).subscribe((com2: HttpResponse<any>) => {
-          if (com2.status === 201) {
-            console.log(com2);
-            let id = {
-              "order_id": com2.body.id,
-              "payment_method": "zarinpal_json",
-              "callback_url": "http://localhost:8100/home"
-            };
-            console.log('com2');
-            this.userService.paymentOrder(id).subscribe((com3: HttpResponse<any>) => {
-              if (com3.status === 200) {
-                if(com3.body.result) {
-                  console.log(com3.body.redirect);
-                  this.flagLoad = true;
-                  /*this.router.navigate([com3.body.redirect])*/
-                  window.location.href = com3.body.redirect;
-                }
-                console.log('payment');
+        this.userService.paymentOrder(id).subscribe((com3: HttpResponse<any>) => {
+          if (com3.status === 200) {
+            if(com3.body.result) {
+              console.log(com3.body.redirect);
+              this.flagLoad = true;
+              /*this.router.navigate([com3.body.redirect])*/
+              window.location.href = com3.body.redirect;
+            }
+            console.log('payment');
 
-                console.log(com3);
-              }
-            }, err => {
-              this.flagLoad = true;
-              console.log('sepide === mamad');
-              this.flagLoad = true;
-              this.alertCtrl.create({
-                message:'خطا در ورود به سامانه:', buttons: [
-                  {
-                    text: 'تایید',
-                    role: 'cancel'
-                  }
-                ]
-              }).then(alertEl => {
-                alertEl.present();
-              });
-            });
+            console.log(com3);
           }
         }, err => {
-          console.log('sepide === karajiye');
           this.flagLoad = true;
-
+          console.log('sepide === mamad');
+          this.flagLoad = true;
           this.alertCtrl.create({
             message:'خطا در ورود به سامانه:', buttons: [
               {

@@ -260,4 +260,5 @@ export class ConfirmPage implements OnInit {
     console.log(this.file);
     this.form.patchValue({nameImage: this.file.name})
   }
+
 }

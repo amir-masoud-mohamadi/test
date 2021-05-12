@@ -28,25 +28,30 @@ export class RunningComponent implements OnInit {
       if (com.status === 200) {
         this.listRunning = com.body;
         console.log(this.listRunning);
-        let date1;
-        let date2;
-        let date3;
-        let date4;
-        let date5;
-        for (let i = 0; i<this.listRunning.length; i++) {
-          date1 = this.listRunning[i].date_created.toString().slice(0,4);
-          date2 = this.listRunning[i].date_created.toString().slice(5,7);
-          date3 = this.listRunning[i].date_created.toString().slice(8,10);
-          date4 = new Date(+date1,+date2, +date3).toLocaleDateString('fa-Ir');
-          date5 = this.listRunning[i].date_created.toString().slice(11,16);
-          this.listRunning[i].date_created = date4;
-          this.listRunning[i].date_modified = date5;
+
+        if (this.listRunning.length>0) {
+          let date1;
+          let date2;
+          let date3;
+          let date4;
+          let date5;
+          for (let i = 0; i<this.listRunning.length; i++) {
+            date1 = this.listRunning[i].date_created.toString().slice(0,4);
+            date2 = this.listRunning[i].date_created.toString().slice(5,7);
+            date3 = this.listRunning[i].date_created.toString().slice(8,10);
+            date4 = new Date(+date1,+date2, +date3).toLocaleDateString('fa-Ir');
+            date5 = this.listRunning[i].date_created.toString().slice(11,16);
+            this.listRunning[i].date_created = date4;
+            this.listRunning[i].date_modified = date5;
+          }
+          console.log(date1);
+          console.log(date2);
+          console.log(date3);
+          console.log(date4);
+          this.flagBaterry = true;
         }
-        console.log(date1);
-        console.log(date2);
-        console.log(date3);
-        console.log(date4);
-        this.flagBaterry = true;
+
+
         this.loading.dismiss();
       }
     }, err => {

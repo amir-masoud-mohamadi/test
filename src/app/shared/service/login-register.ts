@@ -10,6 +10,7 @@ export class loginRegister {
   recipeEvent = new Subject<boolean>();
   loginEvent = new Subject<boolean>();
   userInfo = new Subject<any>();
+  marker = new Subject<any>();
   user;
   company(){
     return this.http.get('https://takstart.shop/sb/services/getCompanies.php').pipe(take(1));
@@ -101,6 +102,12 @@ export class loginRegister {
   infoEvent2() {
     this.userInfo.next(undefined);
   }
+  markerEvent1(user) {
+    this.marker.next(user);
+  }
+  markerEvent2() {
+    this.marker.next(undefined);
+  }
   oneBattery() {
       return this.http.get('https://takstart.shop/wp-json/wc/v3/products?status=publish&per_page=100&&include='+ localStorage.getItem('product_id')+'&_fields=id,name,price,images&attribute='+localStorage.getItem('company')+'&attribute_term='+ localStorage.getItem('car_id'), {
         observe: 'response'}).pipe(take(1));
@@ -116,11 +123,11 @@ export class loginRegister {
       observe: 'response'}).pipe(take(1));
   }
   getNear() {
-    return this.http.get('http://95.217.50.109:6060/wps/getNearestSaba?coor='+ localStorage.getItem('long')+ ' ' + localStorage.getItem('lat') , {
+    return this.http.get('http://95.217.50.109:6060/wps/getNearestSaba?coor='+ localStorage.getItem('long')+ ' ' + localStorage.getItem('latitude') , {
       observe: 'response'}).pipe(take(1));
   }
   getTimeNear(geo) {
-    return this.http.get('http://95.217.50.109:6060/wps/shortestPath?coor='+ localStorage.getItem('long')+ ',' + localStorage.getItem('lat')+';'+ geo.x+','+geo.y, {
+    return this.http.get('http://95.217.50.109:6060/wps/shortestPath?coor='+ localStorage.getItem('long')+ ',' + localStorage.getItem('latitude')+';'+ geo.x+','+geo.y, {
       observe: 'response'}).pipe(take(1));
   }
 }
