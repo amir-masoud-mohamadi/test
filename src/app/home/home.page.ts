@@ -15,7 +15,7 @@ import {LoginPage} from "../login/login.page";
 import {CodePage} from "../login/code/code.page";
 import {ConfirmPage} from "../login/confirm/confirm.page";
 import {HttpResponse} from "@angular/common/http";
-
+const { Network } = Plugins;
 const { Geolocation } = Plugins;
 
 
@@ -36,7 +36,7 @@ export class HomePage implements OnInit, AfterViewInit {
   input;
   users;
   time;
-  zoomis = [16];
+  zoomis = 16;
   tansaction;
   stausMethod;
   humber = false;
@@ -65,6 +65,10 @@ export class HomePage implements OnInit, AfterViewInit {
         console.log(params);
       }
     );
+    let handler = Network.addListener('networkStatusChange', (status) => {
+      console.log("Network status changed", status);
+    });
+    console.log(handler);
   }
     async ngOnInit() {
       console.log('12');
@@ -96,7 +100,7 @@ export class HomePage implements OnInit, AfterViewInit {
                     this.markerPosition2 = [+localStorage.getItem('customer-lat'), +localStorage.getItem('customer-lng')];
                     this.center  = [+localStorage.getItem('customer-lat'), +localStorage.getItem('customer-lng')];
                     this.userService.markerEvent1(this.markerPosition2);
-                    this.zoomis = [12];
+                    this.zoomis = 12;
                     this.markerPosition = [+localStorage.getItem('long'), +localStorage.getItem('latitude')];
                     this.time = localStorage.getItem('customer-time');
                     this.loading.dismiss();
@@ -228,7 +232,7 @@ export class HomePage implements OnInit, AfterViewInit {
           this.markerPosition = [+localStorage.getItem('long'), +localStorage.getItem('latitude')];
           this.markerPosition2 = [+localStorage.getItem('customer-lat'), +localStorage.getItem('customer-lng')];
           this.time = localStorage.getItem('customer-time');
-          this.zoomis = [12];
+          this.zoomis = 12;
 
         }
       }
@@ -674,7 +678,7 @@ export class HomePage implements OnInit, AfterViewInit {
                   this.markerPosition2 = [+localStorage.getItem('customer-lat'), +localStorage.getItem('customer-lng')];
                   this.center  = [+localStorage.getItem('customer-lat'), +localStorage.getItem('customer-lng')];
                   this.userService.markerEvent1(this.markerPosition2);
-                  this.zoomis = [12];
+                  this.zoomis = 12;
                   this.markerPosition = [+localStorage.getItem('long'), +localStorage.getItem('latitude')];
                   this.time = localStorage.getItem('customer-time');
                   this.loading.dismiss();

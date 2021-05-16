@@ -345,10 +345,10 @@ export class TownListPage implements OnInit {
       this.carSearch.splice(0,1);
     }
   }
-  onClickTown(event){
+  onClickTown(s){
     this.modalCtrl.dismiss({
       'dismissed': true,
-      'select': event
+      'select': s
     });
 
   }
@@ -359,6 +359,7 @@ export class TownListPage implements OnInit {
     });
 
   }
+  addRecipe(){}
   backClick() {
     /*if (this.update === 'new') {
       localStorage.removeItem('token');
