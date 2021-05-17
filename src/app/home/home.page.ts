@@ -17,6 +17,7 @@ import {CodePage} from "../login/code/code.page";
 import {ConfirmPage} from "../login/confirm/confirm.page";
 import {HttpResponse} from "@angular/common/http";
 import {DatePipe} from "@angular/common";
+import {OrderTrackingComponent} from "./order-tracking/order-tracking.component";
 
 const { Geolocation } = Plugins;
 
@@ -362,59 +363,19 @@ export class HomePage implements OnInit, AfterViewInit {
       localStorage.setItem('latitude', this.markerPosition[1].toString());
       this.loginModal();
     }
-    /*this.loading.create({message: '...لطفا صبر کنید', keyboardClose: true}).then(load => {
-      load.present();
-      console.log('2');
-      if (localStorage.getItem('token')) {
-        this.userService.validToken().subscribe((com: any) => {
-          if (com.status === 200) {
-            console.log('3');
-            this.loadingFlag = true;
-
-              this.humber = true;
-              this.login = true;
-          } else {
-            console.log('4');
-            this.loadingFlag = false;
-            this.humber = false;
-
-          }
-          console.log('5');
-          this.loading.dismiss();
-          if  (this.loadingFlag) {
-            console.log('6');
-            localStorage.setItem('addressFull', this.input);
-            this.modalCar();
-          } else {
-            console.log('7');
-            localStorage.setItem('addressFull', this.input);
-            this.loginModal();
-          }
-        }, err => {
-          console.log('8');
-          this.loadingFlag = false;
-          this.humber = false;
-          this.loading.dismiss();
-          if  (this.loadingFlag) {
-            localStorage.setItem('addressFull', this.input);
-            this.modalCar();
-          } else {
-            localStorage.setItem('addressFull', this.input);
-            this.loginModal();
-          }
-
-        });
-
-
-      } else {
-        this.loadingFlag = false;
-        this.humber = false;
-        this.loading.dismiss();
-        localStorage.setItem('addressFull', this.input);
-        this.loginModal();
+  }
+  async clickButton2() {
+    if (this.menuControl === true) {
+      this.menuControl = false;
+    }
+    const modal = await this.modalController.create({
+      component: OrderTrackingComponent,
+      cssClass: 'custom-modal',
+      componentProps: {
+        update: 'new'
       }
-
-    });*/
+    });
+    return await modal.present();
   }
   async modalSearch(){
     if (this.menuControl === true) {

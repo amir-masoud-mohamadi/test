@@ -54,7 +54,7 @@
       <ion-input [(ngModel)]="input" *ngIf="!process" class="input-register input-loc" placeholder="کجا هستید؟" readonly (click)="modalSearch()"><ion-icon name="search-outline"></ion-icon></ion-input>
     </div>
   <ion-button class="color-register2 abso" *ngIf="!process" style="z-index: 99999;" fill="outline"  (click)="clickButton()"><ion-icon style="font-size: 23px" name="location-outline"></ion-icon>تایید مکان </ion-button>
-  <ion-button class="color-register2 abso" *ngIf="process" style="z-index: 99999;" fill="outline"  (click)="clickButton()"><ion-icon style="font-size: 23px" name="bag-remove-outline"></ion-icon>پیگیری سفارش </ion-button>
+  <ion-button class="color-register2 abso" *ngIf="process" style="z-index: 99999;" fill="outline"  (click)="clickButton2()"><ion-icon style="font-size: 23px" name="bag-remove-outline"></ion-icon>پیگیری سفارش </ion-button>
     <ion-icon class="abso3" *ngIf="!process" name="locate-outline" (click)="clickGps()"></ion-icon>
   </div>
 <div *ngIf="menuControl" class="home-side-menu0" >

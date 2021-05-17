@@ -119,7 +119,7 @@ export class loginRegister {
       observe: 'response', headers: new HttpHeaders().set('Authorization', auth)}).pipe(take(1));
   }
   createRequest(request) {
-    return this.http.get('http://95.217.50.109:6060/wps/createRequest', {
+    return this.http.post('http://95.217.50.109:6060/wps/selectquerPOST', request, {
       observe: 'response'}).pipe(take(1));
   }
   getNear() {
