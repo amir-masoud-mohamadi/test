@@ -8,10 +8,12 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {HttpClientModule} from '@angular/common/http';
+import {NetworkDisconnectComponent} from "./network-disconnect/network-disconnect.component";
 
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, NetworkDisconnectComponent
+  ],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
   providers: [StatusBar,

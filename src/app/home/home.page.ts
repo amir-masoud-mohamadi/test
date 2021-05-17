@@ -5,6 +5,7 @@ import {AlertController, LoadingController, MenuController, ModalController, Pla
 import {Map} from '../shared/service/map';
 import {SearchComponent} from './search/search.component';
 import {loginRegister} from '../shared/service/login-register';
+
 import { Plugins } from '@capacitor/core';
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {Subscription} from "rxjs";
@@ -15,7 +16,8 @@ import {LoginPage} from "../login/login.page";
 import {CodePage} from "../login/code/code.page";
 import {ConfirmPage} from "../login/confirm/confirm.page";
 import {HttpResponse} from "@angular/common/http";
-const { Network } = Plugins;
+import {DatePipe} from "@angular/common";
+
 const { Geolocation } = Plugins;
 
 
@@ -58,17 +60,17 @@ export class HomePage implements OnInit, AfterViewInit {
               private map: Map,
               private alertCtrl: AlertController,
               private viewContainerRef: ViewContainerRef,
-              private loading: LoadingController,) {
+              private loading: LoadingController,
+              ) {
+
+
     this.route.params.subscribe(
       (params: Params) => {
         console.log('sepide2');
         console.log(params);
       }
     );
-    let handler = Network.addListener('networkStatusChange', (status) => {
-      console.log("Network status changed", status);
-    });
-    console.log(handler);
+
   }
     async ngOnInit() {
       console.log('12');

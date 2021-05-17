@@ -99,7 +99,7 @@ export class ProductComponent implements OnInit {
                address: localStorage.getItem('addressFull'),
                battryid: +localStorage.getItem('product_id'),
                token: localStorage.getItem('token'),
-               date: new Date(),
+               date: new Date().toString(),
                centerid: '0',
                userid:this.user.id,
                orderid:this.orderId,
