@@ -12,6 +12,7 @@ import {SearchComponent} from './search/search.component';
 import {RateComponent} from "./rate/rate.component";
 import {ReceiveComponent} from "./receive/receive.component";
 import {ShopComponent} from "./shop/shop.component";
+import {OrderTrackingComponent} from "./order-tracking/order-tracking.component";
 
 
 
@@ -25,6 +26,6 @@ import {ShopComponent} from "./shop/shop.component";
     ReactiveFormsModule
 
   ],
-  declarations: [HomePage, SearchComponent, ProductComponent, RateComponent, ReceiveComponent, ShopComponent]
+  declarations: [HomePage, SearchComponent, ProductComponent, RateComponent, ReceiveComponent, OrderTrackingComponent ,ShopComponent]
 })
 export class HomePageModule {}

@@ -20,7 +20,7 @@
       (click)="clicked($event)"
 
     >
-      <mgl-popup *ngIf="process"
+      <mgl-popup *ngIf="process && markerPosition2"
         [lngLat]="markerPosition2"
         anchor="bottom"
         offset="10px"
@@ -28,7 +28,7 @@
       >
         <b>نماینده شما تا {{time}} دقیقه دیگر به شما میرسد</b>
       </mgl-popup>
-      <mgl-marker *ngIf="process"
+      <mgl-marker *ngIf="process && markerPosition2"
 
       [(lngLat)]="markerPosition2"
       [draggable]="false"

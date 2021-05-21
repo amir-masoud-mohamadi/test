@@ -119,7 +119,7 @@ export class loginRegister {
       observe: 'response', headers: new HttpHeaders().set('Authorization', auth)}).pipe(take(1));
   }
   createRequest(request) {
-    return this.http.post('http://95.217.50.109:6060/wps/selectquerPOST', request, {
+    return this.http.post('http://95.217.50.109:6060/wps/createRequest', request, {
       observe: 'response'}).pipe(take(1));
   }
   getNear() {
@@ -129,5 +129,14 @@ export class loginRegister {
   getTimeNear(geo) {
     return this.http.get('http://95.217.50.109:6060/wps/shortestPath?coor='+ localStorage.getItem('long')+ ',' + localStorage.getItem('latitude')+';'+ geo.x+','+geo.y, {
       observe: 'response'}).pipe(take(1));
+  }
+  checkCustomer(geo) {
+    return this.http.get('http://95.217.50.109:6060/wps/selectquery?table=center1&fields=st_astext(geom),name,phone&condition=gid='+ geo).pipe(take(1));
+  }
+  checkOrder(geo) {
+    return this.http.get('http://95.217.50.109:6060/wps/selectquery?table=requesttbl&fields=address,peyk,x,y,centerid,status,price,batry_name,battryid&condition=orderid='+ geo).pipe(take(1));
+  }
+  peykOrder(geo) {
+    return this.http.get('http://95.217.50.109:6060/wps/selectquery?table=listpeyk&fields=name,mobile,id&condition=id='+ geo).pipe(take(1));
   }
 }

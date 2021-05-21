@@ -39,7 +39,9 @@ export class ReceiveComponent implements OnInit {
       });
     });
   }
-  backButton() {
-
+  backClick() {
+    this.modalCtrl.dismiss({
+      'dismissed': false
+    });
   }
 }

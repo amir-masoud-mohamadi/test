@@ -1,26 +1,24 @@
 <ion-header class="haeder-all height42">
   <ion-toolbar color="light" class="shop-first-row">
-    <ion-buttons slot="start">
-      <ion-button >
-        <ion-icon class="home-close-button"   name="close-outline" class="icon-20px" ></ion-icon>
-      </ion-button>
+    <ion-buttons class="toolbar-rel">
+      <ion-button (click)="backClick()"><ion-icon style="font-size: 28px" name="close-outline"></ion-icon></ion-button>
     </ion-buttons>
     <ion-title class="shop-p1">
-        شماره سفارش:352
+        شماره سفارش:{{navparam.data.orderId}}
     </ion-title>
 
 
   </ion-toolbar>
 </ion-header>
-<ion-content  class="main-all">
+<ion-content  class="main-all" *ngIf="navparam">
 
   <ion-grid>
     <ion-row>
       <ion-col class="shop-second-row" size-md="12" size-xs="12" >
         <img class="shop-img" src="../../../assets/img/person.png" alt="">
         <div class="shop-all">
-          <p class="shop-p2">:نام نمایندگی</p>
-          <p class="shop-p3"> :نام پیک</p>
+          <p class="shop-p2">  نام نمایندگی: {{navparam.data.customer.name}}</p>
+          <p class="shop-p3" *ngIf="peyk"> نام پیک: {{peyk[0].name}}</p>
         </div>
       </ion-col>
 
@@ -29,21 +27,21 @@
     <ion-row class="box2" >
 
       <ion-col size-md="2" size-xs="3">
-        <p class="login-text2 product-text ">  25000 تومان</p>
+        <p class="login-text2 product-text ">  {{+navparam.data.product[0].price | number:'3.0-0'}} تومان</p>
       </ion-col>
       <ion-col   size-md="10" size-xs="9" class="battery-image">
         <img class="box-img"   src="https://takstart.shop/wp-content/uploads/2021/02/nano-60.jpg" alt="">
-        <p class="login-text product-text">باتری تست</p>
+        <p class="login-text product-text">{{navparam.data.product[0].batry_name}}</p>
       </ion-col>
     </ion-row>
 
 
         <ion-row class="two-button">
           <ion-col size-md="6" size-sm="6" size-xs="6" style="text-align: center">
-            <ion-button href="#" fill="outline" class="call-button" fill="outline"> تماس با نمایندگی</ion-button>
+            <ion-button href="tel:{{navparam.data.customer.phone}}" fill="outline" class="call-button" fill="outline"> تماس با نمایندگی</ion-button>
           </ion-col>
           <ion-col size-md="6" size-sm="6" size-xs="6" style="text-align: center">
-            <ion-button fill="outline" href="#" class="message-button color-login">تماس با پیک</ion-button>
+            <ion-button *ngIf="peyk" fill="outline" href="tel:{{peyk[0].mobile}}" class="message-button color-login">تماس با پیک</ion-button>
           </ion-col>
 
         </ion-row>

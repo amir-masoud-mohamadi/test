@@ -6,20 +6,22 @@ const { Network } = Plugins;
 import { Plugins } from '@capacitor/core';
 
 import {NetworkDisconnectComponent} from "./network-disconnect/network-disconnect.component";
-
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-
+  pipe = new DatePipe('en-US');
+  now = Date.now();
 
   constructor(private platform: Platform,
               private splashScreen: SplashScreen,
               private statusBar: StatusBar,
               private modalController: ModalController) {
     this.initializeApp();
+
     let handler = Network.addListener('networkStatusChange', (status) => {
       console.log("Network status changed", status);
       if(status.connected === false) {

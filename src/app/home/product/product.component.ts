@@ -5,6 +5,9 @@ import {loginRegister} from '../../shared/service/login-register';
 import {HttpResponse} from '@angular/common/http';
 import {Params, Router} from "@angular/router";
 import {ShopComponent} from "../shop/shop.component";
+import {DatePipe} from "@angular/common";
+import {interval} from "rxjs/internal/observable/interval";
+import {Subscription} from "rxjs/index";
 
 
 @Component({
@@ -17,6 +20,7 @@ export class ProductComponent implements OnInit {
   flagLoad = true;
   listBaterry;
   user;
+  subscription: Subscription;
   numberRequest;
   loading = false;
   payment = false;
@@ -25,6 +29,9 @@ export class ProductComponent implements OnInit {
   product = true;
   listSearch = [];
   namayandegi;
+  pipe;
+  now;
+  fors = true;
   duration;
   orderId;
   flagBaterry = false;
@@ -95,11 +102,15 @@ export class ProductComponent implements OnInit {
            if (com2.status === 201) {
              console.log(com2);
              this.orderId= com2.body.id;
+             this.pipe = new DatePipe('en-US');
+             this.now = Date.now();
+             let myShortFormat = this.pipe.transform(this.now, 'short');
+
              let request = {
                address: localStorage.getItem('addressFull'),
                battryid: +localStorage.getItem('product_id'),
                token: localStorage.getItem('token'),
-               date: new Date().toString(),
+               date: myShortFormat,
                centerid: '0',
                userid:this.user.id,
                orderid:this.orderId,
@@ -120,79 +131,112 @@ export class ProductComponent implements OnInit {
 
                  this.userService.createRequest(request).subscribe((com2: HttpResponse<any>) => {
                    if (com2.status === 200) {
+                     const source = interval(10000);
+                     const text = 'Your Text Here';
+                     this.subscription = source.subscribe(val => {
+                       this.userService.checkOrder(this.orderId).subscribe((com8: HttpResponse<any>) => {
+                         if (com2.status === 200) {
+                           console.log('com8');
+                           console.log(com8);
+                           if(com8[0].centerid !== 0 ) {
+                             this.subscription.unsubscribe();
+                             this.userService.getNear().subscribe((com3: HttpResponse<any>) => {
+                               if (com3.status === 200) {
+                                 console.log('salam3');
 
+                                 this.namayandegi = com3.body;
+                                 let geom = this.namayandegi.result.geom;
+                                 let newtext = geom.slice(6);
+                                 console.log('test string');
+                                 console.log(newtext);
+                                 let num = newtext.indexOf(" ");
+                                 let number1 = newtext.slice(0,num);
+                                 console.log(number1);
+                                 console.log(newtext.slice(num+1));
+                                 let number2with = newtext.slice(num+1);
+                                 console.log(number2with.indexOf(")"));
+
+                                 let number2 = number2with.slice(0,number2with.indexOf(")"));
+                                 console.log(number2);
+                                 let address ={
+                                   x: number1,
+                                   y: number2
+                                 };
+                                 localStorage.setItem('customer-lat', number1);
+                                 localStorage.setItem('customer-lng', number2);
+                                 this.userService.getTimeNear(address).subscribe((com4: HttpResponse<any>) => {
+                                   if (com3.status === 200) {
+                                     console.log('salam4');
+                                     let time = com4.body.routes[0].duration/60+15;
+
+                                     this.duration = {
+                                       time: time.toFixed(0),
+                                       distance: com4.body.routes[0].distance
+                                     };
+                                     localStorage.setItem('customer-time', this.duration.time);
+                                     console.log(this.duration);
+                                     this.product = false;
+                                     this.loading = false;
+
+                                   }
+                                 }, err => {
+                                   this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+
+                                   this.alertCtrl.create({
+                                     message: this.errorMsg, buttons: [
+                                       {
+                                         text: 'تایید',
+                                         role: 'cancel'
+                                       }
+                                     ]
+                                   }).then(alertEl => {
+                                     alertEl.present();
+                                   });
+                                 });
+
+                               }
+                             }, err => {
+                               this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+
+                               this.alertCtrl.create({
+                                 message: this.errorMsg, buttons: [
+                                   {
+                                     text: 'تایید',
+                                     role: 'cancel'
+                                   }
+                                 ]
+                               }).then(alertEl => {
+                                 alertEl.present();
+                               });
+                             });
+                           }
+                         }
+                       }, err => {
+                         this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+
+                         this.alertCtrl.create({
+                           message: this.errorMsg, buttons: [
+                             {
+                               text: 'تایید',
+                               role: 'cancel'
+                             }
+                           ]
+                         }).then(alertEl => {
+                           alertEl.present();
+                         });
+                       });
+                     });
                      console.log('request');
                      console.log(request);
                      this.numberRequest = com2;
-                     this.userService.getNear().subscribe((com3: HttpResponse<any>) => {
-                       if (com3.status === 200) {
-                         console.log('salam3');
+                     /*do {
+                       setTimeout(() => {
+                         console.log('fgthfhfhfghfgthbfghfh');
 
-                         this.namayandegi = com3.body;
-                         let geom = this.namayandegi.result.geom;
-                         let newtext = geom.slice(6);
-                         console.log('test string');
-                         console.log(newtext);
-                         let num = newtext.indexOf(" ");
-                         let number1 = newtext.slice(0,num);
-                         console.log(number1);
-                         console.log(newtext.slice(num+1));
-                         let number2with = newtext.slice(num+1);
-                         console.log(number2with.indexOf(")"));
+                       },5000);
+                     }
+                     while (this.fors);*/
 
-                         let number2 = number2with.slice(0,number2with.indexOf(")"));
-                         console.log(number2);
-                         let address ={
-                           x: number1,
-                           y: number2
-                         };
-                         localStorage.setItem('customer-lat', number1);
-                         localStorage.setItem('customer-lng', number2);
-                         this.userService.getTimeNear(address).subscribe((com4: HttpResponse<any>) => {
-                           if (com3.status === 200) {
-                             console.log('salam4');
-                             let time = com4.body.routes[0].duration/60+1;
-
-                             this.duration = {
-                               time: time.toFixed(0),
-                               distance: com4.body.routes[0].distance
-                             };
-                             localStorage.setItem('customer-time', this.duration.time);
-                             console.log(this.duration);
-                             this.product = false;
-                             this.loading = false;
-
-                           }
-                         }, err => {
-                           this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
-
-                           this.alertCtrl.create({
-                             message: this.errorMsg, buttons: [
-                               {
-                                 text: 'تایید',
-                                 role: 'cancel'
-                               }
-                             ]
-                           }).then(alertEl => {
-                             alertEl.present();
-                           });
-                         });
-
-                       }
-                     }, err => {
-                       this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
-
-                       this.alertCtrl.create({
-                         message: this.errorMsg, buttons: [
-                           {
-                             text: 'تایید',
-                             role: 'cancel'
-                           }
-                         ]
-                       }).then(alertEl => {
-                         alertEl.present();
-                       });
-                     });
 
                    }
                  }, err => {
