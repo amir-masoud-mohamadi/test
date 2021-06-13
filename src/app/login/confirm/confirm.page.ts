@@ -165,6 +165,7 @@ export class ConfirmPage implements OnInit {
                 };
                 this.userService.infoEvent1(user);
                 console.log('8');
+                this.loading.dismiss();
                 this.modalCtrl.dismiss({
                   'dismissed': true,
                   'mode': this.mode2

@@ -1,6 +1,13 @@
 import {AfterViewInit, Component, OnInit, ViewContainerRef} from '@angular/core';
 import {ProductComponent} from './product/product.component';
-import {AlertController, LoadingController, MenuController, ModalController, Platform} from '@ionic/angular';
+import {
+  AlertController,
+  LoadingController,
+  MenuController,
+  ModalController,
+  Platform,
+  ToastController
+} from '@ionic/angular';
 
 import {Map} from '../shared/service/map';
 import {SearchComponent} from './search/search.component';
@@ -54,8 +61,8 @@ export class HomePage implements OnInit, AfterViewInit {
   tick = 60000;
   process = false;
   geom = 'POINT(51.3379870719648 35.6986831795255)';
-  markerPosition = [51.338064963919834, 35.70017923069952];
-  center = [51.338064963919834, 35.70017923069952];
+  markerPosition: any = [51.338064963919834, 35.70017923069952];
+  center: [number,number] = [51.338064963919834, 35.70017923069952];
   markerPosition2: any ;
   orderProduct;
   customerProduct;
@@ -69,10 +76,12 @@ export class HomePage implements OnInit, AfterViewInit {
               private alertCtrl: AlertController,
               private viewContainerRef: ViewContainerRef,
               private loading: LoadingController,
+              private toastController: ToastController
               ) {
 
 
     this.route.params.subscribe(
+
       (params: Params) => {
 
       }
@@ -108,15 +117,19 @@ export class HomePage implements OnInit, AfterViewInit {
         console.log('1');
         if (localStorage.getItem('token')) {
           console.log('2');
-          this.userService.validToken().subscribe((com: any) => {
+          this.userService.validToken().subscribe((com: HttpResponse<any>) => {
             console.log('3');
+            console.log(com);
             if (com.status === 200) {
+              console.log('4');
+              this.userService.getRunningHistory().subscribe((com11: HttpResponse<any>) => {
+                console.log('5');
+                if (com11.status === 200) {
+                  console.log('6');
+                  console.log(com11);
+                  if (com11.body.length>0) {
 
-              this.userService.getRunningHistory().subscribe((com: HttpResponse<any>) => {
-                if (com.status === 200) {
-                  if (com.body.length>0) {
-
-                    this.orderId = com.body[0].id;
+                    this.orderId = com11.body[0].id;
                     this.process = true;
                     /*if(localStorage.getItem('customer-lat') && localStorage.getItem('customer-time')){
                       this.markerPosition2 = [+localStorage.getItem('customer-lat'), +localStorage.getItem('customer-lng')];
@@ -227,7 +240,8 @@ export class HomePage implements OnInit, AfterViewInit {
 
                   } else {
                     this.process = false;
-
+                    console.log('else');
+                    this.loading.dismiss();
                   }
 
                 }
@@ -785,11 +799,10 @@ export class HomePage implements OnInit, AfterViewInit {
       cssClass: 'custom-modal'
     });
     modal.onDidDismiss().then((data) => {
-
+        console.log('return application');
+        this.presentToast('open home');
       if (data.data.dismissed) {
-        if (data.data.type === 'new') {
 
-        }
       }
     });
     return await modal.present();
@@ -819,5 +832,25 @@ export class HomePage implements OnInit, AfterViewInit {
       }
     });
     return await modal2.present();
+  }
+  async presentToast(messages) {
+    const toast = await this.toastController.create({
+      message: messages,
+      duration: 2000,
+      position: 'top',
+      color: 'success',
+      cssClass: 'toast-controller2'
+    });
+    toast.present();
+  }
+  async presentToast2(messages) {
+    const toast = await this.toastController.create({
+      message: messages,
+      duration: 2000,
+      position: 'top',
+      color: 'danger',
+      cssClass: 'toast-controller'
+    });
+    toast.present();
   }
 }

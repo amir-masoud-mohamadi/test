@@ -23,7 +23,7 @@
       <mgl-popup *ngIf="process && markerPosition2"
         [lngLat]="markerPosition2"
         anchor="bottom"
-        offset="10px"
+
         [closeOnClick]="false"
       >
         <b>نماینده شما تا {{time}} دقیقه دیگر به شما میرسد</b>
@@ -36,7 +36,7 @@
       (dragEnd)="dragged($event)"
       anchor="top"
       >
-        <img src="../../assets/img/Untitled-3.png" style="width: 60px;height: 70px" alt="">
+        <img src="https://geofahm.ir/www/assets/img/Untitled-3.png" style="width: 60px;height: 70px" alt="">
       </mgl-marker>
       <mgl-marker
 
@@ -46,7 +46,7 @@
                   (dragEnd)="dragged($event)"
                   anchor="bottom"
       >
-        <img src="../../assets/img/index.png" style="width: 60px;height: 70px" alt="">
+        <img src="https://geofahm.ir/www/assets/img/index.png" style="width: 60px;height: 70px" alt="">
       </mgl-marker>
     </mgl-map>
 

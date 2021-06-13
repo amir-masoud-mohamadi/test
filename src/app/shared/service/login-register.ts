@@ -28,7 +28,7 @@ export class loginRegister {
     return this.http.get('https://takstart.shop/sb/sign/isCarSet.php' , {
       observe: 'response', headers: new HttpHeaders().set('Token', auth)}).pipe(take(1));
   }
-  constructor(private http: HttpClient,private alertCtrl: AlertController) { }
+  constructor(private http: HttpClient) { }
   generate(some) {
     const formData = new FormData();
     formData.append('user_login', some);
@@ -119,24 +119,24 @@ export class loginRegister {
       observe: 'response', headers: new HttpHeaders().set('Authorization', auth)}).pipe(take(1));
   }
   createRequest(request) {
-    return this.http.post('http://95.217.50.109:6060/wps/createRequest', request, {
+    return this.http.post('https://geofahm.ir/wps/createRequest', request, {
       observe: 'response'}).pipe(take(1));
   }
   getNear() {
-    return this.http.get('http://95.217.50.109:6060/wps/getNearestSaba?coor='+ localStorage.getItem('long')+ ' ' + localStorage.getItem('latitude') , {
+    return this.http.get('https://geofahm.ir/wps/getNearestSaba?coor='+ localStorage.getItem('long')+ ' ' + localStorage.getItem('latitude') , {
       observe: 'response'}).pipe(take(1));
   }
   getTimeNear(geo) {
-    return this.http.get('http://95.217.50.109:6060/wps/shortestPath?coor='+ localStorage.getItem('long')+ ',' + localStorage.getItem('latitude')+';'+ geo.x+','+geo.y, {
+    return this.http.get('https://geofahm.ir/wps/shortestPath?coor='+ localStorage.getItem('long')+ ',' + localStorage.getItem('latitude')+';'+ geo.x+','+geo.y, {
       observe: 'response'}).pipe(take(1));
   }
   checkCustomer(geo) {
-    return this.http.get('http://95.217.50.109:6060/wps/selectquery?table=center1&fields=st_astext(geom),name,phone&condition=gid='+ geo).pipe(take(1));
+    return this.http.get('https://geofahm.ir/wps/selectquery?table=center1&fields=st_astext(geom),name,phone&condition=gid='+ geo).pipe(take(1));
   }
   checkOrder(geo) {
-    return this.http.get('http://95.217.50.109:6060/wps/selectquery?table=requesttbl&fields=address,peyk,x,y,centerid,status,price,batry_name,battryid&condition=orderid='+ geo).pipe(take(1));
+    return this.http.get('https://geofahm.ir/wps/selectquery?table=requesttbl&fields=address,peyk,x,y,centerid,status,price,batry_name,battryid&condition=orderid='+ geo).pipe(take(1));
   }
   peykOrder(geo) {
-    return this.http.get('http://95.217.50.109:6060/wps/selectquery?table=listpeyk&fields=name,mobile,id&condition=id='+ geo).pipe(take(1));
+    return this.http.get('https://geofahm.ir/wps/selectquery?table=listpeyk&fields=name,mobile,id&condition=id='+ geo).pipe(take(1));
   }
 }

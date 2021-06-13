@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AlertController, LoadingController, ModalController} from '@ionic/angular';
+import {AlertController, LoadingController, ModalController, Platform, ToastController} from '@ionic/angular';
 
 import {loginRegister} from '../../shared/service/login-register';
 import {HttpResponse} from '@angular/common/http';
@@ -40,6 +40,8 @@ export class ProductComponent implements OnInit {
               private alertCtrl: AlertController,
               private router: Router,
               private loading2: LoadingController,
+              private platform: Platform,
+              private toastController: ToastController
               ) {}
   async ngOnInit() {
     this.address = localStorage.getItem('addressFull');
@@ -309,6 +311,9 @@ export class ProductComponent implements OnInit {
 
   }
    loadingButton(){
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
 
   /*this.dismiss();*/
   this.loading = false;
@@ -326,13 +331,21 @@ export class ProductComponent implements OnInit {
     this.userService.getUser().subscribe((com: HttpResponse<any>) => {
       if (com.status === 200) {
         this.user = com.body;
-        console.log('userInfo');
-        console.log(this.user);
-        let id = {
-          "order_id": this.orderId,
-          "payment_method": "zarinpal_json",
-          "callback_url": "https://takstart.shop/tak/tak.html"
-        };
+        let id;
+        if(this.platform.is('desktop')) {
+          id = {
+            "order_id": this.orderId,
+            "payment_method": "zarinpal_json",
+            "callback_url": "https://geofahm.ir/www/index.html"
+          };
+        } else {
+          id = {
+            "order_id": this.orderId,
+            "payment_method": "zarinpal_json",
+            "callback_url": "https://geofahm.ir/tak/tak.html"
+          };
+        }
+
         this.userService.paymentOrder(id).subscribe((com3: HttpResponse<any>) => {
           if (com3.status === 200) {
             if(com3.body.result) {
@@ -340,6 +353,10 @@ export class ProductComponent implements OnInit {
               this.flagLoad = true;
               /*this.router.navigate([com3.body.redirect])*/
               window.location.href = com3.body.redirect;
+              this.presentToast('close modal');
+              if(!this.platform.is('desktop')) {
+                this.presentToast('close modal');
+              }
             }
             console.log('payment');
 
@@ -378,4 +395,24 @@ export class ProductComponent implements OnInit {
     });
 
  }
+  async presentToast(messages) {
+    const toast = await this.toastController.create({
+      message: messages,
+      duration: 2000,
+      position: 'top',
+      color: 'success',
+      cssClass: 'toast-controller2'
+    });
+    toast.present();
+  }
+  async presentToast2(messages) {
+    const toast = await this.toastController.create({
+      message: messages,
+      duration: 2000,
+      position: 'top',
+      color: 'danger',
+      cssClass: 'toast-controller'
+    });
+    toast.present();
+  }
 }

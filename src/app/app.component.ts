@@ -19,7 +19,10 @@ export class AppComponent {
   constructor(private platform: Platform,
               private splashScreen: SplashScreen,
               private statusBar: StatusBar,
+
               private modalController: ModalController) {
+        console.log('this.platform');
+
     this.initializeApp();
 
     let handler = Network.addListener('networkStatusChange', (status) => {
