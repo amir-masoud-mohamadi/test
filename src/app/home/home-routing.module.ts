@@ -16,6 +16,10 @@ const routes: Routes = [
     component: ProductComponent
   },
   {
+    path: ':status',
+    component: ShopComponent
+  },
+  {
     path: 'rate',
     component: RateComponent
   },
@@ -27,7 +31,7 @@ const routes: Routes = [
   {
     path: 'shop',
     component: ShopComponent
-  }
+  },
 
 ];
 

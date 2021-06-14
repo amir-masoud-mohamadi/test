@@ -3,10 +3,9 @@ import {ProductComponent} from './product/product.component';
 import {
   AlertController,
   LoadingController,
-  MenuController,
   ModalController,
   Platform,
-  ToastController
+  ToastController,
 } from '@ionic/angular';
 
 import {Map} from '../shared/service/map';
@@ -73,6 +72,7 @@ export class HomePage implements OnInit, AfterViewInit {
               private route: ActivatedRoute,
               private userService: loginRegister,
               private map: Map,
+              private platform: Platform,
               private alertCtrl: AlertController,
               private viewContainerRef: ViewContainerRef,
               private loading: LoadingController,
@@ -128,7 +128,7 @@ export class HomePage implements OnInit, AfterViewInit {
                   console.log('6');
                   console.log(com11);
                   if (com11.body.length>0) {
-
+                    console.log('7');
                     this.orderId = com11.body[0].id;
                     this.process = true;
                     /*if(localStorage.getItem('customer-lat') && localStorage.getItem('customer-time')){
@@ -187,6 +187,7 @@ export class HomePage implements OnInit, AfterViewInit {
                               this.center  = [+localStorage.getItem('customer-lat'), +localStorage.getItem('customer-lng')];
                               this.userService.markerEvent1(this.markerPosition2);
                               this.zoomis = 12;
+                              this.loading.dismiss();
                               this.markerPosition = [+localStorage.getItem('long'), +localStorage.getItem('latitude')];
                               this.time = localStorage.getItem('customer-time');
 
@@ -195,7 +196,7 @@ export class HomePage implements OnInit, AfterViewInit {
                             }
                           }, err => {
                             this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
-
+                            this.loading.dismiss();
                             this.alertCtrl.create({
                               message: this.errorMsg, buttons: [
                                 {
@@ -209,7 +210,7 @@ export class HomePage implements OnInit, AfterViewInit {
                           });
                         }, err => {
                           this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
-
+                          this.loading.dismiss();
                           this.alertCtrl.create({
                             message: this.errorMsg, buttons: [
                               {
@@ -223,7 +224,7 @@ export class HomePage implements OnInit, AfterViewInit {
                         });
                       }, err => {
                         this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
-
+                        this.loading.dismiss();
                         this.alertCtrl.create({
                           message: this.errorMsg, buttons: [
                             {
@@ -374,6 +375,7 @@ export class HomePage implements OnInit, AfterViewInit {
   }
   async clickGps() {
     const position = await Geolocation.getCurrentPosition().then((resp) => {
+      console.log(resp);
       this.markerPosition = [resp.coords.longitude, resp.coords.latitude];
       this.center = [resp.coords.longitude, resp.coords.latitude];
       const address = {
@@ -401,6 +403,7 @@ export class HomePage implements OnInit, AfterViewInit {
         });
       });
     }).catch((err) => {
+      console.log(err);
     }) ;
   }
   clicked(e: any) {
@@ -800,7 +803,9 @@ export class HomePage implements OnInit, AfterViewInit {
     });
     modal.onDidDismiss().then((data) => {
         console.log('return application');
+      if(!this.platform.is('desktop')) {
         this.presentToast('open home');
+      }
       if (data.data.dismissed) {
 
       }

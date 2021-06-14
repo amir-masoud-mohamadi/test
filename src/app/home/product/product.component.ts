@@ -336,7 +336,7 @@ export class ProductComponent implements OnInit {
           id = {
             "order_id": this.orderId,
             "payment_method": "zarinpal_json",
-            "callback_url": "https://geofahm.ir/www/index.html"
+            "callback_url": "https://geofahm.ir/tak/tak2.html"
           };
         } else {
           id = {
@@ -356,6 +356,7 @@ export class ProductComponent implements OnInit {
               this.presentToast('close modal');
               if(!this.platform.is('desktop')) {
                 this.presentToast('close modal');
+                this.dismiss();
               }
             }
             console.log('payment');
