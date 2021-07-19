@@ -4,7 +4,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class Map {
+export class Maps {
   address(code){
     return this.http.get('https://map.ir/fast-reverse?$filter=city eq تهران&lat=' + code.lat + '&lon=' +
       code.lng + '&x-api-key=' + code.api, {observe: 'response'}).pipe(take(1));

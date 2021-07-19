@@ -3,7 +3,7 @@ import {loginRegister} from '../../shared/service/login-register';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AlertController, ModalController, ToastController} from '@ionic/angular';
 import {Router} from '@angular/router';
-import {Map} from '../../shared/service/map';
+import {Maps} from '../../shared/service/map';
 
 @Component({
   selector: 'app-search',
@@ -24,7 +24,7 @@ export class SearchComponent implements OnInit {
               private alertCtrl: AlertController,
               public modalCtrl: ModalController,
               private toastController: ToastController,
-              private map: Map) { }
+              private map: Maps) { }
   ngOnInit() {
     this.form = new FormGroup({
       town: new FormControl(null, Validators.required)

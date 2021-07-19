@@ -1,6 +1,6 @@
-<ion-content  class="main-all ">
+<ion-content *ngIf="flagNo" class="main-all ">
 
-  <ion-grid class="content-margin" *ngFor="let history of listDone">
+  <ion-grid  class="content-margin" *ngFor="let history of listDone">
     <!--<ion-row>-->
     <!--<ion-col class="tarikhrun" size-md="4" offset-md="4" size-xs="12">-->
     <!--<p>99/2/8 ، ساعت 16:48</p>-->
@@ -44,5 +44,13 @@
       </ion-col>
     </ion-row>
 
+  </ion-grid>
+
+</ion-content>
+<ion-content *ngIf="!flagNo" class="main-all ">
+  <ion-grid >
+    <h2 style="text-align: center;margin-top: 12%">
+      در حال حاضر سفارش انجام شده وجود ندارد
+    </h2>
   </ion-grid>
 </ion-content>

@@ -12,6 +12,8 @@ export class RunningComponent implements OnInit {
   listRunning;
   flagBaterry;
   errorMsg;
+  flagNo = true;
+
   flag= true;
   constructor(private userService: loginRegister,public modalCtrl: ModalController, private loading: LoadingController, private alertCtrl: AlertController) { }
 
@@ -30,6 +32,7 @@ export class RunningComponent implements OnInit {
         console.log(this.listRunning);
 
         if (this.listRunning.length>0) {
+          this.flagNo = true;
           let date1;
           let date2;
           let date3;
@@ -49,6 +52,9 @@ export class RunningComponent implements OnInit {
           console.log(date3);
           console.log(date4);
           this.flagBaterry = true;
+        } else {
+        this.flagNo = false;
+        console.log('salam');
         }
 
 

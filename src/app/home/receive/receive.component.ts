@@ -10,6 +10,7 @@ import {loginRegister} from "../../shared/service/login-register";
 })
 export class ReceiveComponent implements OnInit {
   errorMsg;
+
   listBaterry;
   constructor(private loading2: LoadingController,
               public modalCtrl: ModalController,

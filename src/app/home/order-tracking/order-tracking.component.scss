@@ -89,6 +89,15 @@ padding-right: 10px;
   text-align: center;
 
 }
+.abso-buttonn{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0 auto;
+  text-align: center;
+  padding-right: 8px !important;
+}
 .privacy p a{
   text-decoration: underline !important;
 }
@@ -280,50 +289,47 @@ main-all.login-text{font-size:12px;color:#acb1c0}.haeder-all{direction:rtl;paddi
 .toolbar-rel{
   position: relative;
 }
-//@media screen and (max-height: 644px) {
-//  .login-code-gif{
-//    width: 165px;
-//    height: 145px;
-//
-//  }
-//  .rel-row{
-//
-//    height: 200px !important;
-//  }
-//}
-//@media screen and (max-height: 604px) {
-//  .login-code-gif{
-//    width: 160px;
-//    height: 130px;
-//
-//  }
-//  .rel-row{
-//
-//    height: 200px !important;
-//  }
-//  .login-rules{
-//    border-top: 1px solid gray;
-//    font-size: 14px;
-//  }
-//  .header-register{text-align:center;font-size: 16px}
-//}
-//@media screen and (max-height: 566px) {
-//  .login-code-gif{
-//    display: none;
-//
-//  }
-//  .rel-row{
-//    position:relative;
-//    height: 100px;
-//  }
-//  .login-rules{
-//    border-top: 1px solid gray;
-//    font-size: 14px;
-//  }
-//  .header-register{text-align:center;font-size: 16px}
-//  .rel-row{
-//
-//    height: 200px !important;
-//  }
-//}
+.prec{margin-right:2%;font-weight:400!important;font-size:14px}.hrec{text-align: center;font-size:18px;color:#3cd0fc;border-bottom:1px solid #f1f4f8;padding-bottom:2%}.floatr{display:inline-flex;color:#222b45;margin-right:15px;margin-top:-1px}.floatl{display:inline-flex;float:left;margin-left:5px;margin-top:-1px;color:#acb1c0}.lirec{list-style-type:none}.li2rec{line-height:40px;direction: rtl}.floatrimg{float:right;margin-right:10px;font-weight:700;margin-top:6px}.pprec{color:#acb1c0}.message-button{font-weight:700;width:100px;height:43px}.call-button{font-weight:700;border-radius:30px;width:100px;height:43px}.shop-second-row{border-bottom:1px solid #f1f4f8}.shop-img{width:50px;height:50px;border-radius:5px;float:right}.shop-all{float:right}.shop-p2{color:#222b45;font-weight:700;margin-right:5px;line-height:2px}.shop-p3{color:#acb1c0;margin-right:5px;font-size:10px}.shop-h3{font-weight:700;color:#222b45;border-bottom:1px solid #f1f4f8;padding-bottom:2%}
+.receive-btns1{
+  text-align: center;
+}
+.receive-btns2{
+  text-align: center;
+}
+.message-button {
+  float: left;
+  margin-bottom: 8px;
+}
+.call-button {
+  float: right;
+  margin-bottom: 8px;
+}
+.message-button {
+  width: 125px;
+  margin-left: 15%;
+
+}
+.call-button {
+ width: 125px;
+  margin-right: 15%;
+}
+.shop-buttons-row {
+  padding:0 20px;
+}
+.special {
+  margin-bottom: 57px;
+}
+.receive-abso{
+  width: 100%;position: fixed;bottom: 0px;background-color: #fff
+}
+
+.spanrec{float:left;padding-right:15px;color:#acb1c0;}
+.spanrec-active{float:left;padding-right:15px;color:#acb1c0;}
+.images{
+  list-style-image:url('https://geofahm.ir/takstart/assets/img/1.png')
+}
+.images-active{
+  list-style-image:url('https://geofahm.ir/takstart/assets/img/2.png');
+  color: #3CD0FC;
+}
 

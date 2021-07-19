@@ -9,8 +9,8 @@
   </ion-header>
   <ion-grid style="position:relative;">
     <ion-row >
-      <img *ngIf="lock" class="login-code-gif special" src="https://geofahm.ir/www/assets/img/saedi2.png"  alt="" >
-      <img *ngIf="!lock" class="login-code-gif special" src="https://geofahm.ir/www/assets/img/saedi.gif" alt="" >
+      <img *ngIf="lock" class="login-code-gif special" src="https://geofahm.ir/takstart/assets/img/saedi2.png"  alt="" >
+      <img *ngIf="!lock" class="login-code-gif special" src="https://geofahm.ir/takstart/assets/img/saedi.gif" alt="" >
 
     </ion-row>
   </ion-grid>
@@ -26,7 +26,7 @@
       <ion-col size-md="4" offset-md="4" size-xs="12" class="button-grid2 ">
         <div>
           <ion-label >شماره تلفن همراه</ion-label>
-          <ion-input type="number" [(ngModel)]="phone" (change)="onChange(phone)" class="input-register input-color"  placeholder="شماره همراه" formControlName="phone"></ion-input>
+          <ion-input type="tel"  [(ngModel)]="phone" (keyup)="segmentChanged222($event)" class="input-register input-color"  placeholder="شماره همراه" formControlName="phone"></ion-input>
         </div>
       </ion-col>
     </ion-row>
@@ -40,7 +40,7 @@
 <!--      </ion-col>-->
       <ion-col size-md="4" offset-md="4" size-xs="12" class="button-grid  abso-button  ">
         <ion-button *ngIf="!flagLoad" class="color-register10" fill="outline">
-          <span  style="display: contents;"><img  class="image-loading" src="https://geofahm.ir/www/assets/img/2.gif" alt="">لطفا صبر کنید</span>
+          <span  style="display: contents;"><img  class="image-loading" src="https://geofahm.ir/takstart/assets/img/2.gif" alt="">لطفا صبر کنید</span>
         </ion-button>
         <ion-button *ngIf="flagLoad && form.valid" class="color-register2 " fill="outline"  type="submit"><ion-icon name="checkmark-outline"></ion-icon>تایید</ion-button>
         <ion-button [disabled]=!form.valid *ngIf="!form.valid"  class="color-register22 " fill="outline"  type="submit"><ion-icon name="checkmark-outline"></ion-icon>تایید</ion-button>

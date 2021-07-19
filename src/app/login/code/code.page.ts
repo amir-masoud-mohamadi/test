@@ -18,6 +18,7 @@ export class CodePage implements OnInit {
   flag = false;
   form: FormGroup;
   errorMsg;
+  part2;
   flagLoad = true;
   constructor(
     private loading: LoadingController,
@@ -172,5 +173,10 @@ export class CodePage implements OnInit {
   }
   onChange(phone) {
     console.log(phone)
+  }
+  segmentChanged222(e) {
+    if (this.part2.toString().length >4) {
+      this.part2 = this.part2.toString().slice(0,4);
+    }
   }
 }

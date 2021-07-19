@@ -10,6 +10,7 @@ import {AlertController, LoadingController, ModalController} from "@ionic/angula
 })
 export class DoneComponent implements OnInit {
   listDone;
+  flagNo = true;
   flagBaterry = false;
   errorMsg;
   constructor(private userService: loginRegister,public modalCtrl: ModalController, private loading: LoadingController, private alertCtrl: AlertController) { }
@@ -25,10 +26,16 @@ export class DoneComponent implements OnInit {
 async dis() {
   await this.userService.getDoneHistory().subscribe((com: HttpResponse<any>) => {
     if (com.status === 200) {
-      this.listDone = com.body;
-      console.log(this.listDone);
-      this.flagBaterry = true;
-      this.loading.dismiss();
+      if (com.body.length>0) {
+        this.flagNo = true;
+        this.listDone = com.body;
+        console.log(this.listDone);
+        this.flagBaterry = true;
+        this.loading.dismiss();
+      } else {
+        this.loading.dismiss();
+        this.flagNo = false;
+      }
     }
   }, err => {
     this.loading.dismiss();

@@ -17,17 +17,18 @@
       [centerWithPanTo]="true"
       [interactive]="true"
       [apiKey]="apiKey"
-      (click)="clicked($event)"
+      (moveEnd)="moved($event)"
+      (load)="onMapLoad($event)"
 
     >
-      <mgl-popup *ngIf="process && markerPosition2"
+     <!-- <mgl-popup *ngIf="process && markerPosition2"
         [lngLat]="markerPosition2"
         anchor="bottom"
 
         [closeOnClick]="false"
       >
         <b>نماینده شما تا {{time}} دقیقه دیگر به شما میرسد</b>
-      </mgl-popup>
+      </mgl-popup>-->
       <mgl-marker *ngIf="process && markerPosition2"
 
       [(lngLat)]="markerPosition2"
@@ -36,20 +37,20 @@
       (dragEnd)="dragged($event)"
       anchor="top"
       >
-        <img src="https://geofahm.ir/www/assets/img/Untitled-3.png" style="width: 60px;height: 70px" alt="">
+        <img src="https://geofahm.ir/takstart/assets/img/Untitled-3.png" style="width: 60px;height: 70px" alt="">
       </mgl-marker>
-      <mgl-marker
+      <mgl-marker *ngIf="process"
 
                   [(lngLat)]="markerPosition"
-                  [draggable]="!process"
+                  [draggable]="process"
 
                   (dragEnd)="dragged($event)"
                   anchor="bottom"
       >
-        <img src="https://geofahm.ir/www/assets/img/index.png" style="width: 60px;height: 70px" alt="">
+        <img src="https://geofahm.ir/takstart/assets/img/index.png" style="width: 60px;height: 70px" alt="">
       </mgl-marker>
     </mgl-map>
-
+    <img *ngIf="!process" class="image-marker" src="https://geofahm.ir/takstart/assets/img/index.png" style="width: 60px;height: 70px;" alt="">
     <div class="abso2">
       <ion-input [(ngModel)]="input" *ngIf="!process" class="input-register input-loc" placeholder="کجا هستید؟" readonly (click)="modalSearch()"><ion-icon name="search-outline"></ion-icon></ion-input>
     </div>
@@ -118,3 +119,14 @@
     <!--<ion-col size-md="6" size-sm="6" size-xs="6" style="text-align: center">-->
       <!---->
     <!--</ion-col>-->
+
+
+
+
+
+
+
+
+
+
+

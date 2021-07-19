@@ -3,8 +3,13 @@
     <ion-buttons class="toolbar-rel">
       <ion-button (click)="backClick()"><ion-icon style="font-size: 28px" name="close-outline"></ion-icon></ion-button>
     </ion-buttons>
-    <ion-title class="shop-p1">
-        شماره سفارش:{{data.data.orderId}}
+    <ion-title class="shop-p1" *ngIf="time && !final">
+        <!--شماره سفارش:{{data.data.orderId}}-->
+      نماینده شما تا {{time}} دقیقه دیگر به شما میرسد
+    </ion-title>
+    <ion-title class="shop-p1" *ngIf="final">
+      <!--شماره سفارش:{{data.data.orderId}}-->
+      پیک شما به مقصد رسید
     </ion-title>
 
 
@@ -15,14 +20,42 @@
   <ion-grid>
     <ion-row>
       <ion-col class="shop-second-row" size-md="12" size-xs="12" >
-        <img class="shop-img" src="https://geofahm.ir/www/assets/img/person.png" alt="">
+        <img class="shop-img" src="https://geofahm.ir/takstart/assets/img/person.png" alt="">
         <div class="shop-all">
           <p class="shop-p2">  نام نمایندگی: {{data.data.customer.name}}</p>
-          <p class="shop-p3" *ngIf="peyk"> نام پیک: {{peyk[0].name}}</p>
+          <p class="shop-p3" *ngIf="peyk"> نام پیک: {{peyk.name}}</p>
         </div>
       </ion-col>
+    </ion-row>
+    <ion-row class="two-button">
+      <ion-col size-md="6" size-sm="6" size-xs="6" style="text-align: center">
+        <ion-button href="tel:{{data.data.customer.phone}}" fill="outline" class="call-button" fill="outline"> تماس با نمایندگی</ion-button>
+      </ion-col>
+      <ion-col size-md="6" size-sm="6" size-xs="6" style="text-align: center">
+        <ion-button *ngIf="peyk" fill="outline" href="tel:{{peyk.mobile}}" class="message-button color-login">تماس با پیک</ion-button>
+      </ion-col>
 
-
+    </ion-row>
+    <ion-row>
+      <ion-col size-md="12" size-xs="12">
+        <h3 class="header-register hrec">فرایند آماده سازی سفارش شما</h3>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col class="shop-third-row" size-md="12" size-xs="12">
+        <ion-row>
+          <ion-col size-md="12" size-xs="12">
+            <ul style="list-style: none;" class="li2rec">
+              <li *ngIf="!level1" class="images">در حال آماده سازی و بسته بندی محصول</li>
+              <li *ngIf="level1" class="images-active">در حال آماده سازی و بسته بندی محصول</li>
+              <li *ngIf="!level2" class="images">در حال ارسال محصول به آدرس : {{address}}</li>
+              <li *ngIf="level2" class="images-active">در حال ارسال محصول به آدرس : {{address}}</li>
+              <li *ngIf="!level3" class="images">کالای شما به مقصد رسید</li>
+              <li *ngIf="level3" class="images-active">کالای شما به مقصد رسید</li>
+            </ul>
+          </ion-col>
+        </ion-row>
+      </ion-col>
     </ion-row>
     <ion-row class="box2" >
 
@@ -30,27 +63,18 @@
         <p class="login-text2 product-text ">  {{+data.data.product[0].price | number:'3.0-0'}} تومان</p>
       </ion-col>
       <ion-col   size-md="10" size-xs="9" class="battery-image">
-        <img class="box-img"   src="{{data.data.product[0].images[0].src}}" alt="">
+        <img class="box-img" *ngIf="listBaterryOne" src="{{listBaterryOne[0].images[0].src}}" alt="">
         <p class="login-text product-text">{{data.data.product[0].batry_name}}</p>
       </ion-col>
     </ion-row>
 
+<ion-row class="abso-buttonn button-grid ">
 
-        <ion-row class="two-button">
-          <ion-col size-md="6" size-sm="6" size-xs="6" style="text-align: center">
-            <ion-button href="tel:{{data.data.customer.phone}}" fill="outline" class="call-button" fill="outline"> تماس با نمایندگی</ion-button>
-          </ion-col>
-          <ion-col size-md="6" size-sm="6" size-xs="6" style="text-align: center">
-            <ion-button *ngIf="peyk" fill="outline" href="tel:{{peyk[0].mobile}}" class="message-button color-login">تماس با پیک</ion-button>
-          </ion-col>
+        <ion-col size-md="4" offset-md="4" size-xs="12">
 
-        </ion-row>
-
-        <ion-col size-md="4" offset-md="4" size-xs="12" class="button-grid abso-button">
-
-          <ion-button  class="color-register2 " fill="outline"  type="submit"><ion-icon name="checkmark-outline"></ion-icon>تایید</ion-button>
+          <ion-button [disabled]="!final" class="color-register2 " fill="outline"  (click)="finalButton()"><ion-icon name="checkmark-outline"></ion-icon>محصول را تحویل گرفتم</ion-button>
 
         </ion-col>
-
+</ion-row>
   </ion-grid>
 </ion-content>

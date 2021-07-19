@@ -9,6 +9,8 @@ import {Subject} from "rxjs";
 export class loginRegister {
   recipeEvent = new Subject<boolean>();
   loginEvent = new Subject<boolean>();
+  timeEvent = new Subject<any>();
+  levelEvent = new Subject<any>();
   userInfo = new Subject<any>();
   marker = new Subject<any>();
   user;
@@ -69,6 +71,11 @@ export class loginRegister {
     return this.http.get('https://takstart.shop/wp-json/wc/v3/orders?status=processing&customer='+ localStorage.getItem('id') + '&expand=products&_fields_products=id,name,images' , {
       observe: 'response', headers: new HttpHeaders().set('Authorization', auth)}).pipe(take(1));
   }
+  getRunningHistory2() {
+    let auth = 'Bearer '+ localStorage.getItem('token');
+    return this.http.get('https://takstart.shop/wp-json/wc/v3/orders?status=failed&customer='+ localStorage.getItem('id') + '&expand=products&_fields_products=id,name,images' , {
+      observe: 'response', headers: new HttpHeaders().set('Authorization', auth)}).pipe(take(1));
+  }
   getCarName() {
     return this.http.get('https://takstart.shop/wp-json/wc/v3/products/attributes/'+localStorage.getItem('company_id')+'/terms?hide_empty=false&include='+localStorage.getItem('car_id')+'&_fields=name' , {
       observe: 'response'}).pipe(take(1));
@@ -92,6 +99,12 @@ export class loginRegister {
   }
   loginEvent1() {
     this.loginEvent.next(true);
+  }
+  timeEvent1(time) {
+    this.timeEvent.next(time);
+  }
+  levelEvent1(time) {
+    this.levelEvent.next(time);
   }
   loginEvent2() {
     this.loginEvent.next(false);
@@ -122,6 +135,9 @@ export class loginRegister {
     return this.http.post('https://geofahm.ir/wps/createRequest', request, {
       observe: 'response'}).pipe(take(1));
   }
+  deleteRequest(request) {
+    return this.http.get('https://geofahm.ir/wps/delete?table=requesttbl&id='+request.id).pipe(take(1));
+  }
   getNear() {
     return this.http.get('https://geofahm.ir/wps/getNearestSaba?coor='+ localStorage.getItem('long')+ ' ' + localStorage.getItem('latitude') , {
       observe: 'response'}).pipe(take(1));
@@ -138,5 +154,11 @@ export class loginRegister {
   }
   peykOrder(geo) {
     return this.http.get('https://geofahm.ir/wps/selectquery?table=listpeyk&fields=name,mobile,id&condition=id='+ geo).pipe(take(1));
+  }
+  changeStatus(body, order) {
+    let auth = 'Bearer '+ localStorage.getItem('token');
+    return this.http.post('https://takstart.shop/wp-json/wc/v3/orders/'+order , body,{
+      observe: 'response', headers: new HttpHeaders().set('Authorization', auth)}).pipe(take(1));
+
   }
 }

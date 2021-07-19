@@ -16,6 +16,7 @@ export class LoginPage implements OnInit {
   port: any;
   lock = true;
   phone;
+  part2;
   flagLoad2 = true;
   flagLoad = true;
   constructor(
@@ -38,8 +39,10 @@ export class LoginPage implements OnInit {
   addRecipe(){
     console.log(this.form);
     this.flagLoad = false;
-    let myString= '0';
-    myString += this.form.value.phone.toString();
+
+     let myString = this.form.value.phone.toString();
+     console.log("sepide");
+     console.log(myString);
     if (myString !== null && myString !== undefined) {
       if (myString.length === 11){
         let phone = myString;
@@ -111,7 +114,10 @@ export class LoginPage implements OnInit {
     });
     toast.present();
   }
-  onChange(e) {
-    console.log(e);
+
+  segmentChanged222(e) {
+    if (this.phone.toString().length >11) {
+      this.phone = this.phone.toString().slice(0,11);
+    }
   }
 }

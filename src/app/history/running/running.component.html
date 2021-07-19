@@ -1,26 +1,7 @@
-<ion-content  class="main-all ">
+<ion-content *ngIf="flagNo"  class="main-all ">
 
-  <ion-grid class="content-margin" *ngFor="let history of listRunning">
-    <!--<ion-row>-->
-      <!--<ion-col class="tarikhrun" size-md="4" offset-md="4" size-xs="12">-->
-        <!--<p>99/2/8 ، ساعت 16:48</p>-->
-      <!--</ion-col>-->
-    <!--</ion-row>-->
-    <!--<ion-row >-->
-      <!--<ion-col   class="rowrun box " size-md="4" offset-md="4" size-xs="12">-->
-        <!--<ion-col size-md="12" size-xs="12">-->
-          <!--<ul class="li2rec">-->
-            <!--<li><span class="spanrec">17:04</span>{{history.shipping.address_1}}</li>-->
-          <!--</ul>-->
-        <!--</ion-col>-->
-        <!--<div class="shop-all">-->
-          <!--<p class="shop-p2"> {{history.line_items[0].name}} :نام محصول</p>-->
-        <!--</div>-->
-        <!--<div class="hazinerun">-->
-          <!--<p class="prun"><span class="spanrun">هزینه نهایی</span><br>تومان {{  history.total | number:'3.0-0' }}</p>-->
-        <!--</div>-->
-      <!--</ion-col>-->
-    <!--</ion-row>-->
+  <ion-grid  class="content-margin" *ngFor="let history of listRunning">
+
     <ion-row>
       <ion-col class="tarikhrun" size-md="4" offset-md="4" size-xs="12">
         <p style="float: left">{{history.date_created}} / {{history.date_modified}}</p> <p>شماره سفارش:{{history.id}}</p>
@@ -44,5 +25,13 @@
       </ion-col>
     </ion-row>
 
+  </ion-grid>
+
+</ion-content>
+<ion-content *ngIf="!flagNo" class="main-all ">
+  <ion-grid >
+    <h2 style="text-align: center;margin-top: 12%">
+      در حال حاضر سفارش در حال انجام وجود ندارد
+    </h2>
   </ion-grid>
 </ion-content>

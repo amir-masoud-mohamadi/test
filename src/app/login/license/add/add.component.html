@@ -18,7 +18,7 @@
   <ion-grid style="position:relative;">
     <ion-row >
       <ion-col size-md="4" offset-md="4" size-xs="12">
-      <img class="login-code-gif" src="https://geofahm.ir/www/assets/img/car500.375.gif" alt="" style="">
+      <img class="login-code-gif" src="https://geofahm.ir/takstart/assets/img/car500.375.gif" alt="" style="">
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -62,18 +62,18 @@
 
         </ion-col>-->
         <ion-col size-md="4" offset-md="4" size-xs="12" class="image-plate">
-          <img src="https://geofahm.ir/www/assets/img/plate.png" alt="">
+          <img src="https://geofahm.ir/takstart/assets/img/plate.png" alt="">
 
-          <input class="number-plate1" formControlName="plate1" maxlength="2" placeholder="33">
+          <input type="number" [(ngModel)]="part1" (keyup)="segmentChanged($event)" class="number-plate1" formControlName="plate1" maxlength="2" placeholder="33">
 
 
-          <input class="number-plate2" formControlName="plate3" maxlength="3" placeholder="333">
+          <input type="tel" [(ngModel)]="part2" (keyup)="segmentChanged2($event)" class="number-plate2" formControlName="plate3" maxlength="3" placeholder="333">
 
           <select name="company"  class="number-plate3"  formControlName="plate2">
             <option value="{{select.name}}"  *ngFor="let select of plak" >{{select.name}}</option>
           </select>
 
-          <input class="number-plate4" formControlName="plate4" maxlength="2" placeholder="33">
+          <input type="number" [(ngModel)]="part3" (keyup)="segmentChanged3($event)" class="number-plate4" formControlName="plate4" maxlength="2" placeholder="33">
 
         </ion-col>
         <!--<ion-col size-xs="3">

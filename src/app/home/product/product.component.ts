@@ -25,14 +25,18 @@ export class ProductComponent implements OnInit {
   loading = false;
   payment = false;
   address;
+  idRequest;
   listBaterryOne;
   product = true;
   listSearch = [];
   namayandegi;
   pipe;
+  timer;
   now;
+  finish = false;
   fors = true;
   duration;
+  times;
   orderId;
   flagBaterry = false;
   constructor(public modalCtrl: ModalController,
@@ -40,6 +44,7 @@ export class ProductComponent implements OnInit {
               private alertCtrl: AlertController,
               private router: Router,
               private loading2: LoadingController,
+              private loading3: LoadingController,
               private platform: Platform,
               private toastController: ToastController
               ) {}
@@ -68,6 +73,28 @@ export class ProductComponent implements OnInit {
     });
   }
   dismiss() {
+
+    this.modalCtrl.dismiss(
+      {message: 'close'}, 'close');
+  }
+  dismiss2() {
+    this.loading3.create({message: '...لطفا صبر کنید', keyboardClose: true}).then(load => {
+      load.present();
+      const id = {
+        table: 'requesttbl',
+        id:this.idRequest
+      };
+      this.userService.deleteRequest(id).subscribe((com33: any) => {
+        this.loading3.dismiss();
+        console.log(com33);
+      }, err => {
+        this.loading3.dismiss();
+
+      });
+    });
+    clearInterval(this.timer);
+    this.times = true;
+
     this.modalCtrl.dismiss(
       {message: 'close'}, 'close');
   }
@@ -120,9 +147,11 @@ export class ProductComponent implements OnInit {
                customer_name:this.user.first_name+' '+this.user.last_name,
                price: this.listBaterry[0].price,
                batry_name: this.listBaterry[0].name,
+
                x: +localStorage.getItem('long'),
                y: +localStorage.getItem('latitude'),
              };
+
              console.log('this.orderId');
              console.log(this.orderId);
              this.userService.oneBattery().subscribe((com: HttpResponse<any>) => {
@@ -133,15 +162,19 @@ export class ProductComponent implements OnInit {
 
                  this.userService.createRequest(request).subscribe((com2: HttpResponse<any>) => {
                    if (com2.status === 200) {
-                     const source = interval(10000);
-                     const text = 'Your Text Here';
-                     this.subscription = source.subscribe(val => {
+                     console.log('com2');
+                     console.log(com2);
+                     this.idRequest = com2.body;
+                     this.timer = setInterval(() => {
+                       console.log('interval');
                        this.userService.checkOrder(this.orderId).subscribe((com8: HttpResponse<any>) => {
                          if (com2.status === 200) {
                            console.log('com8');
                            console.log(com8);
+
                            if(com8[0].centerid !== 0 ) {
-                             this.subscription.unsubscribe();
+
+
                              this.userService.getNear().subscribe((com3: HttpResponse<any>) => {
                                if (com3.status === 200) {
                                  console.log('salam3');
@@ -211,7 +244,9 @@ export class ProductComponent implements OnInit {
                                  alertEl.present();
                                });
                              });
+                             clearInterval(this.timer);
                            }
+
                          }
                        }, err => {
                          this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
@@ -227,7 +262,12 @@ export class ProductComponent implements OnInit {
                            alertEl.present();
                          });
                        });
-                     });
+                       if(this.times) {
+                         console.log('just');
+                         clearInterval(this.timer);
+                       }
+                     }, 10000);
+
                      console.log('request');
                      console.log(request);
                      this.numberRequest = com2;
@@ -311,9 +351,23 @@ export class ProductComponent implements OnInit {
 
   }
    loadingButton(){
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+     this.loading3.create({message: '...لطفا صبر کنید', keyboardClose: true}).then(load => {
+       load.present();
+       const id = {
+         table: 'requesttbl',
+         id:this.idRequest
+       };
+       this.userService.deleteRequest(id).subscribe((com33: any) => {
+         this.loading3.dismiss();
+         console.log(com33);
+       }, err => {
+
+
+         this.loading3.dismiss();
+
+       });
+     });
+     clearInterval(this.timer);
 
   /*this.dismiss();*/
   this.loading = false;
@@ -336,13 +390,13 @@ export class ProductComponent implements OnInit {
           id = {
             "order_id": this.orderId,
             "payment_method": "zarinpal_json",
-            "callback_url": "https://geofahm.ir/tak/tak2.html"
+            "callback_url": "https://geofahm.ir/tak/tak2.html?id="+this.orderId
           };
         } else {
           id = {
             "order_id": this.orderId,
             "payment_method": "zarinpal_json",
-            "callback_url": "https://geofahm.ir/tak/tak.html"
+            "callback_url": "https://geofahm.ir/tak/tak.html?id="+this.orderId
           };
         }
 
@@ -353,7 +407,6 @@ export class ProductComponent implements OnInit {
               this.flagLoad = true;
               /*this.router.navigate([com3.body.redirect])*/
               window.location.href = com3.body.redirect;
-              this.presentToast('close modal');
               if(!this.platform.is('desktop')) {
                 this.presentToast('close modal');
                 this.dismiss();

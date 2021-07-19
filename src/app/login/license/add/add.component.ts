@@ -17,6 +17,9 @@ export class AddComponent implements OnInit {
   errorMsg;
   company;
   mode;
+  part1;
+  part2;
+  part3;
   companyId;
   carName;
   model;
@@ -159,10 +162,10 @@ export class AddComponent implements OnInit {
       model: new FormControl(null, [Validators.required]),
       plate: new FormGroup(
         {
-          plate1: new FormControl(null, [Validators.required, Validators.minLength(2)]),
+          plate1: new FormControl(null, [Validators.required, Validators.min(10)]),
           plate2: new FormControl('null', [Validators.required]),
-          plate3: new FormControl(null, [Validators.required, Validators.minLength(3)]),
-          plate4: new FormControl(null, [Validators.required, Validators.minLength(2)]),
+          plate3: new FormControl(null, [Validators.required, Validators.min(100)]),
+          plate4: new FormControl(null, [Validators.required, Validators.min(10)]),
         }
       )
     });
@@ -370,5 +373,28 @@ export class AddComponent implements OnInit {
     } else {
       this.presentToast2('ابتدا کمپانی خودرو را وارد کنید');
     }
+  }
+  segmentChanged(e) {
+    console.log(e);
+
+    console.log(this.part1);
+    if (this.part1.toString().length >2) {
+      this.part1 = this.part1.toString().slice(0,2);
+    }
+  }
+  segmentChanged2(e) {
+    console.log('ssss');
+    if (this.part2.toString().length >3) {
+      this.part2 = this.part2.toString().slice(0,3);
+    }
+    console.log(this.part2);
+  }
+  segmentChanged3(e) {
+    console.log(e);
+    if (this.part3.toString().length >2) {
+      this.part3 = this.part3.toString().slice(0,2);
+    }
+    console.log(this.part3);
+
   }
 }

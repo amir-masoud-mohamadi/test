@@ -9,8 +9,8 @@
   </ion-header>
   <ion-grid style="position:relative;">
     <ion-row >
-      <img *ngIf="lock" class="login-code-gif " src="https://geofahm.ir/www/assets/img/قفل-بسته6.png" style="" alt="" >
-      <img *ngIf="!lock" class="login-code-gif special" src="https://geofahm.ir/www/assets/img/قفل6.gif" alt="" style="">
+      <img *ngIf="lock" class="login-code-gif " src="https://geofahm.ir/takstart/assets/img/قفل-بسته6.png" style="" alt="" >
+      <img *ngIf="!lock" class="login-code-gif special" src="https://geofahm.ir/takstart/assets/img/قفل6.gif" alt="" style="">
 
     </ion-row>
   </ion-grid>
@@ -23,14 +23,14 @@
         <p class="login-text">پبام کوتاهی به شماره تلفن همراه شما <span class="code-number" *ngIf="phoneNumber">{{phoneNumber}}</span> ارسال شده است</p>
       </ion-col>
       <ion-col size-md="4" offset-md="4" size-xs="12" class="button-grid2">
-        <ion-input placeholder="کد را وارد کنید" class="input-register input-color" formControlName="code" tabIndex="0" maxlength="4"></ion-input>
+        <ion-input type="number" [(ngModel)]="part2" (keyup)="segmentChanged222($event)" placeholder="کد را وارد کنید" class="input-register input-color" formControlName="code" tabIndex="0" maxlength="4"></ion-input>
       </ion-col>
     </ion-row>
     <ion-row class="rel-row" >
 
       <ion-col size-md="4" offset-md="4" size-xs="12" class="button-grid abso-button">
         <ion-button *ngIf="!flagLoad" class="color-register10" fill="outline">
-          <span  style="display: contents;"><img  class="image-loading" src="https://geofahm.ir/www/assets/img/2.gif" alt="">لطفا صبر کنید</span>
+          <span  style="display: contents;"><img  class="image-loading" src="https://geofahm.ir/takstart/assets/img/2.gif" alt="">لطفا صبر کنید</span>
         </ion-button>
         <ion-button *ngIf="flagLoad && form.valid" class="color-register2 " fill="outline"  type="submit"><ion-icon name="checkmark-outline"></ion-icon>تایید</ion-button>
         <ion-button [disabled]=!form.valid *ngIf="!form.valid"  class="color-register22 " fill="outline"  type="submit"><ion-icon name="checkmark-outline"></ion-icon>تایید</ion-button>
