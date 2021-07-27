@@ -150,15 +150,19 @@ export class loginRegister {
     return this.http.get('https://geofahm.ir/wps/selectquery?table=center1&fields=st_astext(geom),name,phone&condition=gid='+ geo).pipe(take(1));
   }
   checkOrder(geo) {
-    return this.http.get('https://geofahm.ir/wps/selectquery?table=requesttbl&fields=address,peyk,x,y,centerid,status,price,batry_name,battryid&condition=orderid='+ geo).pipe(take(1));
+    return this.http.get('https://geofahm.ir/wps/selectquery?table=requesttbl&fields=address,peyk,x,y,centerid,status,price,batry_name,battryid,orderid&condition=orderid='+ geo).pipe(take(1));
+  }
+  updateOrder(geo) {
+    return this.http.get('https://geofahm.ir/wps/update?table=requesttbl&field=status&value=100&orderid='+ geo).pipe(take(1));
   }
   peykOrder(geo) {
     return this.http.get('https://geofahm.ir/wps/selectquery?table=listpeyk&fields=name,mobile,id&condition=id='+ geo).pipe(take(1));
   }
   changeStatus(body, order) {
     let auth = 'Bearer '+ localStorage.getItem('token');
-    return this.http.post('https://takstart.shop/wp-json/wc/v3/orders/'+order , body,{
+    return this.http.put('https://takstart.shop/wp-json/wc/v3/orders/'+order , body,{
       observe: 'response', headers: new HttpHeaders().set('Authorization', auth)}).pipe(take(1));
 
   }
+
 }

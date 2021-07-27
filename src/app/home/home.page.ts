@@ -28,6 +28,7 @@ import {timer} from "rxjs/internal/observable/timer";
 import {interval} from "rxjs/internal/observable/interval";
 import {ReceiveComponent} from "./receive/receive.component";
 import {Map} from "mapbox-gl";
+import {PeygiriComponent} from "./peygiri/peygiri.component";
 
 const { Geolocation } = Plugins;
 
@@ -146,265 +147,7 @@ export class HomePage implements OnInit, AfterViewInit {
             console.log(com);
             if (com.status === 200) {
               console.log('4');
-              this.userService.getRunningHistory().subscribe((com11: HttpResponse<any>) => {
-                console.log('5');
-                if (com11.status === 200) {
-                  console.log('6');
-                  console.log(com11);
-                  console.log(com11.body.length>0);
-                  if (com11.body.length>0) {
-                    this.running = true;
-                    console.log('7');
-                    console.log(com11.body[0]);
-                    this.orderId = com11.body[0].id;
-                    this.process = true;
-                    /*if(localStorage.getItem('customer-lat') && localStorage.getItem('customer-time')){
-                      this.markerPosition2 = [+localStorage.getItem('customer-lat'), +localStorage.getItem('customer-lng')];
-                      this.center  = [+localStorage.getItem('customer-lat'), +localStorage.getItem('customer-lng')];
-                      this.userService.markerEvent1(this.markerPosition2);
-                      this.zoomis = 12;
-                      this.markerPosition = [+localStorage.getItem('long'), +localStorage.getItem('latitude')];
-                      this.time = localStorage.getItem('customer-time');
-                    } else {*/
-                      this.userService.checkOrder(this.orderId).subscribe((com2: any) => {
-                        console.log(com2);
-                        console.log('asd');
-                        this.orderProduct = com2;
-
-                        this.userService.checkCustomer(com2[0].centerid).subscribe((com3: any) => {
-
-
-                          let geom = com3[0].st_astext;
-                          let newtext = geom.slice(6);
-
-                          let num = newtext.indexOf(" ");
-                          let number1 = newtext.slice(0,num);
-
-                          let number2with = newtext.slice(num+1);
-
-
-                          let number2 = number2with.slice(0,number2with.indexOf(")"));
-
-                          let address ={
-                            x: number1,
-                            y: number2
-                          };
-
-                          this.customerProduct = {
-                            name:com3[0].name,
-                            phone:com3[0].phone,
-                            x: number1,
-                            y: number2
-                          };
-                          localStorage.setItem('customer-lat', number1);
-                          localStorage.setItem('customer-lng', number2);
-
-                          this.userService.getTimeNear(address).subscribe((com4: HttpResponse<any>) => {
-
-                            if (com4.status === 200) {
-
-                              let time = com4.body.routes[0].duration/60+15;
-
-                              this.duration = {
-                                time: time.toFixed(0),
-                                distance: com4.body.routes[0].distance
-                              };
-                              if(!localStorage.getItem('customer-time')) {
-                                localStorage.setItem('customer-time', this.duration.time);
-                              }
-                              this.userService.timeEvent1(this.time);
-                              this.markerPosition2 = [+localStorage.getItem('customer-lat'), +localStorage.getItem('customer-lng')];
-                              this.center  = [+localStorage.getItem('customer-lat'), +localStorage.getItem('customer-lng')];
-                              this.userService.markerEvent1(this.markerPosition2);
-                              this.zoomis = 12;
-                              this.loading.dismiss();
-                              this.markerPosition = [+localStorage.getItem('long'), +localStorage.getItem('latitude')];
-                              this.time = localStorage.getItem('customer-time');
-
-
-
-                            }
-                          }, err => {
-                            this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
-                            this.loading.dismiss();
-                            this.alertCtrl.create({
-                              message: this.errorMsg, buttons: [
-                                {
-                                  text: 'تایید',
-                                  role: 'cancel'
-                                }
-                              ]
-                            }).then(alertEl => {
-                              alertEl.present();
-                            });
-                          });
-                        }, err => {
-                          this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
-                          this.loading.dismiss();
-                          this.alertCtrl.create({
-                            message: this.errorMsg, buttons: [
-                              {
-                                text: 'تایید',
-                                role: 'cancel'
-                              }
-                            ]
-                          }).then(alertEl => {
-                            alertEl.present();
-                          });
-                        });
-                      }, err => {
-                        this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
-                        this.loading.dismiss();
-                        this.alertCtrl.create({
-                          message: this.errorMsg, buttons: [
-                            {
-                              text: 'تایید',
-                              role: 'cancel'
-                            }
-                          ]
-                        }).then(alertEl => {
-                          alertEl.present();
-                        });
-                      });
-                    /*}*/
-
-
-                  } else {
-                    console.log('8');
-                    this.userService.getRunningHistory2().subscribe((com11: HttpResponse<any>) => {
-                      console.log('11');
-                      if (com11.status === 200) {
-                        console.log('12');
-                        console.log(com11);
-
-                        if (com11.body.length>0) {
-                          this.running = false;
-                          console.log('13');
-                          this.orderId = com11.body[0].id;
-                          this.process = true;
-                          this.userService.checkOrder(this.orderId).subscribe((com2: any) => {
-
-                            this.orderProduct = com2;
-
-                            this.userService.checkCustomer(com2[0].centerid).subscribe((com3: any) => {
-
-
-                              let geom = com3[0].st_astext;
-                              let newtext = geom.slice(6);
-
-                              let num = newtext.indexOf(" ");
-                              let number1 = newtext.slice(0,num);
-
-                              let number2with = newtext.slice(num+1);
-
-
-                              let number2 = number2with.slice(0,number2with.indexOf(")"));
-
-                              let address ={
-                                x: number1,
-                                y: number2
-                              };
-
-                              this.customerProduct = {
-                                name:com3[0].name,
-                                phone:com3[0].phone,
-                                x: number1,
-                                y: number2
-                              };
-                              localStorage.setItem('customer-lat', number1);
-                              localStorage.setItem('customer-lng', number2);
-                              this.markerPosition2 = [+localStorage.getItem('customer-lat'), +localStorage.getItem('customer-lng')];
-                              this.center  = [+localStorage.getItem('customer-lat'), +localStorage.getItem('customer-lng')];
-                              this.userService.markerEvent1(this.markerPosition2);
-                              this.zoomis = 12;
-                              this.loading.dismiss();
-                              this.markerPosition = [+localStorage.getItem('long'), +localStorage.getItem('latitude')];
-                            }, err => {
-                              this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
-                              this.loading.dismiss();
-                              this.alertCtrl.create({
-                                message: this.errorMsg, buttons: [
-                                  {
-                                    text: 'تایید',
-                                    role: 'cancel'
-                                  }
-                                ]
-                              }).then(alertEl => {
-                                alertEl.present();
-                              });
-                            });
-                          }, err => {
-                            this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
-                            this.loading.dismiss();
-                            this.alertCtrl.create({
-                              message: this.errorMsg, buttons: [
-                                {
-                                  text: 'تایید',
-                                  role: 'cancel'
-                                }
-                              ]
-                            }).then(alertEl => {
-                              alertEl.present();
-                            });
-                          });
-                          /*}*/
-
-
-                        } else {
-                          this.process = false;
-
-                          this.loading.dismiss();
-                        }
-
-                      }
-
-                    }, err => {
-                      this.loading.dismiss();
-                      if (err.status === 401 ) {
-                        this.process = false;
-                      }else {
-                        this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
-
-                        this.alertCtrl.create({
-                          message: this.errorMsg, buttons: [
-                            {
-                              text: 'تایید',
-                              role: 'cancel'
-                            }
-                          ]
-                        }).then(alertEl => {
-                          alertEl.present();
-                        });
-                      }
-
-
-                    });
-
-                  }
-
-                }
-
-              }, err => {
-                this.loading.dismiss();
-                if (err.status === 401 ) {
-                  this.process = false;
-                }else {
-                  this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
-
-                  this.alertCtrl.create({
-                    message: this.errorMsg, buttons: [
-                      {
-                        text: 'تایید',
-                        role: 'cancel'
-                      }
-                    ]
-                  }).then(alertEl => {
-                    alertEl.present();
-                  });
-                }
-
-
-              });
+              this.checkProduct();
               this.loadingFlag = true;
               this.userService.loginEvent1();
               this.userService.getUser().subscribe((com: any) => {
@@ -727,13 +470,13 @@ export class HomePage implements OnInit, AfterViewInit {
                   id = {
                     "order_id": this.orderId,
                     "payment_method": "zarinpal_json",
-                    "callback_url": "https://geofahm.ir/tak/tak2.html?id="+this.orderId
+                    "callback_url": "https://geofahm.ir/wps/tak.html"
                   };
                 } else {
                   id = {
                     "order_id": this.orderId,
                     "payment_method": "zarinpal_json",
-                    "callback_url": "https://geofahm.ir/tak/tak.html?id="+this.orderId
+                    "callback_url": "https://geofahm.ir/wps/tak.html"
                   };
                 }
 
@@ -773,7 +516,7 @@ export class HomePage implements OnInit, AfterViewInit {
                 load.present();
 
                 let id = {
-                  status: 'failed'
+                  status: 'cancelled'
                 };
                 this.userService.changeStatus(id, this.orderId).subscribe((com3: HttpResponse<any>) => {
                   if (com3.status === 200) {
@@ -792,6 +535,7 @@ export class HomePage implements OnInit, AfterViewInit {
 
                   }
                 }, err => {
+                  console.log(err);
                   this.loading.dismiss();
                   this.alertCtrl.create({
                     message:'خطا در ورود به سامانه:', buttons: [
@@ -1106,7 +850,7 @@ export class HomePage implements OnInit, AfterViewInit {
                 } else {
                   this.loading.dismiss();
                   this.process = false;
-                  
+
                 }
               }
             }, err => {
@@ -1154,11 +898,13 @@ export class HomePage implements OnInit, AfterViewInit {
     });
     modal.onDidDismiss().then((data) => {
         console.log('return application');
-      if(!this.platform.is('desktop')) {
-        this.presentToast('open home');
-      }
-      if (data.data.dismissed) {
 
+      if (data.data.final) {
+        if(!this.platform.is('desktop')) {
+          this.peygiriModal();
+        } else{
+
+        }
       }
     });
     return await modal.present();
@@ -1186,6 +932,19 @@ export class HomePage implements OnInit, AfterViewInit {
       if (data.data.dismissed) {
         this.modalCode();
       }
+    });
+    return await modal2.present();
+  }
+  async peygiriModal() {
+    const modal2 = await this.modalController.create({
+      component: PeygiriComponent,
+      cssClass: 'custom-modal',
+    });
+    modal2.onDidDismiss().then((data) => {
+      this.loading.create({message: '...لطفا صبر کنید', keyboardClose: true}).then(load => {
+        load.present();
+        this.checkProduct();
+      });
     });
     return await modal2.present();
   }
@@ -1258,4 +1017,267 @@ export class HomePage implements OnInit, AfterViewInit {
   onMapLoad( map: Map) {
     // i added
     map.resize()}
+
+
+    checkProduct() {
+      this.userService.getRunningHistory().subscribe((com11: HttpResponse<any>) => {
+        console.log('5');
+        if (com11.status === 200) {
+          console.log('6');
+          console.log(com11);
+          console.log(com11.body.length>0);
+          if (com11.body.length>0) {
+            this.running = true;
+            console.log('7');
+            console.log(com11.body[0]);
+            this.orderId = com11.body[0].id;
+            this.process = true;
+            /*if(localStorage.getItem('customer-lat') && localStorage.getItem('customer-time')){
+              this.markerPosition2 = [+localStorage.getItem('customer-lat'), +localStorage.getItem('customer-lng')];
+              this.center  = [+localStorage.getItem('customer-lat'), +localStorage.getItem('customer-lng')];
+              this.userService.markerEvent1(this.markerPosition2);
+              this.zoomis = 12;
+              this.markerPosition = [+localStorage.getItem('long'), +localStorage.getItem('latitude')];
+              this.time = localStorage.getItem('customer-time');
+            } else {*/
+            this.userService.checkOrder(this.orderId).subscribe((com2: any) => {
+              console.log(com2);
+              console.log('asd');
+              this.orderProduct = com2;
+
+              this.userService.checkCustomer(com2[0].centerid).subscribe((com3: any) => {
+
+
+                let geom = com3[0].st_astext;
+                let newtext = geom.slice(6);
+
+                let num = newtext.indexOf(" ");
+                let number1 = newtext.slice(0,num);
+
+                let number2with = newtext.slice(num+1);
+
+
+                let number2 = number2with.slice(0,number2with.indexOf(")"));
+
+                let address ={
+                  x: number1,
+                  y: number2
+                };
+
+                this.customerProduct = {
+                  name:com3[0].name,
+                  phone:com3[0].phone,
+                  x: number1,
+                  y: number2
+                };
+                localStorage.setItem('customer-lat', number1);
+                localStorage.setItem('customer-lng', number2);
+
+                this.userService.getTimeNear(address).subscribe((com4: HttpResponse<any>) => {
+
+                  if (com4.status === 200) {
+
+                    let time = com4.body.routes[0].duration/60+15;
+
+                    this.duration = {
+                      time: time.toFixed(0),
+                      distance: com4.body.routes[0].distance
+                    };
+                    if(!localStorage.getItem('customer-time')) {
+                      localStorage.setItem('customer-time', this.duration.time);
+                    }
+                    this.userService.timeEvent1(this.time);
+                    this.markerPosition2 = [+localStorage.getItem('customer-lat'), +localStorage.getItem('customer-lng')];
+                    this.center  = [+localStorage.getItem('customer-lat'), +localStorage.getItem('customer-lng')];
+                    this.userService.markerEvent1(this.markerPosition2);
+                    this.zoomis = 12;
+                    this.loading.dismiss();
+                    this.markerPosition = [+localStorage.getItem('long'), +localStorage.getItem('latitude')];
+                    this.time = localStorage.getItem('customer-time');
+
+
+
+                  }
+                }, err => {
+                  this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+                  this.loading.dismiss();
+                  this.alertCtrl.create({
+                    message: this.errorMsg, buttons: [
+                      {
+                        text: 'تایید',
+                        role: 'cancel'
+                      }
+                    ]
+                  }).then(alertEl => {
+                    alertEl.present();
+                  });
+                });
+              }, err => {
+                this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+                this.loading.dismiss();
+                this.alertCtrl.create({
+                  message: this.errorMsg, buttons: [
+                    {
+                      text: 'تایید',
+                      role: 'cancel'
+                    }
+                  ]
+                }).then(alertEl => {
+                  alertEl.present();
+                });
+              });
+            }, err => {
+              this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+              this.loading.dismiss();
+              this.alertCtrl.create({
+                message: this.errorMsg, buttons: [
+                  {
+                    text: 'تایید',
+                    role: 'cancel'
+                  }
+                ]
+              }).then(alertEl => {
+                alertEl.present();
+              });
+            });
+            /*}*/
+
+
+          } else {
+            console.log('8');
+            this.userService.getRunningHistory2().subscribe((com11: HttpResponse<any>) => {
+              console.log('11');
+              if (com11.status === 200) {
+                console.log('12');
+                console.log(com11);
+
+                if (com11.body.length>0) {
+                  this.running = false;
+                  console.log('13');
+                  this.orderId = com11.body[0].id;
+                  this.process = true;
+                  this.userService.checkOrder(this.orderId).subscribe((com2: any) => {
+
+                    this.orderProduct = com2;
+
+                    this.userService.checkCustomer(com2[0].centerid).subscribe((com3: any) => {
+
+
+                      let geom = com3[0].st_astext;
+                      let newtext = geom.slice(6);
+
+                      let num = newtext.indexOf(" ");
+                      let number1 = newtext.slice(0,num);
+
+                      let number2with = newtext.slice(num+1);
+
+
+                      let number2 = number2with.slice(0,number2with.indexOf(")"));
+
+                      let address ={
+                        x: number1,
+                        y: number2
+                      };
+
+                      this.customerProduct = {
+                        name:com3[0].name,
+                        phone:com3[0].phone,
+                        x: number1,
+                        y: number2
+                      };
+                      localStorage.setItem('customer-lat', number1);
+                      localStorage.setItem('customer-lng', number2);
+                      this.markerPosition2 = [+localStorage.getItem('customer-lat'), +localStorage.getItem('customer-lng')];
+                      this.center  = [+localStorage.getItem('customer-lat'), +localStorage.getItem('customer-lng')];
+                      this.userService.markerEvent1(this.markerPosition2);
+                      this.zoomis = 12;
+                      this.loading.dismiss();
+                      this.markerPosition = [+localStorage.getItem('long'), +localStorage.getItem('latitude')];
+                    }, err => {
+                      this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+                      this.loading.dismiss();
+                      this.alertCtrl.create({
+                        message: this.errorMsg, buttons: [
+                          {
+                            text: 'تایید',
+                            role: 'cancel'
+                          }
+                        ]
+                      }).then(alertEl => {
+                        alertEl.present();
+                      });
+                    });
+                  }, err => {
+                    this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+                    this.loading.dismiss();
+                    this.alertCtrl.create({
+                      message: this.errorMsg, buttons: [
+                        {
+                          text: 'تایید',
+                          role: 'cancel'
+                        }
+                      ]
+                    }).then(alertEl => {
+                      alertEl.present();
+                    });
+                  });
+                  /*}*/
+
+
+                } else {
+                  this.process = false;
+
+                  this.loading.dismiss();
+                }
+
+              }
+
+            }, err => {
+              this.loading.dismiss();
+              if (err.status === 401 ) {
+                this.process = false;
+              }else {
+                this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+
+                this.alertCtrl.create({
+                  message: this.errorMsg, buttons: [
+                    {
+                      text: 'تایید',
+                      role: 'cancel'
+                    }
+                  ]
+                }).then(alertEl => {
+                  alertEl.present();
+                });
+              }
+
+
+            });
+
+          }
+
+        }
+
+      }, err => {
+        this.loading.dismiss();
+        if (err.status === 401 ) {
+          this.process = false;
+        }else {
+          this.errorMsg = 'خطا در ورود به سامانه:' + err.status;
+
+          this.alertCtrl.create({
+            message: this.errorMsg, buttons: [
+              {
+                text: 'تایید',
+                role: 'cancel'
+              }
+            ]
+          }).then(alertEl => {
+            alertEl.present();
+          });
+        }
+
+
+      });
+    }
 }

@@ -77,6 +77,11 @@ export class ProductComponent implements OnInit {
     this.modalCtrl.dismiss(
       {message: 'close'}, 'close');
   }
+  dismiss22() {
+
+    this.modalCtrl.dismiss(
+      {final: true}, 'close');
+  }
   dismiss2() {
     this.loading3.create({message: '...لطفا صبر کنید', keyboardClose: true}).then(load => {
       load.present();
@@ -386,17 +391,18 @@ export class ProductComponent implements OnInit {
       if (com.status === 200) {
         this.user = com.body;
         let id;
+        localStorage.setItem('sepideId', this.orderId);
         if(this.platform.is('desktop')) {
           id = {
             "order_id": this.orderId,
             "payment_method": "zarinpal_json",
-            "callback_url": "https://geofahm.ir/tak/tak2.html?id="+this.orderId
+            "callback_url": "https://geofahm.ir/wps/tak.html"
           };
         } else {
           id = {
             "order_id": this.orderId,
             "payment_method": "zarinpal_json",
-            "callback_url": "https://geofahm.ir/tak/tak.html?id="+this.orderId
+            "callback_url": "https://geofahm.ir/wps/tak.html"
           };
         }
 
@@ -406,10 +412,10 @@ export class ProductComponent implements OnInit {
               console.log(com3.body.redirect);
               this.flagLoad = true;
               /*this.router.navigate([com3.body.redirect])*/
-              window.location.href = com3.body.redirect;
+              window.open(com3.body.redirect, '_self', '');
               if(!this.platform.is('desktop')) {
-                this.presentToast('close modal');
-                this.dismiss();
+
+                this.dismiss22();
               }
             }
             console.log('payment');
